@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tickley/src/todayCategoryModal.dart';
 
 class Today extends StatefulWidget {
   @override
@@ -65,6 +66,7 @@ class TodayState extends State<Today> {
   }
 
   Widget _categoryTask() {
+    const temp = '에너지 절약';
     return (Container(
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
@@ -84,34 +86,44 @@ class TodayState extends State<Today> {
                   mainAxisSpacing: 10,
                   crossAxisCount: 3,
                   children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      child: const Text("에너지 절약"),
+                    Material(
                       color: Colors.green[100],
+                      child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return TodayCategoryModal(temp: temp);
+                                });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: const Text('에너지 절약'),
+                          )),
                     ),
                     Container(
                       padding: const EdgeInsets.all(8),
-                      child: const Text('일회용품 사용 자제'),
+                      child: const Text('쓰레기 절감'),
                       color: Colors.green[200],
                     ),
                     Container(
                       padding: const EdgeInsets.all(8),
-                      child: const Text('카테고리가 애매하넹..'),
+                      child: const Text('온실가스 저감'),
                       color: Colors.green[300],
                     ),
                     Container(
                       padding: const EdgeInsets.all(8),
-                      child: const Text('ㅎㅇㅎㅇ'),
+                      child: const Text('환경보호 봉사 활동'),
                       color: Colors.green[400],
                     ),
                     Container(
                       padding: const EdgeInsets.all(8),
-                      child: const Text('ㅎㅇㅎㅇ'),
+                      child: const Text('생태계 보호'),
                       color: Colors.green[500],
                     ),
                     Container(
                       padding: const EdgeInsets.all(8),
-                      child: const Text('Rgdgd'),
+                      child: const Text('친환경 제품 이용'),
                       color: Colors.green[600],
                     ),
                   ],

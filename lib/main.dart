@@ -87,7 +87,7 @@ class LoginState extends State<Login> {
                                   BottomNavigator(name: name)));
                     }
                   },
-                  child: const Text('Login'),
+                  child: Center(child: const Text('Login')),
                 ),
               ),
             ],
