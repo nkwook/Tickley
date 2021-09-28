@@ -14,6 +14,6 @@ class HomeState extends State<Home> {
   }
 
   Widget _home() {
-    return Text("1st!!!");
+    return Text("Home page");
   }
 }
