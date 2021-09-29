@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tickley/src/my_page.dart';
 import 'home.dart';
 import 'today.dart';
 
@@ -12,7 +13,7 @@ class BottomNavigator extends StatelessWidget {
     List<Widget> _widgetOptions = [
       Home(),
       Today(),
-      Placeholder(),
+      MyPage(Text('세번째탭이지롱')),
     ];
 
     return DefaultTabController(
