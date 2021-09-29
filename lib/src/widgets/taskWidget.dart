@@ -17,6 +17,7 @@ class TaskWidgetState extends State<TaskWidget> {
         child: Material(
             // color: Colors.green[100],
             child: InkWell(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
       onTap: () {
         showModalBottomSheet(
             context: context,
