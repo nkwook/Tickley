@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:tickley/src/model/task.dart';
 import '../utils/utils.dart';
+import '../api/api.dart';
 import '../todayCategoryModal.dart';
 
 class CategoryWidget extends StatefulWidget {
   final String label;
   final String emoji;
+  final int id;
+  final ValueChanged<int> callback;
+  int currentCategory;
 
-  CategoryWidget({Key? key, required this.label, required this.emoji})
+  CategoryWidget(
+      {Key? key,
+      required this.label,
+      required this.emoji,
+      required this.id,
+      required this.callback,
+      required this.currentCategory})
       : super(key: key);
 
   @override
@@ -26,16 +37,17 @@ class CategoryWidgetState extends State<CategoryWidget> {
             // color: Colors.green[100],
             child: InkWell(
       borderRadius: BorderRadius.all(Radius.circular(20)),
-      onTap: () {
-        // showModalBottomSheet(
-        //     context: context,
-        //     builder: (BuildContext context) {
-        //       return TodayCategoryModal(temp: temp);
-        //     });
+      onTap: () async {
+        // List<Task> t = await fetchTasksByCategory(widget.id);
+        print(widget.id);
+        widget.callback(widget.id);
       },
       child: Container(
         decoration: BoxDecoration(
             // boxShadow:
+            color: widget.currentCategory == widget.id
+                ? Colors.blue
+                : Colors.white,
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.all(Radius.circular(20))),
         padding: const EdgeInsets.all(8),
