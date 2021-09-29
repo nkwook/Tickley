@@ -25,14 +25,16 @@ class BottomNavigator extends StatelessWidget {
             bottomNavigationBar: TabBar(
               tabs: <Widget>[
                 Tab(
-                  icon: Icon(Icons.nature),
-                  height: 120,
+                  icon: Icon(Icons.public),
+                  height: 100,
                 ),
                 Tab(
-                  icon: Icon(Icons.nature),
+                  icon: Icon(Icons.check_circle_outline),
+                  height: 100,
                 ),
                 Tab(
-                  icon: Icon(Icons.settings),
+                  icon: Icon(Icons.person),
+                  height: 100,
                 ),
               ],
               indicatorColor: Colors.transparent,
