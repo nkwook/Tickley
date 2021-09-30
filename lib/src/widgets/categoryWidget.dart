@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tickley/src/model/task.dart';
 import '../utils/utils.dart';
-import '../api/api.dart';
-import '../todayCategoryModal.dart';
 
 class CategoryWidget extends StatefulWidget {
   final String label;

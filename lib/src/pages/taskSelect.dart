@@ -116,7 +116,9 @@ class TaskListState extends State<TaskList> {
       shrinkWrap: true,
       itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
-        return TaskWidget();
+        Task iTask = widget.tasks[index];
+        return TaskWidget(
+            label: iTask.label, emoji: '\\uD83D\\uDE0D', id: iTask.id);
       },
     );
   }
