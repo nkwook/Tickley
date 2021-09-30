@@ -11,16 +11,18 @@ class TaskSelect extends StatefulWidget {
 }
 
 class TaskSelectState extends State<TaskSelect> {
-  // late Future<List<Task>> tasks;
-  late Future<Task> task;
   late Future<List<Category>> categories;
   late List<Task> tasks = [];
+  late List<Task> userTasks = [];
   int currentCategory = 1;
+  int userId = 1; //temp
+
+  final _biggerGreyFont = const TextStyle(fontSize: 18.0, color: Colors.grey);
 
   @override
   void initState() {
     super.initState();
-    task = fetchTaskByID(1);
+    updateUserTasks(userId);
     updateTasks(1);
     categories = fetchCategories();
   }
@@ -30,6 +32,14 @@ class TaskSelectState extends State<TaskSelect> {
     setState(() {
       tasks = t;
       currentCategory = id;
+    });
+  }
+
+  void updateUserTasks(int id) async {
+    List<Task> t = await fetchTasksByUser(id);
+    print(t);
+    setState(() {
+      userTasks = t;
     });
   }
 
@@ -55,14 +65,13 @@ class TaskSelectState extends State<TaskSelect> {
                             : Center(child: CircularProgressIndicator());
                       }),
                 ),
-                FutureBuilder<Task>(
-                    future: task,
-                    builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? Text(snapshot.data!.createdAt)
-                          : Center(child: CircularProgressIndicator());
-                    }),
-                TaskList(tasks: tasks)
+                Divider(),
+                Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 15),
+                    child: Text('관심있는 활동들을 눌러보세요',
+                        textAlign: TextAlign.center, style: _biggerGreyFont)),
+                Container(
+                    width: 200, child: TaskList(tasks: tasks, userId: userId))
               ],
             )));
   }
@@ -104,21 +113,24 @@ class CategoryList extends StatelessWidget {
 
 class TaskList extends StatefulWidget {
   final List<Task> tasks;
+  int userId;
 
-  TaskList({Key? key, required this.tasks}) : super(key: key);
+  TaskList({Key? key, required this.tasks, required this.userId})
+      : super(key: key);
   TaskListState createState() => TaskListState();
 }
 
 class TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
+      separatorBuilder: (context, index) {
+        return Container(height: 10);
+      },
       shrinkWrap: true,
       itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
-        Task iTask = widget.tasks[index];
-        return TaskWidget(
-            label: iTask.label, emoji: '\\uD83D\\uDE0D', id: iTask.id);
+        return TaskWidget(task: widget.tasks[index], userId: widget.userId);
       },
     );
   }

@@ -60,3 +60,32 @@ Future<Task> fetchTaskByID(int id) async {
     throw Exception('Failed to load all tasks');
   }
 }
+
+Future<int> postTaskOperation(int userId, int taskId) async {
+  final response = await http.post(
+    Uri.parse(baseUrl + 'user/' + userId.toString() + '/task'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, int>{
+      'taskId': taskId,
+    }),
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    return json.decode(response.body)["status"];
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}
+
+Future<List<Task>> fetchTasksByUser(int id) async {
+  final response =
+      await http.get(Uri.parse(baseUrl + 'user/' + id.toString() + '/task'));
+
+  if (response.statusCode == 200) {
+    return parseTasks(response.body);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}

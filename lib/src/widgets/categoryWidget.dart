@@ -32,19 +32,16 @@ class CategoryWidgetState extends State<CategoryWidget> {
   Widget build(BuildContext context) {
     return Container(
         child: Material(
-            // color: Colors.green[100],
             child: InkWell(
       borderRadius: BorderRadius.all(Radius.circular(20)),
       onTap: () async {
-        // List<Task> t = await fetchTasksByCategory(widget.id);
-        print(widget.id);
         widget.callback(widget.id);
       },
       child: Container(
         decoration: BoxDecoration(
             // boxShadow:
             color: widget.currentCategory == widget.id
-                ? Colors.blue
+                ? Colors.green[50]
                 : Colors.white,
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.all(Radius.circular(20))),

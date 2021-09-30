@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/utils.dart';
-import '../todayCategoryModal.dart';
+import 'todayCategoryModal.dart';
 
 class TaskWidget extends StatefulWidget {
-  String label;
-  String emoji;
-  int id;
+  Task task;
+  int userId;
 
-  TaskWidget(
-      {Key? key, required this.label, required this.emoji, required this.id})
+  TaskWidget({Key? key, required this.task, required this.userId})
       : super(key: key);
 
   @override
@@ -21,28 +20,34 @@ class TaskWidgetState extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var temp = 'fhgv d';
-
     return Container(
         child: Material(
-            // color: Colors.green[100],
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            elevation: 2,
             child: InkWell(
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-      onTap: () {
-        showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return TodayCategoryModal(temp: temp);
-            });
-      },
-      child: Container(
-          decoration: BoxDecoration(
-              // boxShadow:
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          padding: const EdgeInsets.all(8),
-          child: Text(utils.convertStringToUnicode(widget.emoji) + widget.label,
-              style: _biggerFont)),
-    )));
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return TodayCategoryModal(
+                          task: widget.task, userId: widget.userId);
+                    });
+              },
+              child: Container(
+                  // width: 300.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(color: Colors.black),
+                  ),
+                  // boxShadow:
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    utils.convertStringToUnicode(widget.task.emoji) +
+                        widget.task.label,
+                    style: _biggerFont,
+                    textAlign: TextAlign.center,
+                  )),
+            )));
   }
 }
