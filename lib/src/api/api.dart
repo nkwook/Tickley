@@ -22,8 +22,9 @@ List<Category> parseCategories(String responseBody) {
       parsed["data"].map((json) => Category.fromJson(json)));
 }
 
-Future<List<Task>> fetchAllTasks() async {
-  final response = await http.get(Uri.parse(baseUrl + 'task'));
+Future<List<Task>> fetchTasksByCategory(int id) async {
+  final response = await http
+      .get(Uri.parse(baseUrl + 'category/' + id.toString() + '/task'));
 
   if (response.statusCode == 200) {
     return parseTasks(response.body);
@@ -32,11 +33,11 @@ Future<List<Task>> fetchAllTasks() async {
   }
 }
 
-Future<Task> fetchTaskByID(int id) async {
-  final response = await http.get(Uri.parse(baseUrl + 'task/' + id.toString()));
+Future<List<Task>> fetchAllTasks() async {
+  final response = await http.get(Uri.parse(baseUrl + 'task'));
 
   if (response.statusCode == 200) {
-    return Task.fromJson(json.decode(response.body)['data']);
+    return parseTasks(response.body);
   } else {
     throw Exception('Failed to load all tasks');
   }
@@ -48,4 +49,14 @@ List<Task> parseTasks(String responseBody) {
       List<Task>.from(parsed["data"].map((json) => Task.fromJson(json)));
 
   return l;
+}
+
+Future<Task> fetchTaskByID(int id) async {
+  final response = await http.get(Uri.parse(baseUrl + 'task/' + id.toString()));
+
+  if (response.statusCode == 200) {
+    return Task.fromJson(json.decode(response.body)['data']);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
 }

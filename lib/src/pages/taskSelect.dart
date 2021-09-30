@@ -11,16 +11,26 @@ class TaskSelect extends StatefulWidget {
 }
 
 class TaskSelectState extends State<TaskSelect> {
-  late Future<List<Task>> tasks;
+  // late Future<List<Task>> tasks;
   late Future<Task> task;
   late Future<List<Category>> categories;
+  late List<Task> tasks = [];
+  int currentCategory = 1;
 
   @override
   void initState() {
     super.initState();
     task = fetchTaskByID(1);
-    tasks = fetchAllTasks();
+    updateTasks(1);
     categories = fetchCategories();
+  }
+
+  void updateTasks(int id) async {
+    List<Task> t = await fetchTasksByCategory(id);
+    setState(() {
+      tasks = t;
+      currentCategory = id;
+    });
   }
 
   @override
@@ -32,17 +42,19 @@ class TaskSelectState extends State<TaskSelect> {
             child: Column(
               children: [
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    height: 70,
-                    child: Expanded(
-                      child: FutureBuilder<List<Category>>(
-                          future: categories,
-                          builder: (context, snapshot) {
-                            return snapshot.hasData
-                                ? CategoryList(categories: snapshot.data!)
-                                : Center(child: CircularProgressIndicator());
-                          }),
-                    )),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  height: 70,
+                  child: FutureBuilder<List<Category>>(
+                      future: categories,
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? CategoryList(
+                                categories: snapshot.data!,
+                                updateTasks: updateTasks,
+                                currentCategory: currentCategory)
+                            : Center(child: CircularProgressIndicator());
+                      }),
+                ),
                 FutureBuilder<Task>(
                     future: task,
                     builder: (context, snapshot) {
@@ -50,13 +62,7 @@ class TaskSelectState extends State<TaskSelect> {
                           ? Text(snapshot.data!.createdAt)
                           : Center(child: CircularProgressIndicator());
                     }),
-                FutureBuilder<List<Task>>(
-                    future: fetchAllTasks(),
-                    builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? TaskList(tasks: snapshot.data!)
-                          : Center(child: CircularProgressIndicator());
-                    })
+                TaskList(tasks: tasks)
               ],
             )));
   }
@@ -64,7 +70,15 @@ class TaskSelectState extends State<TaskSelect> {
 
 class CategoryList extends StatelessWidget {
   final List<Category> categories;
-  CategoryList({Key? key, required this.categories}) : super(key: key);
+  final ValueChanged<int> updateTasks;
+  int currentCategory;
+
+  CategoryList(
+      {Key? key,
+      required this.categories,
+      required this.updateTasks,
+      required this.currentCategory})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,27 +92,31 @@ class CategoryList extends StatelessWidget {
       itemCount: categories.length,
       itemBuilder: (context, index) {
         return CategoryWidget(
-          label: categories[index].label,
-          emoji: categories[index].emoji,
-        );
+            label: categories[index].label,
+            emoji: categories[index].emoji,
+            id: categories[index].id,
+            callback: updateTasks,
+            currentCategory: currentCategory);
       },
     );
   }
 }
 
-class TaskList extends StatelessWidget {
+class TaskList extends StatefulWidget {
   final List<Task> tasks;
 
   TaskList({Key? key, required this.tasks}) : super(key: key);
+  TaskListState createState() => TaskListState();
+}
 
+class TaskListState extends State<TaskList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: tasks.length,
+      itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
         return TaskWidget();
-        // (title: Text(tasks[index].label));
       },
     );
   }
