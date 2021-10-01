@@ -30,36 +30,37 @@ class HomeState extends State<Home> {
               enableInfiniteScroll: false,
               autoPlay: true,
             ),
-            items: 
-              // imageList
-              //   .map((e) => ClipRRect(
-              //         borderRadius: BorderRadius.circular(8),
-              //         child: Stack(
-              //           fit: StackFit.expand,
-              //           children: <Widget>[
-              //             Image.network(
-              //               e,
-              //               width: 1050,
-              //               height: 350,
-              //               fit: BoxFit.cover,
-              //             )
-              //           ],
-              //         ),
-              //       ))
-              //   .toList(),
-              missionList.map((e) => ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: <Widget>[
-                          Text(
-                            e,
-                            textAlign: TextAlign.center,
-                          )
-                        ],
-                      ),
-                    ))
-                .toList(),
+            items:
+                // imageList
+                //   .map((e) => ClipRRect(
+                //         borderRadius: BorderRadius.circular(8),
+                //         child: Stack(
+                //           fit: StackFit.expand,
+                //           children: <Widget>[
+                //             Image.network(
+                //               e,
+                //               width: 1050,
+                //               height: 350,
+                //               fit: BoxFit.cover,
+                //             )
+                //           ],
+                //         ),
+                //       ))
+                //   .toList(),
+                missionList
+                    .map((e) => ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: <Widget>[
+                              Text(
+                                e,
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                        ))
+                    .toList(),
           ),
         ),
       ),
