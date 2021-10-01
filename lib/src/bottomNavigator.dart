@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'today.dart';
+import 'pages/home.dart';
+import 'pages/today.dart';
 
 class BottomNavigator extends StatelessWidget {
-  const BottomNavigator({Key? key, required this.name}) : super(key: key);
+  const BottomNavigator({Key? key, this.name}) : super(key: key);
   // TabsState createState() => TabsState();
   final name;
 
