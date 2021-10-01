@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tickley/src/widgets/todayCategoryModal.dart';
+import 'package:tickley/src/widgets/taskDetailModal.dart';
 import 'taskSelect.dart';
 
 class Today extends StatefulWidget {
