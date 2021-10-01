@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'todayCategoryModal.dart';
+import 'taskDetailModal.dart';
 
 class TaskWidget extends StatefulWidget {
   Task task;
@@ -30,7 +30,7 @@ class TaskWidgetState extends State<TaskWidget> {
                 showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
-                      return TodayCategoryModal(
+                      return TaskDetailModal(
                           task: widget.task, userId: widget.userId);
                     });
               },

@@ -3,17 +3,17 @@ import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/utils.dart';
 
-class TodayCategoryModal extends StatefulWidget {
+class TaskDetailModal extends StatefulWidget {
   Task task;
   int userId;
 
-  TodayCategoryModal({Key? key, required this.task, required this.userId})
+  TaskDetailModal({Key? key, required this.task, required this.userId})
       : super(key: key);
 
-  TodayCategoryModalState createState() => TodayCategoryModalState();
+  TaskDetailModalState createState() => TaskDetailModalState();
 }
 
-class TodayCategoryModalState extends State<TodayCategoryModal> {
+class TaskDetailModalState extends State<TaskDetailModal> {
   Utils utils = new Utils();
   final _biggerFont = const TextStyle(fontSize: 22.0);
   final _biggerWhiteFont = const TextStyle(
