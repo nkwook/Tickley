@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:tickley/src/model/category.dart';
+import 'package:tickley/src/model/user.dart';
 import '../model/task.dart';
 
 final String baseUrl =
@@ -79,12 +80,26 @@ Future<int> postTaskOperation(int userId, int taskId) async {
   }
 }
 
+// user/:id/task
 Future<List<Task>> fetchTasksByUser(int id) async {
   final response =
       await http.get(Uri.parse(baseUrl + 'user/' + id.toString() + '/task'));
 
   if (response.statusCode == 200) {
     return parseTasks(response.body);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}
+
+// MyPage
+
+// user/:id
+Future<User> getUserData(int id) async {
+  final response = await http.get(Uri.parse(baseUrl + 'user/' + id.toString()));
+
+  if (response.statusCode == 200) {
+    return User.fromJson(json.decode(response.body)['data']);
   } else {
     throw Exception('Failed to load all tasks');
   }

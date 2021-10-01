@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tickley/src/widgets/taskDetailModal.dart';
-import 'taskSelect.dart';
+import 'task_select.dart';
 
 class Today extends StatefulWidget {
   @override

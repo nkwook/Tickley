@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/home.dart';
 import 'pages/today.dart';
-import 'package:tickley/src/my_page.dart';
+import 'package:tickley/src/pages/my_page.dart';
 
 class BottomNavigator extends StatelessWidget {
   const BottomNavigator({Key? key, this.name}) : super(key: key);
