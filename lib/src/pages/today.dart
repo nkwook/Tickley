@@ -1,8 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tickley/src/api/api.dart';
+import 'package:tickley/src/model/tUser.dart';
+import 'package:tickley/src/utils/authentication.dart';
 import 'package:tickley/src/widgets/taskDetailModal.dart';
 import 'taskSelect.dart';
 
 class Today extends StatefulWidget {
+  User? user;
+  Today({Key? key, required this.user}) : super(key: key);
+
   @override
   TodayState createState() => TodayState();
 }
@@ -10,6 +17,27 @@ class Today extends StatefulWidget {
 class TodayState extends State<Today> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final _todayTasks = ['텀블러 사용 하기', '자가용 대신 대중교통', '일회용 수저 주문 안 하기'];
+  String nickname = '';
+
+  _getUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        TUser tUser = await userLogin(user.uid);
+        if (tUser.accessToken == user.uid) {
+          setState(() {
+            nickname = tUser.nickname;
+          });
+        }
+      } catch (error) {}
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +53,8 @@ class TodayState extends State<Today> {
       children: <Widget>[
         _todayTask(),
         // Text('srs'),
-        _categoryTask()
+        _categoryTask(),
+        _logoutButtonTemp()
         // Text('rr')
       ],
     )));
@@ -40,7 +69,7 @@ class TodayState extends State<Today> {
       height: 300.0,
       child: Column(
         children: [
-          Text('당신에게 주어진 오늘의 태스크'),
+          Text(nickname + ' 님에게 주어진 오늘의 태스크'),
           // _todayTakeList(),
           Expanded(
               child: ListView.separated(
@@ -93,5 +122,16 @@ class TodayState extends State<Today> {
                 )),
           ),
         ])));
+  }
+
+  Widget _logoutButtonTemp() {
+    return Material(
+        child: InkWell(
+            onTap: () {
+              Authentication.signOut(context: context);
+            },
+            child: Container(
+              child: Text("Log out"),
+            )));
   }
 }

@@ -37,7 +37,6 @@ class TaskSelectState extends State<TaskSelect> {
 
   void updateUserTasks(int id) async {
     List<Task> t = await fetchTasksByUser(id);
-    print(t);
     setState(() {
       userTasks = t;
     });
