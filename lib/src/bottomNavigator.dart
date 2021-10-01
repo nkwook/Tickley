@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/home.dart';
 import 'pages/today.dart';
+import 'package:tickley/src/my_page.dart';
 
 class BottomNavigator extends StatelessWidget {
   const BottomNavigator({Key? key, this.name}) : super(key: key);
@@ -12,7 +13,7 @@ class BottomNavigator extends StatelessWidget {
     List<Widget> _widgetOptions = [
       Home(),
       Today(),
-      Placeholder(),
+      MyPage(),
     ];
 
     return DefaultTabController(
