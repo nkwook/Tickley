@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tickley/src/model/tUser.dart';
 import '../widgets/taskWidget.dart';
 import '../widgets/categoryWidget.dart';
 import '../model/task.dart';
@@ -13,16 +15,33 @@ class TaskSelect extends StatefulWidget {
 class TaskSelectState extends State<TaskSelect> {
   late Future<List<Category>> categories;
   late List<Task> tasks = [];
-  late List<Task> userTasks = [];
+  late List<Task> favoriteTasks = [];
+  int userId = 0;
   int currentCategory = 1;
-  int userId = 1; //temp
 
   final _biggerGreyFont = const TextStyle(fontSize: 18.0, color: Colors.grey);
+
+  _updateUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        TUser tUser = await userLogin(user.uid);
+        if (tUser.accessToken == user.uid) {
+          int id = tUser.id;
+          setState(() {
+            userId = id;
+          });
+          updateFavoriteTasks(id);
+        }
+      } catch (error) {}
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    updateUserTasks(userId);
+    _updateUser();
+    // updateFavoriteTasks(userId);
     updateTasks(1);
     categories = fetchCategories();
   }
@@ -35,10 +54,10 @@ class TaskSelectState extends State<TaskSelect> {
     });
   }
 
-  void updateUserTasks(int id) async {
-    List<Task> t = await fetchTasksByUser(id);
+  void updateFavoriteTasks(int id) async {
+    List<Task> t = await fetchFavoriteTasksByUser(id);
     setState(() {
-      userTasks = t;
+      favoriteTasks = t;
     });
   }
 
@@ -70,7 +89,8 @@ class TaskSelectState extends State<TaskSelect> {
                     child: Text('관심있는 활동들을 눌러보세요',
                         textAlign: TextAlign.center, style: _biggerGreyFont)),
                 Container(
-                    width: 200, child: TaskList(tasks: tasks, userId: userId))
+                    width: 200, child: TaskList(tasks: tasks, userId: userId)),
+                Container(child: Text(favoriteTasks.toString()))
               ],
             )));
   }

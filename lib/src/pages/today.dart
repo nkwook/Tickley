@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/tUser.dart';
 import 'package:tickley/src/utils/authentication.dart';
-import 'package:tickley/src/widgets/taskDetailModal.dart';
 import 'taskSelect.dart';
 
 class Today extends StatefulWidget {
@@ -19,7 +18,7 @@ class TodayState extends State<Today> {
   final _todayTasks = ['텀블러 사용 하기', '자가용 대신 대중교통', '일회용 수저 주문 안 하기'];
   String nickname = '';
 
-  _getUser() async {
+  _updateUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       try {
@@ -36,7 +35,7 @@ class TodayState extends State<Today> {
   @override
   void initState() {
     super.initState();
-    _getUser();
+    // _getUser();
   }
 
   @override
@@ -110,11 +109,6 @@ class TodayState extends State<Today> {
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => TaskSelect()));
-                  // showModalBottomSheet(
-                  //     context: context,
-                  //     builder: (BuildContext context) {
-                  //       return TaskSelect();
-                  //     });
                 },
                 child: Container(
                   padding: const EdgeInsets.all(8),

@@ -80,7 +80,7 @@ Future<int> postTaskOperation(int userId, int taskId) async {
   }
 }
 
-Future<List<Task>> fetchTasksByUser(int id) async {
+Future<List<Task>> fetchFavoriteTasksByUser(int id) async {
   final response =
       await http.get(Uri.parse(baseUrl + 'user/' + id.toString() + '/task'));
 
@@ -124,6 +124,23 @@ Future<int> createUser(
       'accessToken': accessToken,
       'profileImage': profileImage
     }),
+  );
+  if (response.statusCode == 200) {
+    return response.statusCode;
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}
+
+/* ### `POST api/user/:id/markeTask` :id에 해당하는 유저가 
+task를 즐겨찾기에 추가 - body : {taskId } */
+Future<int> addFavoriteTask(int id, int taskId) async {
+  final response = await http.post(
+    Uri.parse(baseUrl + 'user/' + id.toString() + '/markeTask'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, int>{'taskId': taskId}),
   );
   if (response.statusCode == 200) {
     return response.statusCode;
