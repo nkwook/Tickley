@@ -43,6 +43,7 @@ class HomeState extends State<Home> {
       //tasks = t;
       tasksList.add(t);
     });
+    print(tasksList);
   }
 
   @override
@@ -50,13 +51,16 @@ class HomeState extends State<Home> {
     return FutureBuilder<List<Category>>(
         future: categories,
         builder: (context, snapshot) {
-          return snapshot.hasData
-              ? CategorySlider(
-                  categories: snapshot.data!,
-                  currentCategory: 0,
-                  tasksList: tasksList,
-                )
-              : Center(child: CircularProgressIndicator());
+          return
+              // Expanded(
+              // child:
+              snapshot.hasData
+                  ? CategorySlider(
+                      categories: snapshot.data!,
+                      currentCategory: 0,
+                      tasksList: tasksList,
+                    )
+                  : Center(child: CircularProgressIndicator());
         });
   }
 }
@@ -92,54 +96,46 @@ class CategorySlider extends StatelessWidget {
     print(categories);
     final double height = MediaQuery.of(context).size.height;
     return CarouselSlider(
-      options: CarouselOptions(
-        enableInfiniteScroll: false,
-        height: height,
-        viewportFraction: 1.0,
-        enlargeCenterPage: false,
-        autoPlay: true,
-      ),
-      items: categories
-          .map((e) => ClipRRect(
+        options: CarouselOptions(
+          enableInfiniteScroll: false,
+          height: height,
+          viewportFraction: 1.0,
+          enlargeCenterPage: false,
+          autoPlay: true,
+        ),
+        items: categories
+            .map((e) => ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Stack(fit: StackFit.expand, children: [
-                  Column(
-                    children: [
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                        child: 
-                        Container(
-                          margin: EdgeInsets.all(20),
-                          child:Text(
+                  Column(children: [
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                      child: Container(
+                        margin: EdgeInsets.all(20),
+                        child: Text(
                           missionList[e.id - 1],
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
-                        ),),
-                        
+                        ),
                       ),
-                      SizedBox(
-                          height: 200,
-                          width: 200,
-                          child: Image.asset(illustList[e.id - 1])),
-                      Container(
+                    ),
+                    SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: Image.asset(illustList[e.id - 1])),
+                    Container(
                         margin: EdgeInsets.all(20),
-                        child: TaskList2(tasks: tasksList[0])
-                      ),
-                    ],
-                  ),
-                ]),
-              ))
-          .toList(),
-    );
+                        child: TaskList2(tasks: tasksList[0])),
+                  ]),
+                ])))
+            .toList());
   }
 }
 
 class TaskList2 extends StatefulWidget {
   final List<Task> tasks;
 
-  TaskList2({Key? key, required this.tasks})
-      : super(key: key);
+  TaskList2({Key? key, required this.tasks}) : super(key: key);
   TaskListState2 createState() => TaskListState2();
 }
 
@@ -153,12 +149,12 @@ class TaskListState2 extends State<TaskList2> {
       shrinkWrap: true,
       itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
-        return MainTaskWidget(task: widget.tasks[index], usersId: [1,2]);
+        // return Text("Td");
+        return MainTaskWidget(task: widget.tasks[index], usersId: [1, 2]);
       },
     );
   }
 }
-
 
 // class UserList extends StatelessWidget {
 //   final String category;
@@ -193,7 +189,6 @@ class TaskListState2 extends State<TaskList2> {
 //     );
 //   }
 // }
-
 
 // class MaskedImage extends StatelessWidget {
 //   final String asset;

@@ -6,7 +6,6 @@ import 'taskDetailModal.dart';
 import '../widgets/userWidget.dart';
 import '../widgets/categoryWidget.dart';
 
-
 class MainTaskWidget extends StatefulWidget {
   Task task;
   List<int> usersId;
@@ -21,7 +20,7 @@ class MainTaskWidget extends StatefulWidget {
 class TaskWidgetState2 extends State<MainTaskWidget> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   Utils utils = new Utils();
-
+  List<int> users = [1, 2, 3];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,34 +32,27 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
           textAlign: TextAlign.left,
         ),
         Text("hhh"),
-        UserList(users: [1, 2, 3]),
+        Container(
+          height: 150,
+          child: _userList(),
+        )
       ],
     ));
   }
-}
 
-class UserList extends StatelessWidget {
-  final List<int> users;
-
-  UserList({
-    Key? key,
-    required this.users,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _userList() {
     return ListView.separated(
       separatorBuilder: (context, index) {
         return Container(width: 20);
       },
+      // physics: ClampingScrollPhysics(),
       padding: EdgeInsets.only(top: 8.0),
+
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
       itemCount: users.length,
       itemBuilder: (context, index) {
-        return UserWidget(
-          id: users[index], //users.id
-        );
+        return UserWidget(id: users[index]);
       },
     );
   }
