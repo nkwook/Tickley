@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
+// import '../widgets/taskWidget.dart';
+import '../widgets/mainTaskWidget.dart';
 import '../model/user.dart';
 import '../model/task.dart';
 import '../model/category.dart';
@@ -32,6 +34,7 @@ class HomeState extends State<Home> {
     for (var i = 1; i <= 4; i++) {
       updateTasks(i);
     }
+    print(tasksList);
   }
 
   void updateTasks(int id) async {
@@ -78,47 +81,80 @@ class CategorySlider extends StatelessWidget {
   ];
 
   CategorySlider(
-      {Key? key, required this.categories, required this.currentCategory, required this.tasksList})
+      {Key? key,
+      required this.categories,
+      required this.currentCategory,
+      required this.tasksList})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     print(categories);
+    final double height = MediaQuery.of(context).size.height;
     return CarouselSlider(
       options: CarouselOptions(
-        enlargeCenterPage: true,
         enableInfiniteScroll: false,
+        height: height,
+        viewportFraction: 1.0,
+        enlargeCenterPage: false,
         autoPlay: true,
       ),
       items: categories
           .map((e) => ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: Stack(fit: StackFit.expand, children: <Widget>[
+                child: Stack(fit: StackFit.expand, children: [
                   Column(
                     children: [
                       Container(
                         margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        child: Text(
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                        child: 
+                        Container(
+                          margin: EdgeInsets.all(20),
+                          child:Text(
                           missionList[e.id - 1],
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
-                        ),
+                        ),),
+                        
                       ),
-                      Text("카테고리: " + e.label),
                       SizedBox(
-                        height: 200,
-                        width: 200,
-                        child: Image.asset(illustList[e.id-1])),
-                      
-                      Container(
+                          height: 200,
                           width: 200,
-                          child: Text('TEST')),
+                          child: Image.asset(illustList[e.id - 1])),
+                      Container(
+                        margin: EdgeInsets.all(20),
+                        child: TaskList2(tasks: tasksList[0])
+                      ),
                     ],
                   ),
                 ]),
               ))
           .toList(),
+    );
+  }
+}
+
+class TaskList2 extends StatefulWidget {
+  final List<Task> tasks;
+
+  TaskList2({Key? key, required this.tasks})
+      : super(key: key);
+  TaskListState2 createState() => TaskListState2();
+}
+
+class TaskListState2 extends State<TaskList2> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      separatorBuilder: (context, index) {
+        return Container(height: 10);
+      },
+      shrinkWrap: true,
+      itemCount: widget.tasks.length,
+      itemBuilder: (context, index) {
+        return MainTaskWidget(task: widget.tasks[index], usersId: [1,2]);
+      },
     );
   }
 }

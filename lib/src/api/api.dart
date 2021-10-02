@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tickley/src/model/category.dart';
 import '../model/task.dart';
+import '../model/user.dart';
 
 final String baseUrl =
     'https://zgojtokt6f.execute-api.ap-northeast-2.amazonaws.com/dev/api/';
@@ -51,6 +52,12 @@ List<Task> parseTasks(String responseBody) {
   return l;
 }
 
+List<Task> parseUser(String responseBody) {
+  final parsed = json.decode(responseBody);
+
+  return parsed["data"].map((json) => User.fromJson(json));
+}
+
 Future<Task> fetchTaskByID(int id) async {
   final response = await http.get(Uri.parse(baseUrl + 'task/' + id.toString()));
 
@@ -89,3 +96,15 @@ Future<List<Task>> fetchTasksByUser(int id) async {
     throw Exception('Failed to load all tasks');
   }
 }
+
+Future<List<Task>> fetchUser(int id) async {
+  final response =
+      await http.get(Uri.parse(baseUrl + 'user/' + id.toString()));
+
+  if (response.statusCode == 200) {
+    return parseTasks(response.body);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}
+
