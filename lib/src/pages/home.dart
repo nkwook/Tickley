@@ -32,18 +32,19 @@ class HomeState extends State<Home> {
     super.initState();
     categories = fetchCategories();
     for (var i = 1; i <= 4; i++) {
-      updateTasks(i);
+      //categories 4개로 고정
+      updateTasks(i); // category별로 task 업뎃
     }
     print(tasksList);
   }
 
+  //Category별로 task 업뎃
   void updateTasks(int id) async {
     List<Task> t = await fetchTasksByCategory(id);
     setState(() {
       //tasks = t;
       tasksList.add(t);
     });
-    print(tasksList);
   }
 
   @override
@@ -125,7 +126,7 @@ class CategorySlider extends StatelessWidget {
                         child: Image.asset(illustList[e.id - 1])),
                     Container(
                         margin: EdgeInsets.all(20),
-                        child: TaskList2(tasks: tasksList[0])),
+                        child: TaskList2(tasks: tasksList[e.id - 1])),
                   ]),
                 ])))
             .toList());
@@ -156,39 +157,6 @@ class TaskListState2 extends State<TaskList2> {
   }
 }
 
-// class UserList extends StatelessWidget {
-//   final String category;
-//   final ValueChanged<int> updateTasks;
-//   int currentCategory;
-
-//   UserList(
-//       {Key? key,
-//       required this.category,
-//       required this.updateTasks,
-//       required this.currentCategory})
-//       : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.separated(
-//       separatorBuilder: (context, index) {
-//         return Container(width: 20);
-//       },
-//       padding: EdgeInsets.only(top: 8.0),
-//       scrollDirection: Axis.horizontal,
-//       shrinkWrap: true,
-//       itemCount: categories.length,
-//       itemBuilder: (context, index) {
-//         return UserWidget(
-//             id: categories[index].id,
-//             nickname: categories[index].nickname,
-//             profile_image: categories[index].profile_image,
-//             id: categories[index].id,
-//           );
-//       },
-//     );
-//   }
-// }
 
 // class MaskedImage extends StatelessWidget {
 //   final String asset;
@@ -212,16 +180,3 @@ class TaskListState2 extends State<TaskList2> {
 //       );
 //     });
 //   }
-
-//   Future<List> _createShaderAndImage(String asset, String mask, double w, double h) async {
-//     ByteData data = await rootBundle.load(asset);
-//     ByteData maskData = await rootBundle.load(mask);
-
-//     Codec codec = await instantiateImageCodec(maskData.buffer.asUint8List(), targetWidth: w.toInt(), targetHeight: h.toInt());
-//     FrameInfo fi = await codec.getNextFrame();
-
-//     ImageShader shader = ImageShader(fi.image, TileMode.clamp, TileMode.clamp, Matrix4.identity().storage);
-//     Image image = Image.memory(data.buffer.asUint8List(), fit: BoxFit.cover, width: w, height: h);
-//     return [shader, image];
-//   }
-// }

@@ -46,16 +46,16 @@ Future<List<Task>> fetchAllTasks() async {
 
 List<Task> parseTasks(String responseBody) {
   final parsed = json.decode(responseBody);
-  List<Task> l =
+  List<Task> taskList =
       List<Task>.from(parsed["data"].map((json) => Task.fromJson(json)));
-
-  return l;
+  return taskList;
 }
 
-List<Task> parseUser(String responseBody) {
+List<User> parseUser(String responseBody) {
   final parsed = json.decode(responseBody);
-
-  return parsed["data"].map((json) => User.fromJson(json));
+  List<User> userList =
+      List<User>.from(parsed["data"].map((json) => User.fromJson(json)));
+  return userList;
 }
 
 Future<Task> fetchTaskByID(int id) async {
@@ -108,3 +108,14 @@ Future<List<Task>> fetchUser(int id) async {
   }
 }
 
+Future<List<User>> fetchUsersByTask(int id) async {
+  // id : task id
+  final response = await http
+      .get(Uri.parse(baseUrl + 'task/' + id.toString() + '/user'));
+
+  if (response.statusCode == 200) {
+    return parseUser(response.body);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}

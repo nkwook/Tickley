@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tickley/src/model/task.dart';
+import 'package:tickley/src/model/user.dart';
 import 'package:tickley/src/utils/utils.dart';
 import 'taskDetailModal.dart';
 import '../widgets/userWidget.dart';
 import '../widgets/categoryWidget.dart';
+import '../api/api.dart';
 
 class MainTaskWidget extends StatefulWidget {
   Task task;
@@ -20,7 +22,22 @@ class MainTaskWidget extends StatefulWidget {
 class TaskWidgetState2 extends State<MainTaskWidget> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   Utils utils = new Utils();
-  List<int> users = [1, 2, 3];
+  List<User> usersList = [];
+
+  @override
+  void initState() {
+    updateUsers(widget.task.id);
+  }
+
+  //task완료 user 업뎃
+  void updateUsers(int id) async {
+    List<User> u = await fetchUsersByTask(id); // id : task id
+    setState(() {
+      //tasks = t;
+      usersList = u;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,16 +48,15 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
         ),
-        Text("hhh"),
         Container(
-          height: 150,
-          child: _userList(),
+          height: 50,
+          child: _userListView(),
         )
       ],
     ));
   }
 
-  Widget _userList() {
+  Widget _userListView() {
     return ListView.separated(
       separatorBuilder: (context, index) {
         return Container(width: 20);
@@ -50,9 +66,9 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
 
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
-      itemCount: users.length,
+      itemCount: usersList.length,
       itemBuilder: (context, index) {
-        return UserWidget(id: users[index]);
+        return UserWidget(image: usersList[index].profileImage);
       },
     );
   }
