@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/tUser.dart';
+import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/authentication.dart';
+import 'package:tickley/src/widgets/checklistWidget.dart';
 import 'taskSelect.dart';
 
 class Today extends StatefulWidget {
@@ -15,16 +17,24 @@ class Today extends StatefulWidget {
 
 class TodayState extends State<Today> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  final _biggerBoldFont =
+      const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700);
+
   final _todayTasks = ['텀블러 사용 하기', '자가용 대신 대중교통', '일회용 수저 주문 안 하기'];
+  List<Task>? favoriteTask;
+  late TUser tuser;
   String nickname = '';
 
-  _updateUser() async {
+  updateUser() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       try {
         TUser tUser = await userLogin(user.uid);
+        List<Task> fTask = await fetchFavoriteTasksByUser(tUser.id);
         if (tUser.accessToken == user.uid) {
           setState(() {
+            tuser = tUser;
+            favoriteTask = fTask;
             nickname = tUser.nickname;
           });
         }
@@ -35,7 +45,7 @@ class TodayState extends State<Today> {
   @override
   void initState() {
     super.initState();
-    // _getUser();
+    updateUser();
   }
 
   @override
@@ -47,16 +57,24 @@ class TodayState extends State<Today> {
 
   Widget _today() {
     return Center(
-        child: SingleChildScrollView(
-            child: Column(
-      children: <Widget>[
-        _todayTask(),
-        // Text('srs'),
-        _categoryTask(),
-        _logoutButtonTemp()
-        // Text('rr')
-      ],
-    )));
+        child: favoriteTask != null
+            ? SingleChildScrollView(
+                child: Column(
+                children: <Widget>[
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        nickname + ' 님의 체크리스트',
+                        style: _biggerBoldFont,
+                      )),
+                  _todayTask(),
+                  // Text('srs'),
+                  _taskSelectNavigateButton(),
+                  _logoutButtonTemp()
+                  // Text('rr')
+                ],
+              ))
+            : Container(child: CircularProgressIndicator()));
   }
 
   Widget _todayTask() {
@@ -64,18 +82,20 @@ class TodayState extends State<Today> {
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
       padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
       // color: Colors.white,
-      decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-      height: 300.0,
+      height: 400.0,
       child: Column(
         children: [
-          Text(nickname + ' 님에게 주어진 오늘의 태스크'),
           // _todayTakeList(),
           Expanded(
               child: ListView.separated(
-                  itemCount: _todayTasks.length,
+                  itemCount: favoriteTask!.length,
                   padding: const EdgeInsets.all(16),
                   itemBuilder: (context, i) {
-                    return _buildRow(_todayTasks[i]);
+                    return ChecklistWidget(
+                        task: favoriteTask![i],
+                        userId: tuser.id,
+                        isCompleted: favoriteTask![i].completed);
+                    // _buildRow(favoriteTask![i].label);
                   },
                   separatorBuilder: (context, i) {
                     return const Divider();
@@ -85,37 +105,34 @@ class TodayState extends State<Today> {
     );
   }
 
-  Widget _buildRow(String task) {
-    return ListTile(
-      title: Text(
-        task,
-        style: _biggerFont,
-      ),
-    );
-  }
-
-  Widget _categoryTask() {
-    const temp = '에너지 절약';
+  Widget _taskSelectNavigateButton() {
     return (Container(
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-        // color: Colors.red,
-        decoration: BoxDecoration(border: Border.all(color: Colors.redAccent)),
+        // padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+        // decoration: BoxDecoration(
+        //     border: Border.all(color: Colors.redAccent),
+        //     borderRadius: BorderRadius.all(Radius.circular(20))),
         // height: 400.0,
         child: Column(children: [
-          Material(
-            color: Colors.green[100],
-            child: InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => TaskSelect()));
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: const Text('다른 활동도 추가할래요!'),
-                )),
-          ),
-        ])));
+      Material(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+        elevation: 2,
+        color: Colors.white,
+        child: InkWell(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          TaskSelect(updateToday: updateUser)));
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              padding: const EdgeInsets.all(8),
+              child: Text('활동 추가하기', style: _biggerBoldFont),
+            )),
+      ),
+    ])));
   }
 
   Widget _logoutButtonTemp() {

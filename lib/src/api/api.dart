@@ -64,7 +64,7 @@ Future<Task> fetchTaskByID(int id) async {
 
 Future<int> postTaskOperation(int userId, int taskId) async {
   final response = await http.post(
-    Uri.parse(baseUrl + 'user/' + userId.toString() + '/task'),
+    Uri.parse(baseUrl + 'user/' + userId.toString() + '/completeTask'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -132,16 +132,17 @@ Future<int> createUser(
   }
 }
 
-/* ### `POST api/user/:id/markeTask` :id에 해당하는 유저가 
+/* ### `POST api/user/:id/markTask` :id에 해당하는 유저가 
 task를 즐겨찾기에 추가 - body : {taskId } */
-Future<int> addFavoriteTask(int id, int taskId) async {
+Future<int> postFavoriteTask(int id, int taskId) async {
   final response = await http.post(
-    Uri.parse(baseUrl + 'user/' + id.toString() + '/markeTask'),
+    Uri.parse(baseUrl + 'user/' + id.toString() + '/markTask'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, int>{'taskId': taskId}),
   );
+  print(response.body);
   if (response.statusCode == 200) {
     return response.statusCode;
   } else {
