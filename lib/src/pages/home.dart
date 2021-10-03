@@ -36,22 +36,25 @@ class HomeState extends State<Home> {
       //categories 4개로 고정
       updateTasks(i); // category별로 task 업뎃
     }
-    print(">>>>>TasksList:");
+    print("taskList >>>---");
     print(tasksList);
+    print("global point >>>---");
+    print(points);
   }
 
   //Category별로 task 업뎃
   void updateTasks(int id) async {
     List<Task> t = await fetchTasksByCategory(id);
     int globalPoint = await fetchCategoryPointSum(id);
+    print(globalPoint);
     setState(() {
       //tasks = t;
       tasksList.add(t);
-      points.add(globalPoint);
+      //points.add(globalPoint);
       print("taskList >>>");
       print(t);
       print("global point >>>");
-      print(globalPoint);
+      //print(globalPoint);
     });
   }
 

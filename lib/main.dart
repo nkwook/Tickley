@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       title: '티끌리',
       home: Login(),
       theme: ThemeData(
-        primarySwatch: Colors.cyan,
+        primaryColor: Colors.orange,
       ),
     );
   }

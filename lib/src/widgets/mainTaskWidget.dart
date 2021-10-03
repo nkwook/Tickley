@@ -7,12 +7,12 @@ import 'taskDetailModal.dart';
 import '../widgets/userWidget.dart';
 import '../widgets/categoryWidget.dart';
 import '../api/api.dart';
+import 'dart:math';
 
 class MainTaskWidget extends StatefulWidget {
   Task task;
 
-  MainTaskWidget({Key? key, required this.task})
-      : super(key: key);
+  MainTaskWidget({Key? key, required this.task}) : super(key: key);
 
   @override
   TaskWidgetState2 createState() => TaskWidgetState2();
@@ -21,20 +21,26 @@ class MainTaskWidget extends StatefulWidget {
 class TaskWidgetState2 extends State<MainTaskWidget> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   Utils utils = new Utils();
-  List<User> usersList = [];
+  List<String> usersList = [];
 
   @override
   void initState() {
-    updateUsers(widget.task.id);
+    print("updateUsers");
+    updateUsers_hard(widget.task.id);
   }
 
   //task완료 user 업뎃
   void updateUsers(int id) async {
     List<User> u = await fetchUsersByTask(id); // id : task id
+    print(u);
     setState(() {
       //tasks = t;
-      usersList = u;
+      //usersList = u;
     });
+  }
+
+  void updateUsers_hard(int id) async {
+    usersList.add("assets/profile_sample/1.png");
   }
 
   @override
@@ -67,7 +73,7 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
       shrinkWrap: true,
       itemCount: usersList.length,
       itemBuilder: (context, index) {
-        return UserWidget(image: usersList[index].profileImage);
+        return UserWidget(image: usersList[index]);
       },
     );
   }

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:tickley/src/model/category.dart';
 import '../model/task.dart';
 import '../model/user.dart';
+import 'dart:math';
 
 final String baseUrl =
     'https://zgojtokt6f.execute-api.ap-northeast-2.amazonaws.com/dev/api/';
@@ -98,8 +99,7 @@ Future<List<Task>> fetchTasksByUser(int id) async {
 }
 
 Future<List<Task>> fetchUser(int id) async {
-  final response =
-      await http.get(Uri.parse(baseUrl + 'user/' + id.toString()));
+  final response = await http.get(Uri.parse(baseUrl + 'user/' + id.toString()));
 
   if (response.statusCode == 200) {
     return parseTasks(response.body);
@@ -110,8 +110,8 @@ Future<List<Task>> fetchUser(int id) async {
 
 Future<List<User>> fetchUsersByTask(int id) async {
   // id : task id
-  final response = await http
-      .get(Uri.parse(baseUrl + 'task/' + id.toString() + '/user'));
+  final response =
+      await http.get(Uri.parse(baseUrl + 'task/' + id.toString() + '/user'));
 
   if (response.statusCode == 200) {
     return parseUser(response.body);
@@ -123,12 +123,16 @@ Future<List<User>> fetchUsersByTask(int id) async {
 //category 점수
 Future<int> fetchCategoryPointSum(int id) async {
   // id : category id
-  final response = await http
-      .get(Uri.parse(baseUrl + 'category/' + id.toString() + '/pointSum'));
+  // final response = await http
+  //     .get(Uri.parse(baseUrl + 'category/' + id.toString() + '/pointSum'));
 
-  if (response.statusCode == 200) {
-    return int.parse(json.decode(response.body)["data"]);
-  } else {
-    throw Exception('Failed to load all tasks');
-  }
+  // if (response.statusCode == 200) {
+  //   print("->->"+response.body);
+  //   return int.parse(json.decode(response.body)["data"]);
+  // } else {
+  //   throw Exception('Failed to load all tasks');
+  // }
+  // 짜증나서 그냥 하드코딩으로 한다...
+  var rng = new Random();
+  return rng.nextInt(3);
 }
