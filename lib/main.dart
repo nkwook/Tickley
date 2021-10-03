@@ -3,6 +3,7 @@ import 'src/bottomNavigator.dart';
 
 void main() => runApp(MyApp());
 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
       title: '티끌리',
       home: Login(),
       theme: ThemeData(
-        primarySwatch: Colors.cyan,
+        primaryColor: Colors.orange,
       ),
     );
   }
@@ -36,15 +37,7 @@ class LoginState extends State<Login> {
         children: <Widget>[
           _appLogo(),
           _loginForm(),
-          Material(
-              color: Colors.green,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                    child: Text('Temp Button'),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 25)),
-              ))
+          
         ],
       ),
     );
@@ -57,7 +50,7 @@ class LoginState extends State<Login> {
         padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/logo.png'), fit: BoxFit.fill)));
+                image: AssetImage('assets/logo_tickle.png'), fit: BoxFit.contain)));
   }
 
   Widget _loginForm() {
