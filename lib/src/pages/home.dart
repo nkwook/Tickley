@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
 // import '../widgets/taskWidget.dart';
 import '../widgets/mainTaskWidget.dart';
-import '../model/user.dart';
+
 import '../model/task.dart';
 import '../model/category.dart';
 import '../api/api.dart';
@@ -181,7 +181,6 @@ class TaskListState2 extends State<TaskList2> {
     );
   }
 }
-
 
 // class MaskedImage extends StatelessWidget {
 //   final String asset;

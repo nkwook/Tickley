@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tickley/src/model/t_user.dart';
 import 'package:tickley/src/model/task.dart';
-import 'package:tickley/src/model/user.dart';
 import 'package:tickley/src/utils/utils.dart';
 import 'taskDetailModal.dart';
 import '../widgets/userWidget.dart';
@@ -31,7 +31,7 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
 
   //task완료 user 업뎃
   void updateUsers(int id) async {
-    List<User> u = await fetchUsersByTask(id); // id : task id
+    List<TUser> u = await fetchUsersByTask(id); // id : task id
     print(u);
     setState(() {
       //tasks = t;

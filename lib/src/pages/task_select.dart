@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tickley/src/model/t_user.dart';
 import '../widgets/taskWidget.dart';
 import '../widgets/categoryWidget.dart';
 import '../model/task.dart';
@@ -6,6 +8,10 @@ import '../model/category.dart';
 import '../api/api.dart';
 
 class TaskSelect extends StatefulWidget {
+  Function updateToday;
+
+  TaskSelect({Key? key, required this.updateToday}) : super(key: key);
+
   @override
   TaskSelectState createState() => TaskSelectState();
 }
@@ -13,18 +19,36 @@ class TaskSelect extends StatefulWidget {
 class TaskSelectState extends State<TaskSelect> {
   late Future<List<Category>> categories;
   late List<Task> tasks = [];
-  late List<Task> userTasks = [];
+  late List<Task> favoriteTasks = [];
+  int userId = 0;
   int currentCategory = 1;
-  int userId = 1; //temp
 
   final _biggerGreyFont = const TextStyle(fontSize: 18.0, color: Colors.grey);
+
+  _updateUser() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        TUser tUser = await userLogin(user.uid);
+        if (tUser.accessToken == user.uid) {
+          int id = tUser.id;
+          setState(() {
+            userId = id;
+          });
+          updateFavoriteTasks(id);
+        }
+      } catch (error) {}
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    updateUserTasks(userId);
+    _updateUser();
+    // updateFavoriteTasks(userId);
     updateTasks(1);
     categories = fetchCategories();
+    print(favoriteTasks);
   }
 
   void updateTasks(int id) async {
@@ -35,11 +59,10 @@ class TaskSelectState extends State<TaskSelect> {
     });
   }
 
-  void updateUserTasks(int id) async {
-    List<Task> t = await fetchTasksByUser(id);
-    print(t);
+  void updateFavoriteTasks(int id) async {
+    List<Task> t = await fetchFavoriteTasksByUser(id);
     setState(() {
-      userTasks = t;
+      favoriteTasks = t;
     });
   }
 
@@ -71,7 +94,14 @@ class TaskSelectState extends State<TaskSelect> {
                     child: Text('관심있는 활동들을 눌러보세요',
                         textAlign: TextAlign.center, style: _biggerGreyFont)),
                 Container(
-                    width: 200, child: TaskList(tasks: tasks, userId: userId))
+                    width: 200,
+                    child: TaskList(
+                        tasks: tasks,
+                        userId: userId,
+                        favoriteTasks: favoriteTasks,
+                        updateFavoriteTasks: updateFavoriteTasks,
+                        updateToday: widget.updateToday)),
+                // Container(child: Text(favoriteTasks.toString()))
               ],
             )));
   }
@@ -80,6 +110,7 @@ class TaskSelectState extends State<TaskSelect> {
 class CategoryList extends StatelessWidget {
   final List<Category> categories;
   final ValueChanged<int> updateTasks;
+
   int currentCategory;
 
   CategoryList(
@@ -114,8 +145,17 @@ class CategoryList extends StatelessWidget {
 class TaskList extends StatefulWidget {
   final List<Task> tasks;
   int userId;
+  List<Task> favoriteTasks;
+  Function(int) updateFavoriteTasks;
+  Function updateToday;
 
-  TaskList({Key? key, required this.tasks, required this.userId})
+  TaskList(
+      {Key? key,
+      required this.tasks,
+      required this.userId,
+      required this.favoriteTasks,
+      required this.updateFavoriteTasks,
+      required this.updateToday})
       : super(key: key);
   TaskListState createState() => TaskListState();
 }
@@ -130,7 +170,22 @@ class TaskListState extends State<TaskList> {
       shrinkWrap: true,
       itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
-        return TaskWidget(task: widget.tasks[index], userId: widget.userId);
+        bool isFavorite = false;
+        for (int i = 0; i < widget.favoriteTasks.length; i++) {
+          if (widget.favoriteTasks[i].id == widget.tasks[index].id) {
+            isFavorite = true;
+            // });
+            break;
+          }
+        }
+
+        return TaskWidget(
+            task: widget.tasks[index],
+            userId: widget.userId,
+            isFavorite: isFavorite,
+            favoriteTasks: widget.favoriteTasks,
+            updateFavoriteTasks: widget.updateFavoriteTasks,
+            updateToday: widget.updateToday);
       },
     );
   }

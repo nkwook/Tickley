@@ -1,104 +1,41 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'src/bottomNavigator.dart';
+import 'package:tickley/src/utils/authentication.dart';
+import 'tickley.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App());
+}
 
-
-class MyApp extends StatelessWidget {
+class App extends StatefulWidget {
+  // Create the initialization Future outside of `build`:
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '티끌리',
-      home: Login(),
-      theme: ThemeData(
-        primaryColor: Colors.orange,
-      ),
-    );
-  }
+  _AppState createState() => _AppState();
 }
 
-class Login extends StatefulWidget {
-  LoginState createState() => LoginState();
-}
-
-class LoginState extends State<Login> {
-  final _formKey = GlobalKey<FormState>();
+class _AppState extends State<App> {
+  /// The future is part of the state of our widget. We should not call `initializeApp`
+  /// directly inside [build].
+  // final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _loginScreen(),
+    return FutureBuilder(
+      // Initialize FlutterFire:
+      future: Authentication.initializeFirebase(),
+      builder: (context, snapshot) {
+        // Check for errors
+        if (snapshot.hasError) {
+          throw Exception('error');
+        }
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return TickelyApp();
+        }
+        // Otherwise, show something whilst waiting for initialization to complete
+        return CircularProgressIndicator();
+      },
     );
   }
-
-  Widget _loginScreen() {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          _appLogo(),
-          _loginForm(),
-          
-        ],
-      ),
-    );
-  }
-
-  Widget _appLogo() {
-    return Container(
-        height: 200,
-        margin: EdgeInsets.only(top: 200, bottom: 100, left: 40, right: 40),
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('assets/logo_tickle.png'), fit: BoxFit.contain)));
-  }
-
-  Widget _loginForm() {
-    var name;
-    return Container(
-        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        // height: 400.0,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormField(
-                // The validator receives the text that the user has entered.
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  name = value;
-                  return null;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
-                    if (_formKey.currentState!.validate()) {
-                      // If the form is valid, display a snackbar. In the real world,
-                      // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('로그인 되었습니다')),
-                      );
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  BottomNavigator(name: name)));
-                    }
-                  },
-                  child: Center(child: const Text('Login')),
-                ),
-              ),
-            ],
-          ),
-        ));
-  }
-
-  // Widget
 }

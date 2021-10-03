@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:http/http.dart' as http;
 import 'package:tickley/src/model/category.dart';
 import 'package:tickley/src/model/t_user.dart';
 import '../model/task.dart';
-import '../model/user.dart';
 import 'dart:math';
 
 final String baseUrl =
@@ -53,10 +53,10 @@ List<Task> parseTasks(String responseBody) {
   return taskList;
 }
 
-List<User> parseUser(String responseBody) {
+List<TUser> parseUser(String responseBody) {
   final parsed = json.decode(responseBody);
-  List<User> userList =
-      List<User>.from(parsed["data"].map((json) => User.fromJson(json)));
+  List<TUser> userList =
+      List<TUser>.from(parsed["data"].map((json) => TUser.fromJson(json)));
   return userList;
 }
 
@@ -72,7 +72,7 @@ Future<Task> fetchTaskByID(int id) async {
 
 Future<int> postTaskOperation(int userId, int taskId) async {
   final response = await http.post(
-    Uri.parse(baseUrl + 'user/' + userId.toString() + '/task'),
+    Uri.parse(baseUrl + 'user/' + userId.toString() + '/completeTask'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -88,7 +88,7 @@ Future<int> postTaskOperation(int userId, int taskId) async {
   }
 }
 
-Future<List<Task>> fetchTasksByUser(int id) async {
+Future<List<Task>> fetchFavoriteTasksByUser(int id) async {
   final response =
       await http.get(Uri.parse(baseUrl + 'user/' + id.toString() + '/task'));
 
@@ -99,23 +99,54 @@ Future<List<Task>> fetchTasksByUser(int id) async {
   }
 }
 
-Future<List<Task>> fetchUser(int id) async {
-  final response = await http.get(Uri.parse(baseUrl + 'user/' + id.toString()));
-
-  if (response.statusCode == 200) {
-    return parseTasks(response.body);
-  } else {
-    throw Exception('Failed to load all tasks');
-  }
-}
-
-Future<List<User>> fetchUsersByTask(int id) async {
+Future<List<TUser>> fetchUsersByTask(int id) async {
   // id : task id
   final response =
       await http.get(Uri.parse(baseUrl + 'task/' + id.toString() + '/user'));
 
   if (response.statusCode == 200) {
     return parseUser(response.body);
+  } else {
+    throw Exception('Failed to fetch Users');
+  }
+}
+
+/* POST api/user/login   : (로그인용)accessToken에 해당하는 유저 조회,
+ 없을 경우 상태코드 403을 리턴, 있을 경우 유저 객체 전체를 넘겨줌 */
+Future<TUser> userLogin(String accessToken) async {
+  final response = await http.post(
+    Uri.parse(baseUrl + 'user/login'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'accessToken': accessToken,
+    }),
+  );
+  // print(response.body);
+  if (response.statusCode == 200) {
+    return TUser.fromJson(json.decode(response.body)['data']);
+  } else {
+    throw Exception('Failed to login');
+  }
+}
+
+/* POST api/user : 유저 만들기 */
+Future<int> createUser(
+    String nickname, String accessToken, String profileImage) async {
+  final response = await http.post(
+    Uri.parse(baseUrl + 'user'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, String>{
+      'nickname': nickname,
+      'accessToken': accessToken,
+      'profileImage': profileImage
+    }),
+  );
+  if (response.statusCode == 200) {
+    return response.statusCode;
   } else {
     throw Exception('Failed to load all tasks');
   }
@@ -141,11 +172,29 @@ Future<int> fetchCategoryPointSum(int id) async {
 // MyPage
 
 // user/:id
-Future<TUser> getUserData(int id) async {
+Future<TUser> fetchUserData(int id) async {
   final response = await http.get(Uri.parse(baseUrl + 'user/' + id.toString()));
 
   if (response.statusCode == 200) {
     return TUser.fromJson(json.decode(response.body)['data']);
+  } else {
+    throw Exception('failed to fetch user');
+  }
+}
+/* ### `POST api/user/:id/markTask` :id에 해당하는 유저가 
+task를 즐겨찾기에 추가 - body : {taskId } */
+
+Future<int> postFavoriteTask(int id, int taskId) async {
+  final response = await http.post(
+    Uri.parse(baseUrl + 'user/' + id.toString() + '/markTask'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, int>{'taskId': taskId}),
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    return response.statusCode;
   } else {
     throw Exception('Failed to load all tasks');
   }
