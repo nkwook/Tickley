@@ -1,4 +1,4 @@
-class User {
+class TUser {
   final String accessToken;
   final String nickname;
   final int id;
@@ -7,7 +7,7 @@ class User {
   final String updatedAt;
   // final String profileImage;
 
-  User({
+  TUser({
     required this.accessToken,
     required this.nickname,
     required this.id,
@@ -18,8 +18,8 @@ class User {
   });
 
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory TUser.fromJson(Map<String, dynamic> json) {
+    return TUser(
       id: json['id'] as int,
       point: json['point'] as int,
       accessToken: json['accessToken'] as String,
