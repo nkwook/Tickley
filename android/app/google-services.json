@@ -1,0 +1,55 @@
+{
+
+  "project_info": {
+    "project_number": "986570704697",
+    "project_id": "tickely-eb4a1",
+    "storage_bucket": "tickely-eb4a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986570704697:android:3b68b0076417482ae30ae8",
+        "android_client_info": {
+          "package_name": "com.example.tickley"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986570704697-ctf718mg9g16evjnqis83gvq3np91skf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tickley",
+            "certificate_hash": "7e574cf8a6d65b252bf568c45237b17ec714249f"
+          }
+        },
+        {
+          "client_id": "986570704697-12rfq0afbkkkelg35g2g7cgepj2h2ce7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-vXKW0Pt1CcuiHV_MP-MV3yD1RURrurk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986570704697-12rfq0afbkkkelg35g2g7cgepj2h2ce7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "986570704697-tsleq9oirrt09ablmp8ohm14g28dmd85.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.tickley"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
