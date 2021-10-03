@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tickley/src/model/t_user.dart';
+import 'package:tickley/utils/widget_functions.dart';
 import '../widgets/taskWidget.dart';
 import '../widgets/categoryWidget.dart';
 import '../model/task.dart';
@@ -85,7 +86,7 @@ class TaskSelectState extends State<TaskSelect> {
                                 categories: snapshot.data!,
                                 updateTasks: updateTasks,
                                 currentCategory: currentCategory)
-                            : Center(child: CircularProgressIndicator());
+                            : Center(child: CustomCircularProgressIndicator());
                       }),
                 ),
                 Divider(),

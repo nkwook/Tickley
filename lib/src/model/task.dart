@@ -15,12 +15,13 @@ class Task {
       required this.completed});
 
   factory Task.fromJson(Map<String, dynamic> json) {
+    // print(json);
     return Task(
         id: json['id'] as int,
         point: json['point'] as int,
         label: json['label'] as String,
         description: json['description'] as String,
         emoji: json['emoji'] as String,
-        completed: json['completed'] == 1 ? true : false);
+        completed: json['completed'] == true ? true : false);
   }
 }

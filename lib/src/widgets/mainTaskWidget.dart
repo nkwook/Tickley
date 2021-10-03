@@ -44,24 +44,34 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
     usersList.add('assets/2.png');
     usersList.add('assets/3.png');
     usersList.add('assets/4.png');
+    // usersList.add('assets/google_logo.png');
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        margin: EdgeInsets.only(bottom: 10),
         child: Column(
-      children: [
-        Text(
-          widget.task.label + "를 한 친구들",
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.left,
-        ),
-        Container(
-          height: 50,
-          child: _userListView(),
-        )
-      ],
-    ));
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+                text: TextSpan(
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    children: <TextSpan>[
+                  TextSpan(
+                      text: widget.task.label,
+                      style: TextStyle(color: Color(0xFFD6B589))),
+                  TextSpan(
+                      text: " 활동을 한 친구들", style: TextStyle(color: Colors.black))
+                ])),
+            Container(
+              margin: EdgeInsets.only(top: 8, bottom: 10),
+              height: 60,
+              child: _userListView(),
+            )
+          ],
+        ));
   }
 
   Widget _userListView() {
@@ -76,7 +86,12 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
       shrinkWrap: true,
       itemCount: usersList.length,
       itemBuilder: (context, index) {
-        return UserWidget(image: usersList[index]);
+        return index == usersList.length
+            ? Container(height: 1) // 개야매
+            : Container(
+                width: 65,
+                height: 65,
+                child: UserWidget(image: usersList[index]));
       },
     );
   }

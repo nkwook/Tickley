@@ -4,6 +4,7 @@ import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/t_user.dart';
 import 'package:tickley/src/pages/register.dart';
 import 'package:tickley/src/utils/authentication.dart';
+import 'package:tickley/utils/widget_functions.dart';
 import '../bottomNavigator.dart';
 
 class Login extends StatefulWidget {
@@ -34,7 +35,7 @@ class LoginState extends State<Login> {
         children: <Widget>[
           _appLogo(),
           widget.initLoad || _isSigningIn
-              ? CircularProgressIndicator()
+              ? CustomCircularProgressIndicator()
               : _loginButton(),
         ],
       ),
@@ -55,47 +56,58 @@ class LoginState extends State<Login> {
   Widget _loginButton() {
     // Widget
     return Material(
+        elevation: 3,
         color: Colors.white,
         child: InkWell(
-          onTap: () async {
-            setState(() {
-              _isSigningIn = true;
-            });
-            User? user =
-                await Authentication.signInWithGoogle(context: context);
-            if (user != null) {
-              try {
-                TUser tUser = await userLogin(user.uid);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('로그인 되었습니다')),
-                );
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BottomNavigator()));
+            onTap: () async {
+              setState(() {
+                _isSigningIn = true;
+              });
+              User? user =
+                  await Authentication.signInWithGoogle(context: context);
+              if (user != null) {
+                try {
+                  TUser tUser = await userLogin(user.uid);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('로그인 되었습니다')),
+                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BottomNavigator()));
+                  setState(() {
+                    _isSigningIn = false;
+                  });
+                } on Exception catch (exception) {
+                  print(exception);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Register(user: user)));
+                } catch (error) {
+                  print(error);
+                }
+
+                // print(tUser);
+                // if (tUser.accessToken != null) {
+                // } else {
                 setState(() {
                   _isSigningIn = false;
                 });
-              } on Exception catch (exception) {
-                print(exception);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Register(user: user)));
-              } catch (error) {
-                print(error);
               }
-
-              // print(tUser);
-              // if (tUser.accessToken != null) {
-              // } else {
-              setState(() {
-                _isSigningIn = false;
-              });
-            }
-          },
-          child: Container(
-              child: Text('구글계정으로 로그인'),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10, horizontal: 25)),
-        ));
+            },
+            child: Container(
+              width: 250,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+              child:
+                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+                Image(
+                  image: AssetImage('assets/google_logo.png'),
+                  width: 50,
+                  height: 50,
+                ),
+                Text('Sign In with Google')
+              ]),
+            )));
   }
 }

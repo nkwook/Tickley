@@ -13,7 +13,7 @@ class TickelyApp extends StatelessWidget {
       title: '티끌리',
       home: Tickely(),
       theme: ThemeData(
-        primaryColor: Colors.orange,
+        primaryColor: Colors.white,
       ),
     );
   }

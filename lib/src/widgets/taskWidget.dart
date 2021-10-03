@@ -66,8 +66,15 @@ class TaskWidgetState extends State<TaskWidget> {
                       const SnackBar(content: Text('체크리스트에 추가되었습니다.')));
                 } else {
                   // TODO: add delete
+                  deleteFavoriteTask(widget.userId, widget.task.id);
+                  setState(() {
+                    clicked = true;
+                    isFavorite = false;
+                  });
+                  widget.updateFavoriteTasks(widget.userId);
+                  widget.updateToday();
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('이미 체크리스트에 있는 활동입니다.')));
+                      const SnackBar(content: Text('체크리스트에서 삭제되었습니다.')));
                 }
               },
               child: Container(

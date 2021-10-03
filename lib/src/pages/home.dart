@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tickley/utils/widget_functions.dart';
 // import '../widgets/taskWidget.dart';
 import '../widgets/mainTaskWidget.dart';
 
@@ -60,20 +61,20 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Category>>(
-        future: categories,
-        builder: (context, snapshot) {
-          return
-              // Expanded(
-              // child:
-              snapshot.hasData
-                  ? CategorySlider(
-                      categories: snapshot.data!,
-                      currentCategory: 0,
-                      tasksList: tasksList,
-                    )
-                  : Center(child: CircularProgressIndicator());
-        });
+    return categories != null
+        ? FutureBuilder<List<Category>>(
+            future: categories,
+            builder: (context, snapshot) {
+              return SingleChildScrollView(
+                  child: snapshot.hasData
+                      ? CategorySlider(
+                          categories: snapshot.data!,
+                          currentCategory: 0,
+                          tasksList: tasksList,
+                        )
+                      : Center(child: CustomCircularProgressIndicator()));
+            })
+        : Container(child: CustomCircularProgressIndicator());
   }
 }
 

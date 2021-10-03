@@ -5,6 +5,7 @@ import 'package:tickley/src/model/t_user.dart';
 import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/authentication.dart';
 import 'package:tickley/src/widgets/checklistWidget.dart';
+import 'package:tickley/utils/widget_functions.dart';
 import 'task_select.dart';
 
 class Today extends StatefulWidget {
@@ -20,10 +21,11 @@ class TodayState extends State<Today> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final _biggerBoldFont =
       const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700);
-
-  final _todayTasks = ['텀블러 사용 하기', '자가용 대신 대중교통', '일회용 수저 주문 안 하기'];
   List<Task>? favoriteTask;
-  late TUser tuser;
+  List<Task>? todayTask;
+  List<Task>? tasks;
+  TUser? tuser;
+  int todayTaskIndex = 0;
   String nickname = '';
 
   updateUser() async {
@@ -32,11 +34,32 @@ class TodayState extends State<Today> {
       try {
         TUser tUser = await userLogin(user.uid);
         List<Task> fTask = await fetchFavoriteTasksByUser(tUser.id);
+        List<Task> tTask = await fetchTodayTasks(tUser.id);
+
         if (tUser.accessToken == user.uid) {
+          int tIndex = 0;
+          List<Task> t = [];
+          for (Task tt in tTask) {
+            bool removed = false;
+
+            for (Task ft in fTask) {
+              if (tt.id == ft.id) {
+                removed = true;
+                break;
+              }
+            }
+            if (!removed) {
+              t.add(tt);
+              tIndex++;
+            }
+          }
+
           setState(() {
             tuser = tUser;
             favoriteTask = fTask;
+            todayTask = tTask;
             nickname = tUser.nickname;
+            tasks = t + fTask;
           });
         }
       } catch (error) {}
@@ -46,11 +69,39 @@ class TodayState extends State<Today> {
   @override
   void initState() {
     super.initState();
+    // getTodayTasks();
     updateUser();
+
+    // setState(() {
+    //   todayTask = todayTask! + favoriteTask!;
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (todayTask != null && favoriteTask != null) {
+      int tIndex = 0;
+      List<Task> t = [];
+      for (Task tt in todayTask!) {
+        bool removed = false;
+
+        for (Task ft in favoriteTask!) {
+          if (tt.id == ft.id) {
+            removed = true;
+            break;
+          }
+        }
+        if (!removed) {
+          t.add(tt);
+          tIndex++;
+        }
+      }
+
+      setState(() {
+        tasks = t + favoriteTask!;
+        todayTaskIndex = tIndex;
+      });
+    }
     return Scaffold(
       body: _today(),
     );
@@ -58,14 +109,16 @@ class TodayState extends State<Today> {
 
   Widget _today() {
     return Center(
-        child: favoriteTask != null
+        child: tuser != null
             ? SingleChildScrollView(
                 child: Column(
                 children: <Widget>[
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(left: 55),
+                      // margin: EdgeInsets.only(bottom: 15),
                       child: Text(
-                        nickname + ' 님의 체크리스트',
+                        '오늘의 미션',
                         style: _biggerBoldFont,
                       )),
                   _todayTask(),
@@ -75,32 +128,39 @@ class TodayState extends State<Today> {
                   // Text('rr')
                 ],
               ))
-            : Container(child: CircularProgressIndicator()));
+            : Container(child: CustomCircularProgressIndicator()));
   }
 
   Widget _todayTask() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-      padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+      margin: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20),
       // color: Colors.white,
-      height: 400.0,
+      height: 450.0,
       child: Column(
+        // crossAxisAlignment: ,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // _todayTakeList(),
           Expanded(
               child: ListView.separated(
-                  itemCount: favoriteTask!.length,
+                  itemCount: tasks!.length,
                   padding: const EdgeInsets.all(16),
                   itemBuilder: (context, i) {
+                    bool isTodayTask = true;
+                    if (i >= todayTaskIndex) {
+                      isTodayTask = false;
+                    }
                     return ChecklistWidget(
-                        task: favoriteTask![i],
-                        userId: tuser.id,
-                        isCompleted: favoriteTask![i].completed);
+                        task: tasks![i],
+                        userId: tuser!.id,
+                        isCompleted: tasks![i].completed,
+                        isTodayTask: isTodayTask);
                     // _buildRow(favoriteTask![i].label);
                   },
                   separatorBuilder: (context, i) {
                     return const Divider();
-                  }))
+                  })),
         ],
       ),
     );

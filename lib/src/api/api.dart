@@ -70,6 +70,19 @@ Future<Task> fetchTaskByID(int id) async {
   }
 }
 
+Future<List<Task>> fetchTodayTasks(int userId) async {
+  final queryParameters = {'userId': userId.toString()};
+  String queryString = Uri(queryParameters: queryParameters).query;
+  final response =
+      await http.get(Uri.parse(baseUrl + 'task/today?' + queryString));
+
+  if (response.statusCode == 200) {
+    return parseTasks(response.body);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}
+
 Future<int> postTaskOperation(int userId, int taskId) async {
   final response = await http.post(
     Uri.parse(baseUrl + 'user/' + userId.toString() + '/completeTask'),
@@ -187,6 +200,24 @@ task를 즐겨찾기에 추가 - body : {taskId } */
 Future<int> postFavoriteTask(int id, int taskId) async {
   final response = await http.post(
     Uri.parse(baseUrl + 'user/' + id.toString() + '/markTask'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, int>{'taskId': taskId}),
+  );
+  print(response.body);
+  if (response.statusCode == 200) {
+    return response.statusCode;
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}
+
+/* ### `POST api/user/:id/unmarkTask`   :id에 해당하는 유저가 task를 즐겨찾기에서 삭제
+- body : {taskId }*/
+Future<int> deleteFavoriteTask(int id, int taskId) async {
+  final response = await http.post(
+    Uri.parse(baseUrl + 'user/' + id.toString() + '/unmarkTask'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

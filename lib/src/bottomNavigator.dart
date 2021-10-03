@@ -9,7 +9,7 @@ class BottomNavigator extends StatefulWidget {
 }
 
 class BottomNavigatorState extends State<BottomNavigator> {
-  String _title = 'Today';
+  String _title = '티끌 리스트';
   int _currentIndex = 1;
   User? user;
   // const BottomNavigatorState({Key? key}) : super(key: key);
@@ -38,17 +38,17 @@ class BottomNavigatorState extends State<BottomNavigator> {
         switch (index) {
           case 0:
             {
-              _title = 'Home';
+              _title = '우리는 지금';
             }
             break;
           case 1:
             {
-              _title = 'Today';
+              _title = '티끌 리스트';
             }
             break;
           case 2:
             {
-              _title = 'MyPage';
+              _title = '마이페이지';
             }
             break;
         }
@@ -61,6 +61,8 @@ class BottomNavigatorState extends State<BottomNavigator> {
         child: Scaffold(
             appBar: AppBar(
               title: Text(_title),
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
             ),
             bottomNavigationBar: TabBar(
               onTap: onTabTapped,

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tickley/src/utils/authentication.dart';
+import 'package:tickley/utils/widget_functions.dart';
 import 'tickley.dart';
 
 void main() {
@@ -34,7 +35,7 @@ class _AppState extends State<App> {
           return TickelyApp();
         }
         // Otherwise, show something whilst waiting for initialization to complete
-        return CircularProgressIndicator();
+        return CustomCircularProgressIndicator();
       },
     );
   }

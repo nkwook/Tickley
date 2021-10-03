@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/t_user.dart';
+import 'package:tickley/utils/widget_functions.dart';
 
 class MyPage extends StatefulWidget {
   @override
@@ -37,7 +38,7 @@ class _MyPageState extends State<MyPage> {
               builder: (context, snapshot) {
                 return snapshot.hasData
                     ? charByPoint(snapshot.data!)
-                    : Center(child: CircularProgressIndicator());
+                    : Center(child: CustomCircularProgressIndicator());
               }),
           // myPageList()
         ],
