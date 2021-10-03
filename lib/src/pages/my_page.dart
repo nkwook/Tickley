@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -50,7 +52,7 @@ class _MyPageState extends State<MyPage> {
 
   void updateUserTasks(int id) async {
     List<TaskCompleted> t = await fetchCompletedTasksByUser(id);
-    print(t);
+    print("몇번 불려" + t.length.toString());
     setState(() {
       userTasks = t;
     });
@@ -166,9 +168,24 @@ class _MyPageState extends State<MyPage> {
   }
 
   Widget taskItemList() {
-    return
-        Container(
-            width: 200, child: CompletedTaskList(tasks: userTasks, userId: userId));
+    return Container(
+      margin: EdgeInsets.only(top: 30),
+        padding: EdgeInsets.all(10),
+
+        decoration: BoxDecoration(
+            color: Color(0xffEFEFEF),
+            borderRadius: BorderRadius.circular(20)),
+        width: 330,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Text('내 기록', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            ),
+            CompletedTaskList(tasks: userTasks, userId: userId),
+          ],
+        ));
   }
 
 }
@@ -206,6 +223,7 @@ class TaskListState extends State<CompletedTaskList> {
       itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
         return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CompletedTaskWidget(task: widget.tasks[index], userId: widget.userId),
             Text(formatting(widget.tasks[index]))
