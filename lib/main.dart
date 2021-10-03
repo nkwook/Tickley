@@ -37,15 +37,7 @@ class LoginState extends State<Login> {
         children: <Widget>[
           _appLogo(),
           _loginForm(),
-          Material(
-              color: Colors.green,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                    child: Text('Temp Button'),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 25)),
-              ))
+          
         ],
       ),
     );
