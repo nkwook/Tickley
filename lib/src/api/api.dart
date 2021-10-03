@@ -4,6 +4,7 @@ import 'dart:core';
 import 'package:http/http.dart' as http;
 import 'package:tickley/src/model/category.dart';
 import 'package:tickley/src/model/t_user.dart';
+import 'package:tickley/src/model/task_completed.dart';
 import '../model/task.dart';
 import 'dart:math';
 
@@ -116,12 +117,29 @@ Future<List<TUser>> fetchUsersByTask(int id) async {
   // id : task id
   final response =
       await http.get(Uri.parse(baseUrl + 'task/' + id.toString() + '/user'));
-
   if (response.statusCode == 200) {
     return parseUser(response.body);
   } else {
     throw Exception('Failed to fetch Users');
   }
+}
+
+Future<List<TaskCompleted>> fetchCompletedTasksByUser(int id) async {
+  final response = await http
+      .get(Uri.parse(baseUrl + 'user/' + id.toString() + '/completedTask'));
+
+  if (response.statusCode == 200) {
+    return parseCompletedTasks(response.body);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}
+
+List<TaskCompleted> parseCompletedTasks(String responseBody) {
+  final parsed = json.decode(responseBody);
+  List<TaskCompleted> taskList = List<TaskCompleted>.from(
+      parsed["data"].map((json) => TaskCompleted.fromJson(json)));
+  return taskList;
 }
 
 /* POST api/user/login   : (로그인용)accessToken에 해당하는 유저 조회,

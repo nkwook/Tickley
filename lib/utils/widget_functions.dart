@@ -9,6 +9,8 @@ Widget addHorizontalSpace(double width) {
 }
 
 Widget CustomCircularProgressIndicator() {
-  return CircularProgressIndicator(
-      valueColor: new AlwaysStoppedAnimation<Color>(Colors.white));
+  return Container(
+      // height: 100,
+      child: CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey)));
 }

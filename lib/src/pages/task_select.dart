@@ -70,7 +70,11 @@ class TaskSelectState extends State<TaskSelect> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('환경 보호 활동 찾기')),
+        appBar: AppBar(
+          title: Text('환경 보호 활동 찾기'),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
         body: Center(
             heightFactor: 1,
             child: Column(
@@ -92,7 +96,7 @@ class TaskSelectState extends State<TaskSelect> {
                 Divider(),
                 Container(
                     margin: EdgeInsets.only(top: 5, bottom: 15),
-                    child: Text('관심있는 활동들을 눌러보세요',
+                    child: Text('관심있는 활동들을 눌러서 확인해보세요',
                         textAlign: TextAlign.center, style: _biggerGreyFont)),
                 Container(
                     width: 200,

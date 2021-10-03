@@ -177,7 +177,9 @@ class TaskListState2 extends State<TaskList2> {
       itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
         // return Text("Td");
-        return MainTaskWidget(task: widget.tasks[index]);
+        return index == widget.tasks.length
+            ? Container(height: 1)
+            : MainTaskWidget(task: widget.tasks[index]);
       },
     );
   }

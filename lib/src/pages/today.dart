@@ -124,7 +124,6 @@ class TodayState extends State<Today> {
                   _todayTask(),
                   // Text('srs'),
                   _taskSelectNavigateButton(),
-                  _logoutButtonTemp()
                   // Text('rr')
                 ],
               ))
@@ -194,16 +193,5 @@ class TodayState extends State<Today> {
             )),
       ),
     ])));
-  }
-
-  Widget _logoutButtonTemp() {
-    return Material(
-        child: InkWell(
-            onTap: () {
-              Authentication.signOut(context: context);
-            },
-            child: Container(
-              child: Text("Log out"),
-            )));
   }
 }
