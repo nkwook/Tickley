@@ -119,3 +119,16 @@ Future<List<User>> fetchUsersByTask(int id) async {
     throw Exception('Failed to load all tasks');
   }
 }
+
+//category 점수
+Future<int> fetchCategoryPointSum(int id) async {
+  // id : category id
+  final response = await http
+      .get(Uri.parse(baseUrl + 'category/' + id.toString() + '/pointSum'));
+
+  if (response.statusCode == 200) {
+    return int.parse(json.decode(response.body)["data"]);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}

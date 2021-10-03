@@ -10,9 +10,8 @@ import '../api/api.dart';
 
 class MainTaskWidget extends StatefulWidget {
   Task task;
-  List<int> usersId;
 
-  MainTaskWidget({Key? key, required this.task, required this.usersId})
+  MainTaskWidget({Key? key, required this.task})
       : super(key: key);
 
   @override

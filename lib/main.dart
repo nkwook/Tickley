@@ -3,6 +3,7 @@ import 'src/bottomNavigator.dart';
 
 void main() => runApp(MyApp());
 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class LoginState extends State<Login> {
         padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/logo.png'), fit: BoxFit.fill)));
+                image: AssetImage('assets/logo_tickle.png'), fit: BoxFit.contain)));
   }
 
   Widget _loginForm() {

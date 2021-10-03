@@ -20,6 +20,7 @@ class HomeState extends State<Home> {
   int userId = 1; //temp
   late List<Task> tasks = [];
   late List<List<Task>> tasksList = [];
+  late List<int> points = [];
 
   final List<String> imageList = [
     "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.apple.com%2Fkr%2Fshop%2Fbuy-iphone%2Fiphone-11&psig=AOvVaw3Cjux8T5Onz_Bz1hFO2W6s&ust=1633179901602000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCLj34rGjqfMCFQAAAAAdAAAAABAD",
@@ -35,15 +36,22 @@ class HomeState extends State<Home> {
       //categories 4개로 고정
       updateTasks(i); // category별로 task 업뎃
     }
+    print(">>>>>TasksList:");
     print(tasksList);
   }
 
   //Category별로 task 업뎃
   void updateTasks(int id) async {
     List<Task> t = await fetchTasksByCategory(id);
+    int globalPoint = await fetchCategoryPointSum(id);
     setState(() {
       //tasks = t;
       tasksList.add(t);
+      points.add(globalPoint);
+      print("taskList >>>");
+      print(t);
+      print("global point >>>");
+      print(globalPoint);
     });
   }
 
@@ -71,17 +79,23 @@ class CategorySlider extends StatelessWidget {
   int currentCategory = 0;
   final List<List<Task>> tasksList;
 
-  final List<String> missionList = [
-    "다같이 전구를 00시간 끈 것과 같아요!",
-    "1.5L 페트병 000개 만큼의 물을 아꼈습니다~",
-    "쓰레기 ㅇㅇ톤을 줄였어요!",
-    "나무를 ㅇㅇ 그루 심은 것과 같은 효과에요!",
+  final List<List<String>> titleList = [
+    ["다같이 전구를", "시간 끈 것과 같아요!"], //전기
+    ["욕조", "개에 들어갈 만큼의 물을 아꼈네요 :)"], //물
+    ["바다에 갈뻔한 일반 쓰레기", "톤을 줄였어요!"], //쓰레기
+    ["숲에 나무를", "그루 심은 것과 같은 탄소줄이기에요"], //이산화탄소
+  ];
+  final List<String> valueList = [
+    "1000",
+    "1200",
+    "1203",
+    "301",
   ];
 
   final List<String> illustList = [
-    "assets/lightbulb.jpg",
-    "assets/plastic.jpg",
-    "assets/trash.jpg",
+    "assets/illust3.png",
+    "assets/illust2.png",
+    "assets/illust1.png",
     "assets/tree.png",
   ];
 
@@ -112,13 +126,20 @@ class CategorySlider extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                       child: Container(
-                        margin: EdgeInsets.all(20),
-                        child: Text(
-                          missionList[e.id - 1],
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                          margin: EdgeInsets.all(20),
+                          child: RichText(
+                              text: TextSpan(
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  children: <TextSpan>[
+                                TextSpan(text: titleList[e.id - 1][0] + "\n"),
+                                TextSpan(
+                                    text: valueList[e.id - 1],
+                                    style: TextStyle(color: Colors.green)),
+                                TextSpan(text: titleList[e.id - 1][1]),
+                              ]))),
                     ),
                     SizedBox(
                         height: 200,
@@ -143,6 +164,7 @@ class TaskList2 extends StatefulWidget {
 class TaskListState2 extends State<TaskList2> {
   @override
   Widget build(BuildContext context) {
+    print(widget.tasks.length);
     return ListView.separated(
       separatorBuilder: (context, index) {
         return Container(height: 10);
@@ -151,7 +173,7 @@ class TaskListState2 extends State<TaskList2> {
       itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
         // return Text("Td");
-        return MainTaskWidget(task: widget.tasks[index], usersId: [1, 2]);
+        return MainTaskWidget(task: widget.tasks[index]);
       },
     );
   }
