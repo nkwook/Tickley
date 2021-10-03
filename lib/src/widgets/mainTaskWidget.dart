@@ -40,7 +40,10 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
   }
 
   void updateUsers_hard(int id) async {
-    usersList.add("assets/profile_sample/1.png");
+    usersList.add('assets/1.png');
+    usersList.add('assets/2.png');
+    usersList.add('assets/3.png');
+    usersList.add('assets/4.png');
   }
 
   @override
@@ -64,10 +67,10 @@ class TaskWidgetState2 extends State<MainTaskWidget> {
   Widget _userListView() {
     return ListView.separated(
       separatorBuilder: (context, index) {
-        return Container(width: 20);
+        return Container(width: 1);
       },
       // physics: ClampingScrollPhysics(),
-      padding: EdgeInsets.only(top: 8.0),
+      padding: EdgeInsets.only(top: 3.0),
 
       scrollDirection: Axis.horizontal,
       shrinkWrap: true,
