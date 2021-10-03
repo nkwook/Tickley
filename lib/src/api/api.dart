@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tickley/src/model/category.dart';
 import 'package:tickley/src/model/t_user.dart';
+import 'package:tickley/src/model/task_completed.dart';
 import '../model/task.dart';
 import '../model/user.dart';
 import 'dart:math';
@@ -97,6 +98,24 @@ Future<List<Task>> fetchTasksByUser(int id) async {
   } else {
     throw Exception('Failed to load all tasks');
   }
+}
+
+Future<List<TaskCompleted>> fetchCompletedTasksByUser(int id) async {
+  final response =
+  await http.get(Uri.parse(baseUrl + 'user/' + id.toString() + '/completedTask'));
+
+  if (response.statusCode == 200) {
+    return parseCompletedTasks(response.body);
+  } else {
+    throw Exception('Failed to load all tasks');
+  }
+}
+
+List<TaskCompleted> parseCompletedTasks(String responseBody) {
+  final parsed = json.decode(responseBody);
+  List<TaskCompleted> taskList =
+  List<TaskCompleted>.from(parsed["data"].map((json) => TaskCompleted.fromJson(json)));
+  return taskList;
 }
 
 Future<List<Task>> fetchUser(int id) async {
