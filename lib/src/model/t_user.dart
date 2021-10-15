@@ -5,7 +5,7 @@ class TUser {
   final int point;
   final String createdAt;
   final String updatedAt;
-  // final String profileImage;
+  final String profileImage;
 
   TUser({
     required this.accessToken,
@@ -14,9 +14,8 @@ class TUser {
     required this.point,
     required this.createdAt,
     required this.updatedAt,
-    // this.profileImage = "",
+    required this.profileImage,
   });
-
 
   factory TUser.fromJson(Map<String, dynamic> json) {
     return TUser(
@@ -26,7 +25,8 @@ class TUser {
       nickname: json['nickname'] as String,
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
-      // profileImage: json['profileImage'] as String,
+      profileImage:
+          json['profileImage'] != null ? '' : json['profileImage'] as String,
     );
   }
 }

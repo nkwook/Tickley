@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tickley/src/model/t_user.dart';
+import 'package:tickley/src/model/tUser/tUser.dart';
 import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/utils.dart';
 import 'taskDetailModal.dart';

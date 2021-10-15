@@ -3,7 +3,7 @@ import 'dart:core';
 
 import 'package:http/http.dart' as http;
 import 'package:tickley/src/model/category.dart';
-import 'package:tickley/src/model/t_user.dart';
+import 'package:tickley/src/model/tUser/tUser.dart';
 import 'package:tickley/src/model/task_completed.dart';
 import '../model/task.dart';
 import 'dart:math';

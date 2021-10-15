@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tickley/src/api/api.dart';
-import 'package:tickley/src/model/t_user.dart';
-import 'package:tickley/src/pages/register.dart';
+import 'package:tickley/src/model/tUser/tUser.dart';
+
+import 'package:tickley/src/screens/register.dart';
 import 'package:tickley/src/utils/authentication.dart';
 import 'package:tickley/utils/widget_functions.dart';
 import '../bottomNavigator.dart';

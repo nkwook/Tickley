@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'pages/home.dart';
-import 'pages/today.dart';
-import 'package:tickley/src/pages/my_page.dart';
+import 'screens/home.dart';
+import 'screens/today.dart';
+import 'package:tickley/src/screens/my_page.dart';
 
 class BottomNavigator extends StatefulWidget {
   BottomNavigatorState createState() => BottomNavigatorState();

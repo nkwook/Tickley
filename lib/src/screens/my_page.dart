@@ -7,7 +7,8 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tickley/src/api/api.dart';
-import 'package:tickley/src/model/t_user.dart';
+import 'package:tickley/src/model/tUser/tUser.dart';
+
 import 'package:tickley/src/utils/authentication.dart';
 import 'package:tickley/utils/widget_functions.dart';
 import 'package:intl/intl.dart';
