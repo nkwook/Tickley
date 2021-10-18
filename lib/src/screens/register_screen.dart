@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tickley/src/api/api.dart';
-import '../bottomNavigator.dart';
+import '../bottom_navigator.dart';
 
 class Register extends StatefulWidget {
   User user;

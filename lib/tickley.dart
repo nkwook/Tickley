@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/bloc/tUserCubit.dart';
-import 'package:tickley/src/bloc/tUserState.dart';
-import 'package:tickley/src/repository/tUserRepository.dart';
-import 'package:tickley/src/screens/login.dart';
-import 'src/bottomNavigator.dart';
+import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
+import 'package:tickley/src/bloc/tUser/tUser_state.dart';
+import 'package:tickley/src/repository/tUser_repository.dart';
+import 'package:tickley/src/screens/login_screen.dart';
+import 'src/bottom_navigator.dart';
 
-class TickelyApp extends StatelessWidget {
+class TickleyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '티끌리',
-      home: Tickely(),
+      home: Tickley(),
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
@@ -19,11 +19,11 @@ class TickelyApp extends StatelessWidget {
   }
 }
 
-class Tickely extends StatefulWidget {
-  TickelyState createState() => TickelyState();
+class Tickley extends StatefulWidget {
+  TickleyState createState() => TickleyState();
 }
 
-class TickelyState extends State<Tickely> {
+class TickleyState extends State<Tickley> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
@@ -32,7 +32,6 @@ class TickelyState extends State<Tickely> {
   }
 }
 
-// TODO: tickleywidget 만들기
 class TickleyWidget extends StatefulWidget {
   @override
   _TickleyWidgetState createState() => _TickleyWidgetState();
@@ -48,11 +47,11 @@ class _TickleyWidgetState extends State<TickleyWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<TUserCubit, TUserState>(builder: (_, state) {
       if (state is Empty) {
-        return Login(initLoad: false);
+        return LoginScreen(initLoad: false);
       } else if (state is Error) {
-        return Login(initLoad: false);
+        return LoginScreen(initLoad: false);
       } else if (state is Loading) {
-        return Login(initLoad: true);
+        return LoginScreen(initLoad: true);
       } else if (state is Loaded) {
         return BottomNavigator();
       }

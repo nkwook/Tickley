@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:http/http.dart' as http;
-import 'package:tickley/src/model/category.dart';
+
 import 'package:tickley/src/model/tUser/tUser.dart';
 import 'package:tickley/src/model/task_completed.dart';
 import '../model/task.dart';
@@ -10,21 +10,6 @@ import 'dart:math';
 
 final String baseUrl =
     'https://zgojtokt6f.execute-api.ap-northeast-2.amazonaws.com/dev/api/';
-
-Future<List<Category>> fetchCategories() async {
-  final response = await http.get(Uri.parse(baseUrl + 'category'));
-  if (response.statusCode == 200) {
-    return parseCategories(response.body);
-  } else {
-    throw Exception('Failed to load all categories');
-  }
-}
-
-List<Category> parseCategories(String responseBody) {
-  final parsed = json.decode(responseBody);
-  return List<Category>.from(
-      parsed["data"].map((json) => Category.fromJson(json)));
-}
 
 Future<List<Task>> fetchTasksByCategory(int id) async {
   final response = await http

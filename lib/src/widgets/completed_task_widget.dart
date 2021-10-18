@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/model/task_completed.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'taskDetailModal.dart';
+import 'task_detail_modal.dart';
 
 class CompletedTaskWidget extends StatefulWidget {
   TaskCompleted task;
@@ -36,7 +36,7 @@ class TaskWidgetState extends State<CompletedTaskWidget> {
               //       });
               // },
               child: Container(
-                // width: 300.0,
+                  // width: 300.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     border: Border.all(color: Colors.black),

@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'screens/home.dart';
-import 'screens/today.dart';
-import 'package:tickley/src/screens/my_page.dart';
+import 'screens/home_screen.dart';
+import 'screens/mission_list_screen.dart';
+import 'package:tickley/src/screens/my_page_screen.dart';
 
 class BottomNavigator extends StatefulWidget {
   BottomNavigatorState createState() => BottomNavigatorState();
@@ -11,23 +10,18 @@ class BottomNavigator extends StatefulWidget {
 class BottomNavigatorState extends State<BottomNavigator> {
   String _title = '티끌 리스트';
   int _currentIndex = 1;
-  User? user;
   // const BottomNavigatorState({Key? key}) : super(key: key);
   // TabsState createState() => TabsState();
   @override
   void initState() {
     super.initState();
-    User? user = FirebaseAuth.instance.currentUser;
-    setState(() {
-      user = user;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = [
-      Home(),
-      Today(),
+      HomeScreen(),
+      MissionListScreen(),
       MyPage(),
     ];
 

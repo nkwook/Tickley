@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/repository/tUserRepository.dart';
+import 'package:tickley/src/repository/tUser_repository.dart';
 
-import 'tUserState.dart';
+import 'tUser_state.dart';
 
 class TUserCubit extends Cubit<TUserState> {
   final TUserRepository repository;
@@ -15,7 +15,6 @@ class TUserCubit extends Cubit<TUserState> {
       final resp = await this.repository.userLogin();
 
       final tUser = resp;
-      print(resp);
 
       emit(Loaded(tUser: tUser));
     } catch (e) {

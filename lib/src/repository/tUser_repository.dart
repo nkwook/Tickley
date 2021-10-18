@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:tickley/src/model/tUser/tUser.dart';
-import 'package:tickley/utils/constants.dart';
+import 'package:tickley/src/utils/constants.dart';
 
 class TUserRepository {
   Future<TUser> userLogin() async {

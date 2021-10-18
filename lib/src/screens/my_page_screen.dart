@@ -10,11 +10,11 @@ import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/utils/authentication.dart';
-import 'package:tickley/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions.dart';
 import 'package:intl/intl.dart';
 import 'package:tickley/src/model/task_completed.dart';
 import 'package:tickley/src/widgets/completed_task_widget.dart';
-import 'package:tickley/src/widgets/taskWidget.dart';
+import 'package:tickley/src/widgets/task_widget.dart';
 
 class MyPage extends StatefulWidget {
   @override

@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:tickley/src/model/mission/mission.dart';
+
 class Utils {
   String convertStringToUnicode(String content) {
     String regex = "\\u";
@@ -17,5 +21,12 @@ class Utils {
 //     print(offset);
     }
     return content;
+  }
+
+  List<Mission> parseMissions(String responseBody) {
+    final parsed = json.decode(responseBody);
+    List<Mission> missionList = List<Mission>.from(
+        parsed["data"].map((json) => Mission.fromJson(json)));
+    return missionList;
   }
 }

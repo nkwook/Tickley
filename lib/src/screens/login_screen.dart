@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
-import 'package:tickley/src/screens/register.dart';
+import 'package:tickley/src/screens/register_screen.dart';
 import 'package:tickley/src/utils/authentication.dart';
-import 'package:tickley/utils/widget_functions.dart';
-import '../bottomNavigator.dart';
+import 'package:tickley/src/utils/widget_functions.dart';
+import '../bottom_navigator.dart';
 
-class Login extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   bool initLoad;
 
-  Login({
+  LoginScreen({
     Key? key,
     required this.initLoad,
   }) : super(key: key);
 
-  LoginState createState() => LoginState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class LoginState extends State<Login> {
+class LoginScreenState extends State<LoginScreen> {
   bool _isSigningIn = false;
   final _formKey = GlobalKey<FormState>();
 

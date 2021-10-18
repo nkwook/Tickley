@@ -4,21 +4,21 @@ import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/model/task.dart';
-import 'package:tickley/src/utils/authentication.dart';
-import 'package:tickley/src/widgets/checklistWidget.dart';
-import 'package:tickley/utils/widget_functions.dart';
-import 'task_select.dart';
 
-class Today extends StatefulWidget {
+import 'package:tickley/src/widgets/checklist_widget.dart';
+import 'package:tickley/src/utils/widget_functions.dart';
+import 'mission_select_screen.dart';
+
+class MissionListScreen extends StatefulWidget {
   // User? user;
   // Today({Key? key, required this.user}) : super(key: key);
-  Today({Key? key}) : super(key: key);
+  MissionListScreen({Key? key}) : super(key: key);
 
   @override
-  TodayState createState() => TodayState();
+  MissionListScreenState createState() => MissionListScreenState();
 }
 
-class TodayState extends State<Today> {
+class MissionListScreenState extends State<MissionListScreen> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final _biggerBoldFont =
       const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700);
@@ -185,7 +185,7 @@ class TodayState extends State<Today> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          TaskSelect(updateToday: updateUser)));
+                          MissionSelect(updateToday: updateUser)));
             },
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),

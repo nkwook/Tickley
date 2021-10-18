@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tickley/src/bloc/missions/mission_cubit.dart';
 import 'package:tickley/src/model/task.dart';
 import '../utils/utils.dart';
 
@@ -6,7 +8,7 @@ class CategoryWidget extends StatefulWidget {
   final String label;
   final String emoji;
   final int id;
-  final ValueChanged<int> callback;
+  final ValueChanged<int> updateCurrentCategory;
   int currentCategory;
 
   CategoryWidget(
@@ -14,7 +16,7 @@ class CategoryWidget extends StatefulWidget {
       required this.label,
       required this.emoji,
       required this.id,
-      required this.callback,
+      required this.updateCurrentCategory,
       required this.currentCategory})
       : super(key: key);
 
@@ -34,8 +36,11 @@ class CategoryWidgetState extends State<CategoryWidget> {
         child: Material(
             child: InkWell(
       borderRadius: BorderRadius.all(Radius.circular(20)),
-      onTap: () async {
-        widget.callback(widget.id);
+      onTap: () {
+        BlocProvider.of<MissionCubit>(context)
+            .fetchMissionsByCategory(widget.id);
+
+        widget.updateCurrentCategory(widget.id);
       },
       child: Container(
         decoration: BoxDecoration(

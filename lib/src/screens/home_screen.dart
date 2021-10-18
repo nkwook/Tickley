@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tickley/utils/widget_functions.dart';
-// import '../widgets/taskWidget.dart';
-import '../widgets/mainTaskWidget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tickley/src/bloc/category/category_cubit.dart';
+import 'package:tickley/src/bloc/category/category_state.dart';
+import 'package:tickley/src/model/category/category.dart';
+import 'package:tickley/src/repository/category_repository.dart';
+import 'package:tickley/src/utils/widget_functions.dart';
+
+import '../widgets/main_task_widget.dart';
 
 import '../model/task.dart';
-import '../model/category.dart';
 import '../api/api.dart';
-import './task_select.dart';
-import 'dart:developer';
 
-class Home extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  HomeState createState() => HomeState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class HomeState extends State<Home> {
+class HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+          create: (_) => CategoryCubit(repository: CategoryRepository()))
+    ], child: HomeWidget());
+  }
+}
+
+class HomeWidget extends StatefulWidget {
+  _HomeWidgetState createState() => _HomeWidgetState();
+}
+
+class _HomeWidgetState extends State<HomeWidget> {
   late Future<List<Category>> categories;
   int userId = 1; //temp
   late List<Task> tasks = [];
@@ -32,15 +48,15 @@ class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    categories = fetchCategories();
+    BlocProvider.of<CategoryCubit>(context).fetchCategories();
     for (var i = 1; i <= 4; i++) {
       //categories 4개로 고정
       updateTasks(i); // category별로 task 업뎃
     }
-    print("taskList >>>---");
-    print(tasksList);
-    print("global point >>>---");
-    print(points);
+    // print("taskList >>>---");
+    // print(tasksList);
+    // print("global point >>>---");
+    // print(points);
   }
 
   //Category별로 task 업뎃
@@ -61,22 +77,41 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return categories != null
-        ? FutureBuilder<List<Category>>(
-            future: categories,
-            builder: (context, snapshot) {
-              return SingleChildScrollView(
-                  child: snapshot.hasData
-                      ? CategorySlider(
-                          categories: snapshot.data!,
-                          currentCategory: 0,
-                          tasksList: tasksList,
-                        )
-                      : Center(child: CustomCircularProgressIndicator()));
-            })
-        : Container(child: CustomCircularProgressIndicator());
+    return BlocBuilder<CategoryCubit, CategoryState>(builder: (_, state) {
+      if (state is Empty) {
+        return CustomCircularProgressIndicator();
+      } else if (state is Error) {
+        return CustomCircularProgressIndicator();
+      } else if (state is Loading) {
+        return CustomCircularProgressIndicator();
+      } else if (state is Loaded) {
+        return SingleChildScrollView(
+            child: CategorySlider(
+          categories: state.categories,
+          currentCategory: 0,
+          tasksList: tasksList,
+        ));
+      }
+      return Container();
+    });
   }
 }
+//     categories != null
+//         ? FutureBuilder<List<Category>>(
+//             future: categories,
+//             builder: (context, snapshot) {
+//               return SingleChildScrollView(
+//                   child: snapshot.hasData
+//                       ? CategorySlider(
+//                           categories: snapshot.data!,
+//                           currentCategory: 0,
+//                           tasksList: tasksList,
+//                         )
+//                       : Center(child: CustomCircularProgressIndicator()));
+//             })
+//         : Container(child: CustomCircularProgressIndicator());
+//   }
+// }
 
 class CategorySlider extends StatelessWidget {
   final List<Category> categories;

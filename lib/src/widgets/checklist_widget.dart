@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'taskDetailModal.dart';
+import 'task_detail_modal.dart';
 
 class ChecklistWidget extends StatefulWidget {
   Task task;

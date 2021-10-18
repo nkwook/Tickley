@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tickley/src/api/api.dart';
+import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'taskDetailModal.dart';
+import 'task_detail_modal.dart';
 
 class TaskWidget extends StatefulWidget {
-  Task task;
+  Mission task;
   int userId;
   bool isFavorite;
   List<Task> favoriteTasks;
