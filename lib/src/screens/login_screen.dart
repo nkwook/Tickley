@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/api/api.dart';
+import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
+import 'package:tickley/src/bloc/tUser/tUser_state.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/screens/register_screen.dart';
@@ -25,9 +28,9 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _loginScreen(),
-    );
+    return BlocBuilder<TUserCubit, TUserState>(builder: (_, state) {
+      return _loginScreen();
+    });
   }
 
   Widget _loginScreen() {
@@ -68,14 +71,19 @@ class LoginScreenState extends State<LoginScreen> {
                   await Authentication.signInWithGoogle(context: context);
               if (user != null) {
                 try {
-                  TUser tUser = await userLogin(user.uid);
+                  // TUser tUser = await userLogin(user.uid);
+                  BlocProvider.of<TUserCubit>(context).userLogin();
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('로그인 되었습니다')),
                   );
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => BottomNavigator()));
+                          builder: (context) => BottomNavigator(
+                              tUser: BlocProvider.of<TUserCubit>(context)
+                                  .state
+                                  .tUserState)));
                   setState(() {
                     _isSigningIn = false;
                   });
@@ -89,9 +97,6 @@ class LoginScreenState extends State<LoginScreen> {
                   print(error);
                 }
 
-                // print(tUser);
-                // if (tUser.accessToken != null) {
-                // } else {
                 setState(() {
                   _isSigningIn = false;
                 });

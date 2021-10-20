@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 
 @immutable
-abstract class FavoriteMissionState extends Equatable {}
+abstract class FavoriteMissionState extends Equatable {
+  late FavoriteMissionState _favoriteMissionState;
+  get missons => _favoriteMissionState.missons;
+}
 
 class Empty extends FavoriteMissionState {
   @override

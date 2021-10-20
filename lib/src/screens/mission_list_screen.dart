@@ -1,18 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tickley/src/api/api.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tickley/src/bloc/favorite_missions/favorite_mission_cubit.dart';
+import 'package:tickley/src/bloc/favorite_missions/favorite_mission_state.dart';
+
 import 'package:tickley/src/model/tUser/tUser.dart';
-
-import 'package:tickley/src/model/task.dart';
-
 import 'package:tickley/src/widgets/checklist_widget.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 import 'mission_select_screen.dart';
 
 class MissionListScreen extends StatefulWidget {
-  // User? user;
-  // Today({Key? key, required this.user}) : super(key: key);
-  MissionListScreen({Key? key}) : super(key: key);
+  TUser tUser;
+  MissionListScreen({Key? key, required this.tUser}) : super(key: key);
 
   @override
   MissionListScreenState createState() => MissionListScreenState();
@@ -22,113 +20,33 @@ class MissionListScreenState extends State<MissionListScreen> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final _biggerBoldFont =
       const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w700);
-  List<Task>? favoriteTask;
-  List<Task>? todayTask;
-  List<Task>? tasks;
-  TUser? tuser;
-  int todayTaskIndex = 0;
-  String nickname = '';
-
-  updateUser() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      try {
-        TUser tUser = await userLogin(user.uid);
-        List<Task> fTask = await fetchFavoriteTasksByUser(tUser.id);
-        List<Task> tTask = await fetchTodayTasks(tUser.id);
-
-        if (tUser.accessToken == user.uid) {
-          int tIndex = 0;
-          List<Task> t = [];
-          for (Task tt in tTask) {
-            bool removed = false;
-
-            for (Task ft in fTask) {
-              if (tt.id == ft.id) {
-                removed = true;
-                break;
-              }
-            }
-            if (!removed) {
-              t.add(tt);
-              tIndex++;
-            }
-          }
-
-          setState(() {
-            tuser = tUser;
-            favoriteTask = fTask;
-            todayTask = tTask;
-            nickname = tUser.nickname;
-            tasks = t + fTask;
-          });
-        }
-      } catch (error) {}
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    // getTodayTasks();
-    updateUser();
 
-    // setState(() {
-    //   todayTask = todayTask! + favoriteTask!;
-    // });
+    BlocProvider.of<FavoriteMissionCubit>(context)
+        .fetchFavoriteMissionsByUser(widget.tUser.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (todayTask != null && favoriteTask != null) {
-      int tIndex = 0;
-      List<Task> t = [];
-      for (Task tt in todayTask!) {
-        bool removed = false;
-
-        for (Task ft in favoriteTask!) {
-          if (tt.id == ft.id) {
-            removed = true;
-            break;
-          }
-        }
-        if (!removed) {
-          t.add(tt);
-          tIndex++;
-        }
-      }
-
-      setState(() {
-        tasks = t + favoriteTask!;
-        todayTaskIndex = tIndex;
-      });
-    }
     return Scaffold(
-      body: _today(),
-    );
-  }
-
-  Widget _today() {
-    return Center(
-        child: tuser != null
-            ? SingleChildScrollView(
+        body: Center(
+            child: SingleChildScrollView(
                 child: Column(
-                children: <Widget>[
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(left: 55),
-                      // margin: EdgeInsets.only(bottom: 15),
-                      child: Text(
-                        '오늘의 미션',
-                        style: _biggerBoldFont,
-                      )),
-                  _todayTask(),
-                  // Text('srs'),
-                  _taskSelectNavigateButton(),
-                  // Text('rr')
-                ],
-              ))
-            : Container(child: CustomCircularProgressIndicator()));
+      children: <Widget>[
+        Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(left: 55),
+            child: Text(
+              '오늘의 미션',
+              style: _biggerBoldFont,
+            )),
+        _todayTask(),
+        _taskSelectNavigateButton(),
+      ],
+    ))));
   }
 
   Widget _todayTask() {
@@ -141,26 +59,31 @@ class MissionListScreenState extends State<MissionListScreen> {
         // crossAxisAlignment: ,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // _todayTakeList(),
-          Expanded(
-              child: ListView.separated(
-                  itemCount: tasks!.length,
-                  padding: const EdgeInsets.all(16),
-                  itemBuilder: (context, i) {
-                    bool isTodayTask = true;
-                    if (i >= todayTaskIndex) {
-                      isTodayTask = false;
-                    }
-                    return ChecklistWidget(
-                        task: tasks![i],
-                        userId: tuser!.id,
-                        isCompleted: tasks![i].completed,
-                        isTodayTask: isTodayTask);
-                    // _buildRow(favoriteTask![i].label);
-                  },
-                  separatorBuilder: (context, i) {
-                    return const Divider();
-                  })),
+          BlocBuilder<FavoriteMissionCubit, FavoriteMissionState>(
+              builder: (_, state) {
+            if (state is Empty) {
+              return CustomCircularProgressIndicator();
+            } else if (state is Loading) {
+              return CustomCircularProgressIndicator();
+            } else if (state is Error) {
+              return CustomCircularProgressIndicator();
+            } else if (state is Loaded) {
+              return Expanded(
+                  child: ListView.separated(
+                      itemCount: state.missions.length,
+                      padding: const EdgeInsets.all(16),
+                      itemBuilder: (context, i) {
+                        return FavoriteMissionListWidget(
+                            mission: state.missions[i],
+                            userId: widget.tUser.id,
+                            isCompleted: state.missions[i].completed);
+                      },
+                      separatorBuilder: (context, i) {
+                        return const Divider();
+                      }));
+            }
+            return Container();
+          })
         ],
       ),
     );
@@ -168,11 +91,6 @@ class MissionListScreenState extends State<MissionListScreen> {
 
   Widget _taskSelectNavigateButton() {
     return (Container(
-        // padding: EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-        // decoration: BoxDecoration(
-        //     border: Border.all(color: Colors.redAccent),
-        //     borderRadius: BorderRadius.all(Radius.circular(20))),
-        // height: 400.0,
         child: Column(children: [
       Material(
         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -185,7 +103,7 @@ class MissionListScreenState extends State<MissionListScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          MissionSelect(updateToday: updateUser)));
+                          MissionSelectScreen(tUser: widget.tUser)));
             },
             child: Container(
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),

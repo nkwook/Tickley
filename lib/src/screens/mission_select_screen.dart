@@ -1,92 +1,35 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/category/category_cubit.dart';
 import 'package:tickley/src/bloc/category/category_state.dart' as cs;
 import 'package:tickley/src/bloc/favorite_missions/favorite_mission_cubit.dart';
+import 'package:tickley/src/bloc/favorite_missions/favorite_mission_state.dart';
 import 'package:tickley/src/bloc/missions/mission_cubit.dart';
 import 'package:tickley/src/bloc/missions/mission_state.dart' as ms;
-import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
-import 'package:tickley/src/bloc/tUser/tUser_state.dart' as ts;
 import 'package:tickley/src/model/category/category.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
-import 'package:tickley/src/repository/category_repository.dart';
-import 'package:tickley/src/repository/favorite_mission_repository.dart';
-import 'package:tickley/src/repository/mission_repository.dart';
-import 'package:tickley/src/repository/tUser_repository.dart';
 
 import 'package:tickley/src/utils/widget_functions.dart';
-import 'package:tickley/tickley.dart';
-import '../widgets/task_widget.dart';
+import '../widgets/mission_widget.dart';
 import '../widgets/category_widget.dart';
-import '../model/task.dart';
 
-import '../api/api.dart';
-
-class MissionSelect extends StatefulWidget {
-  Function updateToday;
-
-  MissionSelect({Key? key, required this.updateToday}) : super(key: key);
+class MissionSelectScreen extends StatefulWidget {
+  TUser tUser;
+  MissionSelectScreen({Key? key, required this.tUser}) : super(key: key);
   @override
-  MissionSelectState createState() => MissionSelectState();
+  MissionSelectScreenState createState() => MissionSelectScreenState();
 }
 
-class MissionSelectState extends State<MissionSelect> {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      // BlocProvider(create: (_) => TUserCubit(repository: TUserRepository())),
-      BlocProvider(
-          create: (_) =>
-              FavoriteMissionCubit(repository: FavoriteMissionRepository())),
-      BlocProvider(
-          create: (_) => CategoryCubit(repository: CategoryRepository())),
-      BlocProvider(
-          create: (_) => MissionCubit(repository: MissionRepository())),
-    ], child: MissionSelectWidget(updateToday: widget.updateToday));
-  }
-}
-
-class MissionSelectWidget extends StatefulWidget {
-  Function updateToday;
-  MissionSelectWidget({Key? key, required this.updateToday}) : super(key: key);
-
-  MissionSelectWidgetState createState() => MissionSelectWidgetState();
-}
-
-class MissionSelectWidgetState extends State<MissionSelectWidget> {
-  late List<Task> tasks = [];
-  late List<Task> favoriteTasks = [];
+class MissionSelectScreenState extends State<MissionSelectScreen> {
   int userId = 0;
   int currentCategory = 1;
 
   final _biggerGreyFont = const TextStyle(fontSize: 18.0, color: Colors.grey);
 
-  _updateUser() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      try {
-        TUser tUser = await userLogin(user.uid);
-        if (tUser.accessToken == user.uid) {
-          int id = tUser.id;
-          setState(() {
-            userId = id;
-          });
-          updateFavoriteTasks(id);
-        }
-      } catch (error) {}
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    _updateUser();
-    // BlocProvider.of<FavoriteMissionCubit>(context).fetchFavoriteMissionsByUser(
-    // print(BlocProvider.of<TUserCubit>(context).state.tUserState.toString());
-    // // BlocProvider.value(value: )
-    // print(BlocProvider.of<TUserCubit>(context).state.toString());
     BlocProvider.of<CategoryCubit>(context).fetchCategories();
     BlocProvider.of<MissionCubit>(context).fetchMissionsByCategory(1);
   }
@@ -94,13 +37,6 @@ class MissionSelectWidgetState extends State<MissionSelectWidget> {
   void updateCurrentCategory(int id) async {
     setState(() {
       currentCategory = id;
-    });
-  }
-
-  void updateFavoriteTasks(int id) async {
-    List<Task> t = await fetchFavoriteTasksByUser(id);
-    setState(() {
-      favoriteTasks = t;
     });
   }
 
@@ -146,12 +82,10 @@ class MissionSelectWidgetState extends State<MissionSelectWidget> {
                     } else if (missionState is ms.Loaded) {
                       return Container(
                           width: 200,
-                          child: TaskList(
-                              tasks: missionState.missions,
-                              userId: userId,
-                              favoriteTasks: favoriteTasks,
-                              updateFavoriteTasks: updateFavoriteTasks,
-                              updateToday: widget.updateToday));
+                          child: MissionList(
+                            missions: missionState.missions,
+                            userId: widget.tUser.id,
+                          ));
                     }
                     return Container();
                   })
@@ -197,51 +131,55 @@ class CategoryList extends StatelessWidget {
   }
 }
 
-class TaskList extends StatefulWidget {
-  final List<Mission> tasks;
+class MissionList extends StatefulWidget {
+  final List<Mission> missions;
   int userId;
-  List<Task> favoriteTasks;
-  Function(int) updateFavoriteTasks;
-  Function updateToday;
 
-  TaskList(
-      {Key? key,
-      required this.tasks,
-      required this.userId,
-      required this.favoriteTasks,
-      required this.updateFavoriteTasks,
-      required this.updateToday})
-      : super(key: key);
-  TaskListState createState() => TaskListState();
+  MissionList({
+    Key? key,
+    required this.missions,
+    required this.userId,
+  }) : super(key: key);
+  MissionListState createState() => MissionListState();
 }
 
-class TaskListState extends State<TaskList> {
+class MissionListState extends State<MissionList> {
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      separatorBuilder: (context, index) {
-        return Container(height: 10);
-      },
-      shrinkWrap: true,
-      itemCount: widget.tasks.length,
-      itemBuilder: (context, index) {
-        bool isFavorite = false;
-        for (int i = 0; i < widget.favoriteTasks.length; i++) {
-          if (widget.favoriteTasks[i].id == widget.tasks[index].id) {
-            isFavorite = true;
-            // });
-            break;
-          }
-        }
+    return BlocBuilder<FavoriteMissionCubit, FavoriteMissionState>(
+        builder: (_, state) {
+      if (state is Empty)
+        return CustomCircularProgressIndicator();
+      else if (state is Loading)
+        return CustomCircularProgressIndicator();
+      else if (state is Error)
+        return CustomCircularProgressIndicator();
+      else if (state is Loaded) {
+        return ListView.separated(
+          separatorBuilder: (context, index) {
+            return Container(height: 10);
+          },
+          shrinkWrap: true,
+          itemCount: widget.missions.length,
+          itemBuilder: (context, index) {
+            bool isFavorite = false;
+            for (int i = 0; i < state.missions.length; i++) {
+              if (state.missions[i].id == widget.missions[index].id) {
+                isFavorite = true;
+                break;
+              }
+            }
 
-        return TaskWidget(
-            task: widget.tasks[index],
-            userId: widget.userId,
-            isFavorite: isFavorite,
-            favoriteTasks: widget.favoriteTasks,
-            updateFavoriteTasks: widget.updateFavoriteTasks,
-            updateToday: widget.updateToday);
-      },
-    );
+            return MissionWidget(
+              mission: widget.missions[index],
+              userId: widget.userId,
+              isFavorite: isFavorite,
+            );
+          },
+        );
+      }
+
+      return Container();
+    });
   }
 }

@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:tickley/src/api/api.dart';
-import 'package:tickley/src/model/task.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:tickley/src/bloc/missions/mission_cubit.dart';
+import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/utils/utils.dart';
 
-class TaskDetailModal extends StatefulWidget {
-  Task task;
+class MissionDetailModal extends StatefulWidget {
+  Mission mission;
   int userId;
   bool isCompleted;
   Function setIsCompleted;
 
-  TaskDetailModal(
+  MissionDetailModal(
       {Key? key,
-      required this.task,
+      required this.mission,
       required this.userId,
       required this.setIsCompleted,
       required this.isCompleted})
       : super(key: key);
 
-  TaskDetailModalState createState() => TaskDetailModalState();
+  MissionDetailModalState createState() => MissionDetailModalState();
 }
 
-class TaskDetailModalState extends State<TaskDetailModal> {
+class MissionDetailModalState extends State<MissionDetailModal> {
   Utils utils = new Utils();
   final _normalFont = const TextStyle(fontSize: 15.0);
 
@@ -38,14 +40,14 @@ class TaskDetailModalState extends State<TaskDetailModal> {
             children: <Widget>[
               Container(height: 20),
               Text(
-                  utils.convertStringToUnicode(widget.task.emoji) +
-                      widget.task.label,
+                  utils.convertStringToUnicode(widget.mission.emoji) +
+                      widget.mission.label,
                   style: _biggerFont),
               Divider(),
               Container(
                 height: 110,
                 margin: EdgeInsets.only(top: 20),
-                child: Text(widget.task.description, style: _normalFont),
+                child: Text(widget.mission.description, style: _normalFont),
               ),
               Material(
                   color: Colors.white,
@@ -55,21 +57,16 @@ class TaskDetailModalState extends State<TaskDetailModal> {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     onTap: () async {
                       if (!widget.isCompleted) {
-                        int result = await postTaskOperation(
-                            widget.userId, widget.task.id);
-                        if (result == 200) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text('환경 보호 성공! ' +
-                                  widget.task.point.toString() +
-                                  '점 을 얻었어요.')));
+                        BlocProvider.of<MissionCubit>(context)
+                            .postMissionCompleted(
+                                widget.userId, widget.mission.id);
 
-                          widget.setIsCompleted();
-                          Navigator.pop(context);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Error')),
-                          );
-                        }
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('환경 보호 성공! ' +
+                                widget.mission.point.toString() +
+                                '점 을 얻었어요.')));
+
+                        Navigator.pop(context);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('환경 보호에 동참해주셔서 감사합니다\u{1F603}')));

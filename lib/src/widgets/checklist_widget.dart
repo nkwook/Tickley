@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:tickley/src/api/api.dart';
-import 'package:tickley/src/model/task.dart';
+import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'task_detail_modal.dart';
+import 'mission_detail_modal.dart';
 
-class ChecklistWidget extends StatefulWidget {
-  Task task;
+class FavoriteMissionListWidget extends StatefulWidget {
+  Mission mission;
   int userId;
   bool isCompleted;
-  bool isTodayTask;
 
-  ChecklistWidget(
-      {Key? key,
-      required this.task,
-      required this.userId,
-      required this.isCompleted,
-      required this.isTodayTask})
-      : super(key: key);
+  FavoriteMissionListWidget({
+    Key? key,
+    required this.mission,
+    required this.userId,
+    required this.isCompleted,
+  }) : super(key: key);
 
   @override
-  ChecklistWidgetState createState() => ChecklistWidgetState();
+  FavoriteMissionListWidgetState createState() =>
+      FavoriteMissionListWidgetState();
 }
 
-class ChecklistWidgetState extends State<ChecklistWidget> {
+class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
   final _biggerFont = const TextStyle(fontSize: 19.0);
   Utils utils = new Utils();
   bool isCompleted = false;
@@ -63,8 +61,8 @@ class ChecklistWidgetState extends State<ChecklistWidget> {
                   showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return TaskDetailModal(
-                            task: widget.task,
+                        return MissionDetailModal(
+                            mission: widget.mission,
                             userId: widget.userId,
                             isCompleted: isCompleted,
                             setIsCompleted: setIsCompleted);
@@ -79,26 +77,11 @@ class ChecklistWidgetState extends State<ChecklistWidget> {
                     ),
                     // boxShadow:
                     padding: const EdgeInsets.all(8),
-                    child: widget.isTodayTask
-                        ? Center(
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                Text(
-                                  utils.convertStringToUnicode(
-                                          widget.task.emoji) +
-                                      widget.task.label,
-                                  style: _biggerFont,
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text('<추천>',
-                                    style: TextStyle(color: Colors.orange))
-                              ]))
-                        : Text(
-                            utils.convertStringToUnicode(widget.task.emoji) +
-                                widget.task.label,
-                            style: _biggerFont,
-                            textAlign: TextAlign.center,
-                          )))));
+                    child: Text(
+                      utils.convertStringToUnicode(widget.mission.emoji) +
+                          widget.mission.label,
+                      style: _biggerFont,
+                      textAlign: TextAlign.center,
+                    )))));
   }
 }

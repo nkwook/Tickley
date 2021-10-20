@@ -1,33 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:tickley/src/api/api.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tickley/src/bloc/favorite_missions/favorite_mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
-import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'task_detail_modal.dart';
 
-class TaskWidget extends StatefulWidget {
-  Mission task;
+class MissionWidget extends StatefulWidget {
+  Mission mission;
   int userId;
   bool isFavorite;
-  List<Task> favoriteTasks;
-  Function(int) updateFavoriteTasks;
-  Function updateToday;
 
-  TaskWidget(
-      {Key? key,
-      required this.task,
-      required this.userId,
-      required this.isFavorite,
-      required this.favoriteTasks,
-      required this.updateFavoriteTasks,
-      required this.updateToday})
-      : super(key: key);
+  MissionWidget({
+    Key? key,
+    required this.mission,
+    required this.userId,
+    required this.isFavorite,
+  }) : super(key: key);
 
   @override
-  TaskWidgetState createState() => TaskWidgetState();
+  MissionWidgetState createState() => MissionWidgetState();
 }
 
-class TaskWidgetState extends State<TaskWidget> {
+class MissionWidgetState extends State<MissionWidget> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   Utils utils = new Utils();
   bool isFavorite = false;
@@ -56,40 +49,37 @@ class TaskWidgetState extends State<TaskWidget> {
               borderRadius: BorderRadius.all(Radius.circular(20)),
               onTap: () {
                 if (!isFavorite) {
-                  postFavoriteTask(widget.userId, widget.task.id);
+                  BlocProvider.of<FavoriteMissionCubit>(context)
+                      .addFavoriteMission(widget.userId, widget.mission.id);
                   setState(() {
                     clicked = true;
                     isFavorite = true;
                   });
-                  widget.updateFavoriteTasks(widget.userId);
-                  widget.updateToday();
+                  //need to check status
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('체크리스트에 추가되었습니다.')));
                 } else {
-                  // TODO: add delete
-                  deleteFavoriteTask(widget.userId, widget.task.id);
+                  BlocProvider.of<FavoriteMissionCubit>(context)
+                      .deleteFavoriteMission(widget.userId, widget.mission.id);
+
                   setState(() {
                     clicked = true;
                     isFavorite = false;
                   });
-                  widget.updateFavoriteTasks(widget.userId);
-                  widget.updateToday();
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('체크리스트에서 삭제되었습니다.')));
                 }
               },
               child: Container(
-                  // width: 300.0,
                   decoration: BoxDecoration(
                     color: isFavorite ? Colors.grey : Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     border: Border.all(color: Colors.black),
                   ),
-                  // boxShadow:
                   padding: const EdgeInsets.all(8),
                   child: Text(
-                    utils.convertStringToUnicode(widget.task.emoji) +
-                        widget.task.label,
+                    utils.convertStringToUnicode(widget.mission.emoji) +
+                        widget.mission.label,
                     style: _biggerFont,
                     textAlign: TextAlign.center,
                   )),

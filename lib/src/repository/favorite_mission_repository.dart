@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 import 'package:tickley/src/model/mission/mission.dart';
@@ -14,6 +16,40 @@ class FavoriteMissionRepository {
       return utils.parseMissions(response.body);
     } else {
       throw Exception('Failed to load favorite missions');
+    }
+  }
+
+  Future<int> addFavoriteMission(int id, int taskId) async {
+    final response = await http.post(
+      Uri.parse(BASE_URL + 'user/' + id.toString() + '/markTask'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, int>{'taskId': taskId}),
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to load all tasks');
+    }
+  }
+
+/* ### `POST api/user/:id/unmarkTask`   :id에 해당하는 유저가 task를 즐겨찾기에서 삭제
+- body : {taskId }*/
+  Future<int> deleteFavoriteMission(int id, int taskId) async {
+    final response = await http.post(
+      Uri.parse(BASE_URL + 'user/' + id.toString() + '/unmarkTask'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, int>{'taskId': taskId}),
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to load all tasks');
     }
   }
 }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tickley/src/model/tUser/tUser.dart';
 import 'screens/home_screen.dart';
 import 'screens/mission_list_screen.dart';
 import 'package:tickley/src/screens/my_page_screen.dart';
 
 class BottomNavigator extends StatefulWidget {
+  TUser tUser;
+  BottomNavigator({Key? key, required this.tUser}) : super(key: key);
+
   BottomNavigatorState createState() => BottomNavigatorState();
 }
 
@@ -21,7 +25,7 @@ class BottomNavigatorState extends State<BottomNavigator> {
   Widget build(BuildContext context) {
     List<Widget> _widgetOptions = [
       HomeScreen(),
-      MissionListScreen(),
+      MissionListScreen(tUser: widget.tUser),
       MyPage(),
     ];
 

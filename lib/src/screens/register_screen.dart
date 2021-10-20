@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/api/api.dart';
+import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
 import '../bottom_navigator.dart';
 
 class Register extends StatefulWidget {
@@ -72,7 +74,11 @@ class RegisterState extends State<Register> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => BottomNavigator()));
+                                      builder: (context) => BottomNavigator(
+                                          tUser: BlocProvider.of<TUserCubit>(
+                                                  context)
+                                              .state
+                                              .tUserState)));
                             }
                           },
                           child: Center(child: const Text('Login')),

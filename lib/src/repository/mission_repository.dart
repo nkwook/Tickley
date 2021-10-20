@@ -20,6 +20,23 @@ class MissionRepository {
     }
   }
 
+  Future<int> postMissionCompleted(int userId, int taskId) async {
+    final response = await http.post(
+      Uri.parse(BASE_URL + 'user/' + userId.toString() + '/completeTask'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, int>{
+        'taskId': taskId,
+      }),
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return json.decode(response.body)["status"];
+    } else {
+      throw Exception('Failed to load all tasks');
+    }
+  }
   // Future<List<Task>> fetchTodayTasks(int userId) async {
   //   final queryParameters = {'userId': userId.toString()};
   //   String queryString = Uri(queryParameters: queryParameters).query;
@@ -32,22 +49,5 @@ class MissionRepository {
   //     throw Exception('Failed to load all tasks');
   //   }
   // }
-  // Future<int> postTaskOperation(int userId, int taskId) async {
-  // final response = await http.post(
-  //   Uri.parse(baseUrl + 'user/' + userId.toString() + '/completeTask'),
-  //   headers: <String, String>{
-  //     'Content-Type': 'application/json; charset=UTF-8',
-  //   },
-  //   body: jsonEncode(<String, int>{
-  //     'taskId': taskId,
-  //   }),
-  // );
-  // print(response.body);
-  // if (response.statusCode == 200) {
-  //   return json.decode(response.body)["status"];
-  // } else {
-  //   throw Exception('Failed to load all tasks');
-  // }
-// }
 
 }

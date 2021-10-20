@@ -21,4 +21,27 @@ class FavoriteMissionCubit extends Cubit<FavoriteMissionState> {
       emit(Error(message: e.toString()));
     }
   }
+
+  addFavoriteMission(int userId, int missionId) async {
+    try {
+      final resp = await this.repository.addFavoriteMission(userId, missionId);
+      print(resp);
+
+      emit(Loaded(missions: []));
+    } catch (e) {
+      emit(Error(message: e.toString()));
+    }
+  }
+
+  deleteFavoriteMission(int userId, int missionId) async {
+    try {
+      final resp =
+          await this.repository.deleteFavoriteMission(userId, missionId);
+      print(resp);
+
+      emit(Loaded(missions: []));
+    } catch (e) {
+      emit(Error(message: e.toString()));
+    }
+  }
 }

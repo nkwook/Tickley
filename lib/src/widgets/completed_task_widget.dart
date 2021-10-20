@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/model/task.dart';
 import 'package:tickley/src/model/task_completed.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'task_detail_modal.dart';
+import 'mission_detail_modal.dart';
 
 class CompletedTaskWidget extends StatefulWidget {
   TaskCompleted task;
