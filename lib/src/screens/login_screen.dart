@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
 import 'package:tickley/src/bloc/tUser/tUser_state.dart';
-import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/screens/register_screen.dart';
 import 'package:tickley/src/utils/authentication.dart';
@@ -62,58 +60,61 @@ class LoginScreenState extends State<LoginScreen> {
     return Material(
         elevation: 3,
         color: Colors.white,
-        child: InkWell(
-            onTap: () async {
-              setState(() {
-                _isSigningIn = true;
-              });
-              User? user =
-                  await Authentication.signInWithGoogle(context: context);
-              if (user != null) {
-                try {
-                  // TUser tUser = await userLogin(user.uid);
-                  BlocProvider.of<TUserCubit>(context).userLogin();
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('로그인 되었습니다')),
-                  );
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BottomNavigator(
-                              tUser: BlocProvider.of<TUserCubit>(context)
-                                  .state
-                                  .tUserState)));
-                  setState(() {
-                    _isSigningIn = false;
-                  });
-                } on Exception catch (exception) {
-                  print(exception);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Register(user: user)));
-                } catch (error) {
-                  print(error);
-                }
-
+        child: BlocListener<TUserCubit, TUserState>(
+            listener: (context, state) {
+              if (state is Loaded) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('로그인 되었습니다')),
+                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            BottomNavigator(tUser: state.tUser)));
                 setState(() {
                   _isSigningIn = false;
                 });
               }
             },
-            child: Container(
-              width: 250,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Image(
-                  image: AssetImage('assets/google_logo.png'),
-                  width: 50,
-                  height: 50,
-                ),
-                Text('Sign In with Google')
-              ]),
-            )));
+            child: InkWell(
+                onTap: () async {
+                  setState(() {
+                    _isSigningIn = true;
+                  });
+                  User? user =
+                      await Authentication.signInWithGoogle(context: context);
+                  if (user != null) {
+                    try {
+                      BlocProvider.of<TUserCubit>(context).userLogin();
+                    } on Exception catch (exception) {
+                      print(exception);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Register(user: user)));
+                    } catch (error) {
+                      print(error);
+                    }
+
+                    setState(() {
+                      _isSigningIn = false;
+                    });
+                  }
+                },
+                child: Container(
+                  width: 250,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image(
+                          image: AssetImage('assets/google_logo.png'),
+                          width: 50,
+                          height: 50,
+                        ),
+                        Text('Sign In with Google')
+                      ]),
+                ))));
   }
 }

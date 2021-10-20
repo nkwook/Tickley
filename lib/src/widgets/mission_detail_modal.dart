@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tickley/src/bloc/favorite_missions/favorite_mission_cubit.dart';
 
 import 'package:tickley/src/bloc/missions/mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
@@ -57,7 +58,7 @@ class MissionDetailModalState extends State<MissionDetailModal> {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     onTap: () async {
                       if (!widget.isCompleted) {
-                        BlocProvider.of<MissionCubit>(context)
+                        BlocProvider.of<FavoriteMissionCubit>(context)
                             .postMissionCompleted(
                                 widget.userId, widget.mission.id);
 

@@ -21,29 +21,4 @@ class MissionCubit extends Cubit<MissionState> {
       emit(Error(message: e.toString()));
     }
   }
-
-  postMissionCompleted(int userId, int missionId) async {
-    try {
-      if (state is Loaded) {
-        var parsedState = (state as Loaded);
-        List<Mission> mList = parsedState.missions;
-
-        for (Mission m in mList) {
-          if (m.id == missionId) {
-            Mission mm = m.copyWith(completed: true);
-            m = mm;
-          }
-        }
-
-        // emit(Loaded(missions: mList));
-        final resp =
-            await this.repository.postMissionCompleted(userId, missionId);
-        print(resp);
-        print(mList.toString());
-        emit(Loaded(missions: []));
-      }
-    } catch (e) {
-      emit(Error(message: e.toString()));
-    }
-  }
 }

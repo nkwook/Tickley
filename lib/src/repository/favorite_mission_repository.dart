@@ -52,4 +52,22 @@ class FavoriteMissionRepository {
       throw Exception('Failed to load all tasks');
     }
   }
+
+  Future<int> postMissionCompleted(int userId, int taskId) async {
+    final response = await http.post(
+      Uri.parse(BASE_URL + 'user/' + userId.toString() + '/completeTask'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, int>{
+        'taskId': taskId,
+      }),
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      return json.decode(response.body)["status"];
+    } else {
+      throw Exception('Failed to load all tasks');
+    }
+  }
 }

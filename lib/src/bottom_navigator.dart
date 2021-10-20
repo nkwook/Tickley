@@ -19,6 +19,7 @@ class BottomNavigatorState extends State<BottomNavigator> {
   @override
   void initState() {
     super.initState();
+    print(widget.tUser);
   }
 
   @override
