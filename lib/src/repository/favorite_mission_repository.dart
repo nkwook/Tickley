@@ -27,7 +27,6 @@ class FavoriteMissionRepository {
       },
       body: jsonEncode(<String, int>{'taskId': taskId}),
     );
-    print(response.body);
     if (response.statusCode == 200) {
       return response.statusCode;
     } else {
@@ -45,7 +44,6 @@ class FavoriteMissionRepository {
       },
       body: jsonEncode(<String, int>{'taskId': taskId}),
     );
-    print(response.body);
     if (response.statusCode == 200) {
       return response.statusCode;
     } else {
@@ -63,7 +61,6 @@ class FavoriteMissionRepository {
         'taskId': taskId,
       }),
     );
-    print(response.body);
     if (response.statusCode == 200) {
       return json.decode(response.body)["status"];
     } else {

@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 @immutable
-abstract class TUserState extends Equatable {
-  late TUserState _tUserState;
+abstract class AuthState extends Equatable {
+  late AuthState _tUserState;
   get tUserState => _tUserState;
 }
 
-class Empty extends TUserState {
+class Empty extends AuthState {
   @override
   List<Object> get props => [];
 }
 
-class Loading extends TUserState {
+class Loading extends AuthState {
   @override
   List<Object> get props => [];
 }
 
-class Error extends TUserState {
+class Error extends AuthState {
   final String message;
 
   Error({
@@ -29,7 +29,7 @@ class Error extends TUserState {
   List<Object> get props => [this.message];
 }
 
-class Loaded extends TUserState {
+class Loaded extends AuthState {
   final TUser tUser;
 
   Loaded({

@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/bloc/missions/mission_state.dart';
-import 'package:tickley/src/model/mission/mission.dart';
+import 'package:tickley/src/bloc/mission/mission_state.dart';
 import 'package:tickley/src/repository/mission_repository.dart';
 
 class MissionCubit extends Cubit<MissionState> {

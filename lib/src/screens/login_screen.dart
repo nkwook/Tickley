@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
-import 'package:tickley/src/bloc/tUser/tUser_state.dart';
+import 'package:tickley/src/bloc/auth/auth_cubit.dart';
+import 'package:tickley/src/bloc/auth/auth_state.dart';
 
 import 'package:tickley/src/screens/register_screen.dart';
 import 'package:tickley/src/utils/authentication.dart';
@@ -26,22 +26,24 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TUserCubit, TUserState>(builder: (_, state) {
+    return BlocBuilder<AuthCubit, AuthState>(builder: (_, state) {
       return _loginScreen();
     });
   }
 
   Widget _loginScreen() {
-    return Center(
-      child: Column(
-        children: <Widget>[
-          _appLogo(),
-          widget.initLoad || _isSigningIn
-              ? CustomCircularProgressIndicator()
-              : _loginButton(),
-        ],
-      ),
-    );
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            children: <Widget>[
+              _appLogo(),
+              widget.initLoad || _isSigningIn
+                  ? CustomCircularProgressIndicator()
+                  : _loginButton(),
+            ],
+          ),
+        ));
   }
 
   Widget _appLogo() {
@@ -60,7 +62,7 @@ class LoginScreenState extends State<LoginScreen> {
     return Material(
         elevation: 3,
         color: Colors.white,
-        child: BlocListener<TUserCubit, TUserState>(
+        child: BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is Loaded) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -85,13 +87,14 @@ class LoginScreenState extends State<LoginScreen> {
                       await Authentication.signInWithGoogle(context: context);
                   if (user != null) {
                     try {
-                      BlocProvider.of<TUserCubit>(context).userLogin();
+                      BlocProvider.of<AuthCubit>(context).userLogin();
                     } on Exception catch (exception) {
                       print(exception);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Register(user: user)));
+                              builder: (context) =>
+                                  RegisterScreen(user: user)));
                     } catch (error) {
                       print(error);
                     }

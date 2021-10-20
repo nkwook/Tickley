@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/category/category_cubit.dart';
 import 'package:tickley/src/bloc/category/category_state.dart';
 import 'package:tickley/src/model/category/category.dart';
-import 'package:tickley/src/repository/category_repository.dart';
+import 'package:tickley/src/model/mission/mission.dart';
+
 import 'package:tickley/src/utils/widget_functions.dart';
 
-import '../widgets/main_task_widget.dart';
+import '../widgets/main_mission_widget.dart';
 
-import '../model/task.dart';
 import '../api/api.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,24 +19,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(
-          create: (_) => CategoryCubit(repository: CategoryRepository()))
-    ], child: HomeWidget());
-  }
-}
-
-class HomeWidget extends StatefulWidget {
-  _HomeWidgetState createState() => _HomeWidgetState();
-}
-
-class _HomeWidgetState extends State<HomeWidget> {
   late Future<List<Category>> categories;
   int userId = 1; //temp
-  late List<Task> tasks = [];
-  late List<List<Task>> tasksList = [];
+  late List<Mission> missions = [];
+  late List<List<Mission>> missionsList = [];
   late List<int> points = [];
 
   final List<String> imageList = [
@@ -49,9 +35,11 @@ class _HomeWidgetState extends State<HomeWidget> {
   void initState() {
     super.initState();
     BlocProvider.of<CategoryCubit>(context).fetchCategories();
+    // 변경될 여지가 많아서 mission fetch 부분 리팩토링하지 않았음.
+
     for (var i = 1; i <= 4; i++) {
       //categories 4개로 고정
-      updateTasks(i); // category별로 task 업뎃
+      updateMissions(i); // category별로 task 업뎃
     }
     // print("taskList >>>---");
     // print(tasksList);
@@ -60,17 +48,16 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   //Category별로 task 업뎃
-  void updateTasks(int id) async {
-    List<Task> t = await fetchTasksByCategory(id);
+  void updateMissions(int id) async {
+    List<Mission> t = await fetchMissionsByCategory(id);
     int globalPoint = await fetchCategoryPointSum(id);
-    print(globalPoint);
+    // print(globalPoint);
     setState(() {
       //tasks = t;
-      tasksList.add(t);
-      //points.add(globalPoint);
-      print("taskList >>>");
-      print(t);
-      print("global point >>>");
+      missionsList.add(t);
+      // print("taskList >>>");
+      // print(t);
+      // print("global point >>>");
       //print(globalPoint);
     });
   }
@@ -89,34 +76,18 @@ class _HomeWidgetState extends State<HomeWidget> {
             child: CategorySlider(
           categories: state.categories,
           currentCategory: 0,
-          tasksList: tasksList,
+          missionsList: missionsList,
         ));
       }
       return Container();
     });
   }
 }
-//     categories != null
-//         ? FutureBuilder<List<Category>>(
-//             future: categories,
-//             builder: (context, snapshot) {
-//               return SingleChildScrollView(
-//                   child: snapshot.hasData
-//                       ? CategorySlider(
-//                           categories: snapshot.data!,
-//                           currentCategory: 0,
-//                           tasksList: tasksList,
-//                         )
-//                       : Center(child: CustomCircularProgressIndicator()));
-//             })
-//         : Container(child: CustomCircularProgressIndicator());
-//   }
-// }
 
 class CategorySlider extends StatelessWidget {
   final List<Category> categories;
   int currentCategory = 0;
-  final List<List<Task>> tasksList;
+  final List<List<Mission>> missionsList;
 
   final List<List<String>> titleList = [
     ["다같이 전구를", "시간 끈 것과 같아요!"], //전기
@@ -142,12 +113,12 @@ class CategorySlider extends StatelessWidget {
       {Key? key,
       required this.categories,
       required this.currentCategory,
-      required this.tasksList})
+      required this.missionsList})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print(categories);
+    // print(categories);
     final double height = MediaQuery.of(context).size.height;
     return CarouselSlider(
         options: CarouselOptions(
@@ -186,35 +157,35 @@ class CategorySlider extends StatelessWidget {
                         child: Image.asset(illustList[e.id - 1])),
                     Container(
                         margin: EdgeInsets.all(20),
-                        child: TaskList2(tasks: tasksList[e.id - 1])),
+                        child: MissionList2(missions: missionsList[e.id - 1])),
                   ]),
                 ])))
             .toList());
   }
 }
 
-class TaskList2 extends StatefulWidget {
-  final List<Task> tasks;
+class MissionList2 extends StatefulWidget {
+  final List<Mission> missions;
 
-  TaskList2({Key? key, required this.tasks}) : super(key: key);
-  TaskListState2 createState() => TaskListState2();
+  MissionList2({Key? key, required this.missions}) : super(key: key);
+  MissionListState2 createState() => MissionListState2();
 }
 
-class TaskListState2 extends State<TaskList2> {
+class MissionListState2 extends State<MissionList2> {
   @override
   Widget build(BuildContext context) {
-    print(widget.tasks.length);
+    // print(widget.missions.length);
     return ListView.separated(
       separatorBuilder: (context, index) {
         return Container(height: 10);
       },
       shrinkWrap: true,
-      itemCount: widget.tasks.length,
+      itemCount: widget.missions.length,
       itemBuilder: (context, index) {
         // return Text("Td");
-        return index == widget.tasks.length
+        return index == widget.missions.length
             ? Container(height: 1)
-            : MainTaskWidget(task: widget.tasks[index]);
+            : MainMissionWidget(mission: widget.missions[index]);
       },
     );
   }

@@ -43,13 +43,13 @@ class MissionListScreenState extends State<MissionListScreen> {
               '오늘의 미션',
               style: _biggerBoldFont,
             )),
-        _todayTask(),
-        _taskSelectNavigateButton(),
+        _favoriteMission(),
+        _missionSelectNavigateButton(),
       ],
     ))));
   }
 
-  Widget _todayTask() {
+  Widget _favoriteMission() {
     return Container(
       margin: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -89,7 +89,7 @@ class MissionListScreenState extends State<MissionListScreen> {
     );
   }
 
-  Widget _taskSelectNavigateButton() {
+  Widget _missionSelectNavigateButton() {
     return (Container(
         child: Column(children: [
       Material(

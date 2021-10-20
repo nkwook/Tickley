@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tickley/src/model/task.dart';
-import 'package:tickley/src/model/task_completed.dart';
+import 'package:tickley/src/model/completed_mission/completed_mission.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'mission_detail_modal.dart';
 
-class CompletedTaskWidget extends StatefulWidget {
-  TaskCompleted task;
+class CompletedMissionWidget extends StatefulWidget {
+  CompletedMission mission;
   int userId;
 
-  CompletedTaskWidget({Key? key, required this.task, required this.userId})
+  CompletedMissionWidget(
+      {Key? key, required this.mission, required this.userId})
       : super(key: key);
 
   @override
-  TaskWidgetState createState() => TaskWidgetState();
+  CompletedMissionWidgetState createState() => CompletedMissionWidgetState();
 }
 
-class TaskWidgetState extends State<CompletedTaskWidget> {
+class CompletedMissionWidgetState extends State<CompletedMissionWidget> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   Utils utils = new Utils();
 
@@ -36,7 +35,6 @@ class TaskWidgetState extends State<CompletedTaskWidget> {
               //       });
               // },
               child: Container(
-                  // width: 300.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     border: Border.all(color: Colors.black),
@@ -44,8 +42,8 @@ class TaskWidgetState extends State<CompletedTaskWidget> {
                   // boxShadow:
                   padding: const EdgeInsets.all(8),
                   child: Text(
-                    utils.convertStringToUnicode(widget.task.emoji) +
-                        widget.task.label,
+                    utils.convertStringToUnicode(widget.mission.emoji) +
+                        widget.mission.label,
                     style: _biggerFont,
                     textAlign: TextAlign.center,
                   )),

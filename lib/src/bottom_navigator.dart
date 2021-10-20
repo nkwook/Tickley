@@ -19,7 +19,6 @@ class BottomNavigatorState extends State<BottomNavigator> {
   @override
   void initState() {
     super.initState();
-    print(widget.tUser);
   }
 
   @override
@@ -27,7 +26,7 @@ class BottomNavigatorState extends State<BottomNavigator> {
     List<Widget> _widgetOptions = [
       HomeScreen(),
       MissionListScreen(tUser: widget.tUser),
-      MyPage(),
+      MyPageScreen(tUser: widget.tUser),
     ];
 
     void onTabTapped(int index) {

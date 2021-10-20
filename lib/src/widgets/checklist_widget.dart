@@ -39,7 +39,6 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
     setState(() {
       isCompleted = widget.isCompleted;
     });
-    // print(widget.favoriteTasks);
   }
 
   @override

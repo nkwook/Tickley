@@ -1,96 +1,82 @@
 import 'dart:ui';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tickley/src/api/api.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:tickley/src/bloc/completed_mission/completed_mission_cubit.dart';
+import 'package:tickley/src/bloc/completed_mission/completed_mission_state.dart'
+    as cs;
+import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
+import 'package:tickley/src/bloc/tUser/tUser_state.dart' as ts;
+import 'package:tickley/src/model/completed_mission/completed_mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/utils/authentication.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 
-import 'package:tickley/src/model/task_completed.dart';
-import 'package:tickley/src/widgets/completed_task_widget.dart';
+import 'package:tickley/src/widgets/completed_mission_widget.dart';
 
-class MyPage extends StatefulWidget {
+class MyPageScreen extends StatefulWidget {
+  TUser tUser;
+  MyPageScreen({Key? key, required this.tUser}) : super(key: key);
+
   @override
-  State<StatefulWidget> createState() => _MyPageState();
+  State<StatefulWidget> createState() => _MyPageScreenState();
 }
 
-class _MyPageState extends State<MyPage> {
-  Future<TUser>? userData;
-  late List<TaskCompleted> tasks = [];
-  late List<TaskCompleted> userTasks = [];
+class _MyPageScreenState extends State<MyPageScreen> {
   final myPageListLabel = ['내 성취 보러가기', '프로필 설정', '알림 설정'];
-  int userId = 1; //temp
-
-  _updateUser() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      try {
-        TUser tUser = await userLogin(user.uid);
-        if (tUser.accessToken == user.uid) {
-          int id = tUser.id;
-          setState(() {
-            userId = id;
-          });
-          getUser(id);
-          updateUserTasks(id);
-        }
-      } catch (error) {}
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    _updateUser();
-    // getUser(userId); // to remove
-    // updateUserTasks(userId); //to remove
-  }
-
-  void updateUserTasks(int id) async {
-    List<TaskCompleted> t = await fetchCompletedTasksByUser(id);
-    print("몇번 불려" + t.length.toString());
-    setState(() {
-      userTasks = t;
-    });
-  }
-
-  void getUser(int id) async {
-    Future<TUser> u = fetchUserData(id);
-    setState(() {
-      userData = u;
-    });
+    BlocProvider.of<CompletedMissionCubit>(context)
+        .fetchCompletedMissionsByUser(widget.tUser.id);
+    // to get points
+    BlocProvider.of<TUserCubit>(context).fetchUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return userData != null
-        ? SingleChildScrollView(
-            child: Container(
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-            child: Column(
-              children: [
-                FutureBuilder<TUser>(
-                    future: userData,
-                    builder: (context, snapshot) {
-                      return snapshot.hasData
-                          ? charByPoint(snapshot.data!)
-                          : Container(
-                              height: 100,
-                              child: CustomCircularProgressIndicator());
-                    }),
-                taskItemList(),
-                _logoutButtonTemp()
+    return SingleChildScrollView(
+        child: Container(
+      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+      child: Column(
+        children: [
+          BlocBuilder<TUserCubit, ts.TUserState>(builder: (_, state) {
+            if (state is ts.Empty) {
+              return CustomCircularProgressIndicator();
+            } else if (state is ts.Loading) {
+              return CustomCircularProgressIndicator();
+            } else if (state is ts.Error) {
+              return CustomCircularProgressIndicator();
+            } else if (state is ts.Loaded) {
+              return charByPoint(state.tUser);
+            }
+            return Container();
+          }),
+          BlocBuilder<CompletedMissionCubit, cs.CompletedMissionState>(
+              builder: (_, state) {
+            if (state is cs.Empty) {
+              return CustomCircularProgressIndicator();
+            } else if (state is cs.Loading) {
+              return CustomCircularProgressIndicator();
+            } else if (state is cs.Error) {
+              return CustomCircularProgressIndicator();
+            } else if (state is cs.Loaded) {
+              return missionItemList(state.missions, widget.tUser.id);
+            }
+            return Container();
+          }),
+          _logoutButtonTemp()
 // myPageList()
-              ],
-            ),
-          ))
-        : Container(height: 100, child: CustomCircularProgressIndicator());
+        ],
+      ),
+    ));
   }
 
   Widget _logoutButtonTemp() {
@@ -195,7 +181,7 @@ class _MyPageState extends State<MyPage> {
     );
   }
 
-  Widget taskItemList() {
+  Widget missionItemList(List<CompletedMission> completedMissions, int userId) {
     return Container(
         margin: EdgeInsets.only(top: 30),
         padding: EdgeInsets.all(10),
@@ -212,46 +198,46 @@ class _MyPageState extends State<MyPage> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            CompletedTaskList(tasks: userTasks, userId: userId),
+            CompletedMissionList(missions: completedMissions, userId: userId),
           ],
         ));
   }
 }
 
-class CompletedTaskList extends StatefulWidget {
-  final List<TaskCompleted> tasks;
+class CompletedMissionList extends StatefulWidget {
+  final List<CompletedMission> missions;
   int userId;
 
-  CompletedTaskList({Key? key, required this.tasks, required this.userId})
+  CompletedMissionList({Key? key, required this.missions, required this.userId})
       : super(key: key);
-  TaskListState createState() => TaskListState();
+  CompletedMissionListState createState() => CompletedMissionListState();
 }
 
-class TaskListState extends State<CompletedTaskList> {
-  String formatting(TaskCompleted task) {
-    var str = task.completedAt;
+class CompletedMissionListState extends State<CompletedMissionList> {
+  String formatting(CompletedMission mission) {
+    var str = mission.completedAt;
     var formattedDate = str.substring(0, 10);
-    print(formattedDate);
+    // print(formattedDate);
 
     return formattedDate;
   }
 
   @override
   Widget build(BuildContext context) {
-    print("길이" + widget.tasks.length.toString());
+    // print("길이" + widget.tasks.length.toString());
     return ListView.separated(
       separatorBuilder: (context, index) {
         return Container(height: 10);
       },
       shrinkWrap: true,
-      itemCount: widget.tasks.length,
+      itemCount: widget.missions.length,
       itemBuilder: (context, index) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CompletedTaskWidget(
-                task: widget.tasks[index], userId: widget.userId),
-            Text(formatting(widget.tasks[index]))
+            CompletedMissionWidget(
+                mission: widget.missions[index], userId: widget.userId),
+            Text(formatting(widget.missions[index]))
           ],
         );
       },

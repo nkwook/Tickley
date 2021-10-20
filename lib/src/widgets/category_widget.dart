@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/bloc/missions/mission_cubit.dart';
-import 'package:tickley/src/model/task.dart';
+import 'package:tickley/src/bloc/mission/mission_cubit.dart';
+
 import '../utils/utils.dart';
 
 class CategoryWidget extends StatefulWidget {

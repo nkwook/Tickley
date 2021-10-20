@@ -38,7 +38,7 @@ class FavoriteMissionCubit extends Cubit<FavoriteMissionState> {
     try {
       final resp =
           await this.repository.deleteFavoriteMission(userId, missionId);
-      print(resp);
+      // print(resp);
 
       emit(Loaded(missions: []));
     } catch (e) {
@@ -62,8 +62,8 @@ class FavoriteMissionCubit extends Cubit<FavoriteMissionState> {
         // emit(Loaded(missions: mList));
         final resp =
             await this.repository.postMissionCompleted(userId, missionId);
-        print(resp);
-        print(mList.toString());
+        // print(resp);
+        // print(mList.toString());
         emit(Loaded(missions: []));
       }
     } catch (e) {
