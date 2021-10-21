@@ -21,7 +21,6 @@ class TUserRepository {
         'accessToken': accessToken,
       }),
     );
-    // print(response.body);
     if (response.statusCode == 200) {
       return TUser.fromJson(json.decode(response.body)['data']);
     } else {

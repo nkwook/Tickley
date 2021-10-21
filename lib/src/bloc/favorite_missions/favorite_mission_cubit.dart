@@ -28,7 +28,7 @@ class FavoriteMissionCubit extends Cubit<FavoriteMissionState> {
       final resp = await this.repository.addFavoriteMission(userId, missionId);
       print(resp);
 
-      emit(Loaded(missions: []));
+      emit(Loaded(missions: resp));
     } catch (e) {
       emit(Error(message: e.toString()));
     }
@@ -38,9 +38,8 @@ class FavoriteMissionCubit extends Cubit<FavoriteMissionState> {
     try {
       final resp =
           await this.repository.deleteFavoriteMission(userId, missionId);
-      // print(resp);
 
-      emit(Loaded(missions: []));
+      emit(Loaded(missions: resp));
     } catch (e) {
       emit(Error(message: e.toString()));
     }
@@ -56,15 +55,14 @@ class FavoriteMissionCubit extends Cubit<FavoriteMissionState> {
           if (m.id == missionId) {
             Mission mm = m.copyWith(completed: true);
             m = mm;
+            print(m.completed);
           }
         }
-
-        // emit(Loaded(missions: mList));
+        emit(Loaded(missions: mList));
         final resp =
             await this.repository.postMissionCompleted(userId, missionId);
-        // print(resp);
-        // print(mList.toString());
-        emit(Loaded(missions: []));
+        final missions = resp;
+        emit(Loaded(missions: missions));
       }
     } catch (e) {
       emit(Error(message: e.toString()));

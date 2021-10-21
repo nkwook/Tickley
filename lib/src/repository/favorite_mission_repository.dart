@@ -19,7 +19,7 @@ class FavoriteMissionRepository {
     }
   }
 
-  Future<int> addFavoriteMission(int id, int taskId) async {
+  Future<List<Mission>> addFavoriteMission(int id, int taskId) async {
     final response = await http.post(
       Uri.parse(BASE_URL + 'user/' + id.toString() + '/markTask'),
       headers: <String, String>{
@@ -28,7 +28,7 @@ class FavoriteMissionRepository {
       body: jsonEncode(<String, int>{'taskId': taskId}),
     );
     if (response.statusCode == 200) {
-      return response.statusCode;
+      return utils.parseMissions(response.body);
     } else {
       throw Exception('Failed to load all tasks');
     }
@@ -36,7 +36,7 @@ class FavoriteMissionRepository {
 
 /* ### `POST api/user/:id/unmarkTask`   :id에 해당하는 유저가 task를 즐겨찾기에서 삭제
 - body : {taskId }*/
-  Future<int> deleteFavoriteMission(int id, int taskId) async {
+  Future<List<Mission>> deleteFavoriteMission(int id, int taskId) async {
     final response = await http.post(
       Uri.parse(BASE_URL + 'user/' + id.toString() + '/unmarkTask'),
       headers: <String, String>{
@@ -45,13 +45,13 @@ class FavoriteMissionRepository {
       body: jsonEncode(<String, int>{'taskId': taskId}),
     );
     if (response.statusCode == 200) {
-      return response.statusCode;
+      return utils.parseMissions(response.body);
     } else {
       throw Exception('Failed to load all tasks');
     }
   }
 
-  Future<int> postMissionCompleted(int userId, int taskId) async {
+  Future<List<Mission>> postMissionCompleted(int userId, int taskId) async {
     final response = await http.post(
       Uri.parse(BASE_URL + 'user/' + userId.toString() + '/completeTask'),
       headers: <String, String>{
@@ -62,7 +62,7 @@ class FavoriteMissionRepository {
       }),
     );
     if (response.statusCode == 200) {
-      return json.decode(response.body)["status"];
+      return utils.parseMissions(response.body);
     } else {
       throw Exception('Failed to load all tasks');
     }
