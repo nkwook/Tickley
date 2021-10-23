@@ -12,7 +12,7 @@ class BottomNavigator extends StatefulWidget {
 }
 
 class BottomNavigatorState extends State<BottomNavigator> {
-  String _title = '티끌 리스트';
+  // String _title = '티끌 리스트';
   int _currentIndex = 1;
   // const BottomNavigatorState({Key? key}) : super(key: key);
   // TabsState createState() => TabsState();
@@ -33,23 +33,23 @@ class BottomNavigatorState extends State<BottomNavigator> {
       //보류
       setState(() {
         _currentIndex = index;
-        switch (index) {
-          case 0:
-            {
-              _title = '우리는 지금';
-            }
-            break;
-          case 1:
-            {
-              _title = '티끌 리스트';
-            }
-            break;
-          case 2:
-            {
-              _title = '마이페이지';
-            }
-            break;
-        }
+        // switch (index) {
+        //   case 0:
+        //     {
+        //       _title = '우리는 지금';
+        //     }
+        //     break;
+        //   case 1:
+        //     {
+        //       _title = '티끌 리스트';
+        //     }
+        //     break;
+        //   case 2:
+        //     {
+        //       _title = '마이페이지';
+        //     }
+        //     break;
+        // }
       });
     }
 
@@ -57,11 +57,11 @@ class BottomNavigatorState extends State<BottomNavigator> {
         initialIndex: 1,
         length: 3,
         child: Scaffold(
-            appBar: AppBar(
-              title: Text(_title),
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-            ),
+            // appBar: AppBar(
+            //   title: Text(_title),
+            //   backgroundColor: Colors.white,
+            //   foregroundColor: Colors.black,
+            // ),
             bottomNavigationBar: TabBar(
               onTap: onTabTapped,
               tabs: <Widget>[
