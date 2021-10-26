@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
       final resp = await this.repository.userLogin(user.uid);
 
       final tUser = resp;
-      if (tUser == null) {
+      if (tUser.id == null) {
         emit(Register());
       } else {
         emit(Loaded(tUser: tUser));

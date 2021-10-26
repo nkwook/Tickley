@@ -76,7 +76,16 @@ class LoginScreenState extends State<LoginScreen> {
                 setState(() {
                   _isSigningIn = false;
                 });
-              }
+              } else if (state is Register) {}
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('회원가입을 진행해주세요')),
+              );
+
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegisterScreen()));
+              setState(() {
+                _isSigningIn = false;
+              });
             },
             child: InkWell(
                 onTap: () async {
