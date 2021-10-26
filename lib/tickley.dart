@@ -62,6 +62,7 @@ class TickleyState extends State<Tickley> {
   @override
   void initState() {
     BlocProvider.of<AuthCubit>(context).userLogin();
+    getUser();
   }
 
   getUser() async {
