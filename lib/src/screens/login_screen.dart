@@ -93,8 +93,8 @@ class LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  RegisterScreen(user: user)));
+                              builder: (context) => RegisterScreen()));
+                      // RegisterScreen(user: user)));
                     } catch (error) {
                       print(error);
                     }

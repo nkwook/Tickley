@@ -58,18 +58,9 @@ class Tickley extends StatefulWidget {
 }
 
 class TickleyState extends State<Tickley> {
-  late User user;
   @override
   void initState() {
     BlocProvider.of<AuthCubit>(context).userLogin();
-    getUser();
-  }
-
-  getUser() async {
-    User? user = await Authentication.signInWithGoogle(context: context);
-    setState(() {
-      user = user;
-    });
   }
 
   @override
@@ -78,10 +69,7 @@ class TickleyState extends State<Tickley> {
       if (state is Empty) {
         return LoginScreen(initLoad: false);
       } else if (state is Error) {
-        if (user != null) {
-          return RegisterScreen(user: user);
-        }
-        return LoginScreen(initLoad: false);
+        return RegisterScreen();
       } else if (state is Loading) {
         return LoginScreen(initLoad: true);
       } else if (state is Loaded) {

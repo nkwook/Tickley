@@ -5,14 +5,15 @@ import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/bloc/auth/auth_cubit.dart';
 import 'package:tickley/src/bloc/auth/auth_state.dart';
 import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
+import 'package:tickley/src/utils/authentication.dart';
 import '../bottom_navigator.dart';
 
 class RegisterScreen extends StatefulWidget {
-  User user;
-  RegisterScreen({
-    Key? key,
-    required this.user,
-  }) : super(key: key);
+  // User user;
+  RegisterScreen({Key? key
+      // required this.user,
+      })
+      : super(key: key);
   RegisterScreenState createState() => RegisterScreenState();
 }
 
@@ -64,17 +65,20 @@ class RegisterScreenState extends State<RegisterScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: ElevatedButton(
                               onPressed: () async {
+                                User? user =
+                                    await Authentication.signInWithGoogle(
+                                        context: context);
+
                                 if (_formKey.currentState!.validate()) {
                                   try {
                                     String? url = 'https://picsum.photos/200';
-                                    if (widget.user.photoURL != null) {
-                                      url = widget.user.photoURL;
+                                    if (user!.photoURL != null) {
+                                      url = user.photoURL;
                                     }
                                     //not debugged + need to consider err case
 
                                     BlocProvider.of<AuthCubit>(context)
-                                        .createUser(
-                                            nickname, widget.user.uid, url!);
+                                        .createUser(nickname, user.uid, url!);
                                   } catch (error) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
