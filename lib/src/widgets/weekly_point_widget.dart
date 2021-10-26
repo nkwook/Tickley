@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tickley/src/model/mission/mission.dart';
+import 'package:tickley/src/model/completed_mission/completed_mission.dart';
+import 'package:tickley/src/utils/constants.dart';
+
 import 'package:tickley/src/utils/utils.dart';
 
 class WeeklyPointWidget extends StatefulWidget {
-  // Mission mission;
-  // int userId;
-  // bool isCompleted;
+  List<List<CompletedMission>> weeklyCompletedMission;
 
   WeeklyPointWidget({
     Key? key,
-    // required this.mission,
-    // required this.userId,
-    // required this.isCompleted,
+    required this.weeklyCompletedMission,
   }) : super(key: key);
 
   @override
@@ -77,7 +75,7 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                               itemBuilder: (context, index) {
                                 return Container(
                                     child: Column(children: [
-                                  Text("Mon"),
+                                  Text(WeekList[index]),
                                   Container(
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
@@ -92,7 +90,7 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                               separatorBuilder: (_, index) {
                                 return Container(width: 7);
                               },
-                              itemCount: 7)
+                              itemCount: widget.weeklyCompletedMission.length)
                           // ],
                           ),
                       // )

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/bloc/favorite_missions/favorite_mission_cubit.dart';
+import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 
-import 'package:tickley/src/bloc/mission/mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/utils/utils.dart';
 

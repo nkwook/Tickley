@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 const BASE_URL =
     'https://zgojtokt6f.execute-api.ap-northeast-2.amazonaws.com/dev/api/';
 
+const WeekList = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 const COLOR_BLACK = Color.fromRGBO(48, 47, 48, 1.0);
 const COLOR_GREY = Color.fromRGBO(141, 141, 141, 1.0);
 

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/bloc/favorite_missions/favorite_mission_state.dart';
+import 'package:tickley/src/bloc/favorite_mission/favorite_mission_state.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 
 import 'package:tickley/src/repository/favorite_mission_repository.dart';

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/repository/tUser_repository.dart';
+import 'package:tickley/src/utils/authentication.dart';
 
 import 'auth_state.dart';
 

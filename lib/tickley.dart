@@ -1,12 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/auth/auth_cubit.dart';
 import 'package:tickley/src/bloc/auth/auth_state.dart';
 import 'package:tickley/src/bloc/category/category_cubit.dart';
 import 'package:tickley/src/bloc/completed_mission/completed_mission_cubit.dart';
-import 'package:tickley/src/bloc/favorite_missions/favorite_mission_cubit.dart';
+import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/bloc/mission/mission_cubit.dart';
 import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
+import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_mission_cubit.dart';
 
 import 'package:tickley/src/repository/category_repository.dart';
 import 'package:tickley/src/repository/completed_mission_repository.dart';
@@ -14,6 +16,8 @@ import 'package:tickley/src/repository/favorite_mission_repository.dart';
 import 'package:tickley/src/repository/mission_repository.dart';
 import 'package:tickley/src/repository/tUser_repository.dart';
 import 'package:tickley/src/screens/login_screen.dart';
+import 'package:tickley/src/screens/register_screen.dart';
+import 'package:tickley/src/utils/authentication.dart';
 import 'src/bottom_navigator.dart';
 
 class TickleyApp extends StatelessWidget {
@@ -21,6 +25,7 @@ class TickleyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
+          //TODO: separate unrequired global blocproviders.
           BlocProvider(create: (_) => AuthCubit(repository: TUserRepository())),
           BlocProvider(
               create: (_) => TUserCubit(repository: TUserRepository())),
@@ -33,7 +38,10 @@ class TickleyApp extends StatelessWidget {
               create: (_) => MissionCubit(repository: MissionRepository())),
           BlocProvider(
               create: (_) => CompletedMissionCubit(
-                  repository: CompletedMissionRepository()))
+                  repository: CompletedMissionRepository())),
+          BlocProvider(
+              create: (_) => WeeklyCompletedMissionCubit(
+                  repository: CompletedMissionRepository())),
         ],
         child: MaterialApp(
             title: '티끌리',
@@ -50,9 +58,17 @@ class Tickley extends StatefulWidget {
 }
 
 class TickleyState extends State<Tickley> {
+  late User user;
   @override
   void initState() {
     BlocProvider.of<AuthCubit>(context).userLogin();
+  }
+
+  getUser() async {
+    User? user = await Authentication.signInWithGoogle(context: context);
+    setState(() {
+      user = user;
+    });
   }
 
   @override
@@ -61,6 +77,9 @@ class TickleyState extends State<Tickley> {
       if (state is Empty) {
         return LoginScreen(initLoad: false);
       } else if (state is Error) {
+        if (user != null) {
+          return RegisterScreen(user: user);
+        }
         return LoginScreen(initLoad: false);
       } else if (state is Loading) {
         return LoginScreen(initLoad: true);

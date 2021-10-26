@@ -22,18 +22,24 @@ class _$CompletedMissionTearOff {
   const _$CompletedMissionTearOff();
 
   _CompletedMission call(
-      {required String label,
+      {required String date,
+      required int week,
+      required String label,
       required String description,
       required int point,
       required int id,
       required String emoji,
+      required int completed,
       required String completedAt}) {
     return _CompletedMission(
+      date: date,
+      week: week,
       label: label,
       description: description,
       point: point,
       id: id,
       emoji: emoji,
+      completed: completed,
       completedAt: completedAt,
     );
   }
@@ -48,11 +54,14 @@ const $CompletedMission = _$CompletedMissionTearOff();
 
 /// @nodoc
 mixin _$CompletedMission {
+  String get date => throw _privateConstructorUsedError;
+  int get week => throw _privateConstructorUsedError;
   String get label => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   int get point => throw _privateConstructorUsedError;
   int get id => throw _privateConstructorUsedError;
   String get emoji => throw _privateConstructorUsedError;
+  int get completed => throw _privateConstructorUsedError;
   String get completedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -67,11 +76,14 @@ abstract class $CompletedMissionCopyWith<$Res> {
           CompletedMission value, $Res Function(CompletedMission) then) =
       _$CompletedMissionCopyWithImpl<$Res>;
   $Res call(
-      {String label,
+      {String date,
+      int week,
+      String label,
       String description,
       int point,
       int id,
       String emoji,
+      int completed,
       String completedAt});
 }
 
@@ -86,14 +98,25 @@ class _$CompletedMissionCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? date = freezed,
+    Object? week = freezed,
     Object? label = freezed,
     Object? description = freezed,
     Object? point = freezed,
     Object? id = freezed,
     Object? emoji = freezed,
+    Object? completed = freezed,
     Object? completedAt = freezed,
   }) {
     return _then(_value.copyWith(
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      week: week == freezed
+          ? _value.week
+          : week // ignore: cast_nullable_to_non_nullable
+              as int,
       label: label == freezed
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
@@ -114,6 +137,10 @@ class _$CompletedMissionCopyWithImpl<$Res>
           ? _value.emoji
           : emoji // ignore: cast_nullable_to_non_nullable
               as String,
+      completed: completed == freezed
+          ? _value.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as int,
       completedAt: completedAt == freezed
           ? _value.completedAt
           : completedAt // ignore: cast_nullable_to_non_nullable
@@ -130,11 +157,14 @@ abstract class _$CompletedMissionCopyWith<$Res>
       __$CompletedMissionCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String label,
+      {String date,
+      int week,
+      String label,
       String description,
       int point,
       int id,
       String emoji,
+      int completed,
       String completedAt});
 }
 
@@ -151,14 +181,25 @@ class __$CompletedMissionCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? date = freezed,
+    Object? week = freezed,
     Object? label = freezed,
     Object? description = freezed,
     Object? point = freezed,
     Object? id = freezed,
     Object? emoji = freezed,
+    Object? completed = freezed,
     Object? completedAt = freezed,
   }) {
     return _then(_CompletedMission(
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      week: week == freezed
+          ? _value.week
+          : week // ignore: cast_nullable_to_non_nullable
+              as int,
       label: label == freezed
           ? _value.label
           : label // ignore: cast_nullable_to_non_nullable
@@ -179,6 +220,10 @@ class __$CompletedMissionCopyWithImpl<$Res>
           ? _value.emoji
           : emoji // ignore: cast_nullable_to_non_nullable
               as String,
+      completed: completed == freezed
+          ? _value.completed
+          : completed // ignore: cast_nullable_to_non_nullable
+              as int,
       completedAt: completedAt == freezed
           ? _value.completedAt
           : completedAt // ignore: cast_nullable_to_non_nullable
@@ -191,16 +236,23 @@ class __$CompletedMissionCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_CompletedMission implements _CompletedMission {
   _$_CompletedMission(
-      {required this.label,
+      {required this.date,
+      required this.week,
+      required this.label,
       required this.description,
       required this.point,
       required this.id,
       required this.emoji,
+      required this.completed,
       required this.completedAt});
 
   factory _$_CompletedMission.fromJson(Map<String, dynamic> json) =>
       _$$_CompletedMissionFromJson(json);
 
+  @override
+  final String date;
+  @override
+  final int week;
   @override
   final String label;
   @override
@@ -212,11 +264,13 @@ class _$_CompletedMission implements _CompletedMission {
   @override
   final String emoji;
   @override
+  final int completed;
+  @override
   final String completedAt;
 
   @override
   String toString() {
-    return 'CompletedMission(label: $label, description: $description, point: $point, id: $id, emoji: $emoji, completedAt: $completedAt)';
+    return 'CompletedMission(date: $date, week: $week, label: $label, description: $description, point: $point, id: $id, emoji: $emoji, completed: $completed, completedAt: $completedAt)';
   }
 
   @override
@@ -224,19 +278,23 @@ class _$_CompletedMission implements _CompletedMission {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _CompletedMission &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.week, week) || other.week == week) &&
             (identical(other.label, label) || other.label == label) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.point, point) || other.point == point) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.emoji, emoji) || other.emoji == emoji) &&
+            (identical(other.completed, completed) ||
+                other.completed == completed) &&
             (identical(other.completedAt, completedAt) ||
                 other.completedAt == completedAt));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, label, description, point, id, emoji, completedAt);
+  int get hashCode => Object.hash(runtimeType, date, week, label, description,
+      point, id, emoji, completed, completedAt);
 
   @JsonKey(ignore: true)
   @override
@@ -251,16 +309,23 @@ class _$_CompletedMission implements _CompletedMission {
 
 abstract class _CompletedMission implements CompletedMission {
   factory _CompletedMission(
-      {required String label,
+      {required String date,
+      required int week,
+      required String label,
       required String description,
       required int point,
       required int id,
       required String emoji,
+      required int completed,
       required String completedAt}) = _$_CompletedMission;
 
   factory _CompletedMission.fromJson(Map<String, dynamic> json) =
       _$_CompletedMission.fromJson;
 
+  @override
+  String get date;
+  @override
+  int get week;
   @override
   String get label;
   @override
@@ -271,6 +336,8 @@ abstract class _CompletedMission implements CompletedMission {
   int get id;
   @override
   String get emoji;
+  @override
+  int get completed;
   @override
   String get completedAt;
   @override

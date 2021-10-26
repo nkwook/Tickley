@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/bloc/favorite_missions/favorite_mission_cubit.dart';
-import 'package:tickley/src/bloc/favorite_missions/favorite_mission_state.dart';
+import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
+import 'package:tickley/src/bloc/favorite_mission/favorite_mission_state.dart';
+import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_mission_cubit.dart';
+import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_mission_state.dart'
+    as ws;
 
 import 'package:tickley/src/model/tUser/tUser.dart';
 import 'package:tickley/src/widgets/favorite_mission_list_widget.dart';
@@ -28,6 +31,9 @@ class MissionListScreenState extends State<MissionListScreen> {
 
     BlocProvider.of<FavoriteMissionCubit>(context)
         .fetchFavoriteMissionsByUser(widget.tUser.id);
+
+    BlocProvider.of<WeeklyCompletedMissionCubit>(context)
+        .fetchWeeklyCompletedMissionsByUser(widget.tUser.id);
   }
 
   @override
@@ -64,7 +70,20 @@ class MissionListScreenState extends State<MissionListScreen> {
                   'Eco Mission',
                   style: _biggerBoldFont,
                 )),
-            WeeklyPointWidget(),
+            BlocBuilder<WeeklyCompletedMissionCubit,
+                ws.WeeklyCompletedMissionState>(builder: (_, state) {
+              if (state is ws.Empty) {
+                return CustomCircularProgressIndicator();
+              } else if (state is ws.Loading) {
+                return CustomCircularProgressIndicator();
+              } else if (state is ws.Error) {
+                return CustomCircularProgressIndicator();
+              } else if (state is ws.Loaded) {
+                return WeeklyPointWidget(
+                    weeklyCompletedMission: state.missions);
+              }
+              return Container();
+            }),
             _favoriteMission(),
           ],
         ))));
@@ -103,40 +122,5 @@ class MissionListScreenState extends State<MissionListScreen> {
         })
       ],
     );
-  }
-
-  Widget _missionSelectNavigateButton() {
-    return FloatingActionButton(
-      elevation: 2,
-      onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    MissionSelectScreen(tUser: widget.tUser)));
-      },
-    );
-    // return (Container(
-    //     child: Column(children: [
-    //   Material(
-    //     borderRadius: BorderRadius.all(Radius.circular(10)),
-    //     elevation: 2,
-    //     color: Colors.white,
-    //     child: InkWell(
-    //         borderRadius: BorderRadius.all(Radius.circular(10)),
-    //         onTap: () {
-    //           Navigator.push(
-    //               context,
-    //               MaterialPageRoute(
-    //                   builder: (context) =>
-    //                       MissionSelectScreen(tUser: widget.tUser)));
-    //         },
-    //         child: Container(
-    //           margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-    //           padding: const EdgeInsets.all(8),
-    //           child: Text('활동 추가하기', style: _biggerBoldFont),
-    //         )),
-    //   ),
-    // ])));
   }
 }
