@@ -69,9 +69,11 @@ class TickleyState extends State<Tickley> {
       if (state is Empty) {
         return LoginScreen(initLoad: false);
       } else if (state is Error) {
-        return RegisterScreen();
+        return LoginScreen(initLoad: true);
       } else if (state is Loading) {
         return LoginScreen(initLoad: true);
+      } else if (state is Register) {
+        return RegisterScreen();
       } else if (state is Loaded) {
         return BottomNavigator(tUser: state.tUser);
       }

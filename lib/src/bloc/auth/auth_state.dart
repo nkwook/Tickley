@@ -18,6 +18,11 @@ class Loading extends AuthState {
   List<Object> get props => [];
 }
 
+class Register extends AuthState {
+  @override
+  List<Object> get props => [];
+}
+
 class Error extends AuthState {
   final String message;
 

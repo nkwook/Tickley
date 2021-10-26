@@ -6,12 +6,7 @@ import 'package:tickley/src/model/tUser/tUser.dart';
 import 'package:tickley/src/utils/constants.dart';
 
 class TUserRepository {
-  Future<TUser> userLogin() async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    if (user == null) throw Exception('Failed to login');
-    String accessToken = user.uid;
-
+  Future<TUser> userLogin(String accessToken) async {
     final response = await http.post(
       Uri.parse(BASE_URL + 'user/login'),
       headers: <String, String>{

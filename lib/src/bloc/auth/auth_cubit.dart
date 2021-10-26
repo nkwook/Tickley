@@ -13,12 +13,19 @@ class AuthCubit extends Cubit<AuthState> {
   userLogin() async {
     try {
       emit(Loading());
+      User? user = FirebaseAuth.instance.currentUser;
 
-      final resp = await this.repository.userLogin();
+      if (user == null) throw Exception('Failed to login');
+      // String accessToken = user.uid;
+
+      final resp = await this.repository.userLogin(user.uid);
 
       final tUser = resp;
-
-      emit(Loaded(tUser: tUser));
+      if (tUser == null) {
+        emit(Register());
+      } else {
+        emit(Loaded(tUser: tUser));
+      }
     } catch (e) {
       emit(Error(message: e.toString()));
     }
@@ -27,10 +34,14 @@ class AuthCubit extends Cubit<AuthState> {
   createUser(String nickname, String accessToken, String profileImage) async {
     try {
       emit(Loading());
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) throw Exception('Failed to login');
+
       final status =
           await this.repository.createUser(nickname, accessToken, profileImage);
       print(status);
-      final resp = await this.repository.userLogin();
+      final resp = await this.repository.userLogin(user.uid);
       final tUser = resp;
 
       emit(Loaded(tUser: tUser));
