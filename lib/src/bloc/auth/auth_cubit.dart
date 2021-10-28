@@ -10,24 +10,17 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.repository}) : super(Empty());
 
-  userLogin() async {
+  userLogin(String uid) async {
     try {
       emit(Loading());
-      User? user = FirebaseAuth.instance.currentUser;
 
-      if (user == null) throw Exception('Failed to login');
-      // String accessToken = user.uid;
-
-      final resp = await this.repository.userLogin(user.uid);
+      final resp = await this.repository.userLogin(uid);
 
       final tUser = resp;
-      if (tUser.id == null) {
-        emit(Register());
-      } else {
-        emit(Loaded(tUser: tUser));
-      }
+      emit(Loaded(tUser: tUser));
+      // }
     } catch (e) {
-      emit(Error(message: e.toString()));
+      emit(Register());
     }
   }
 

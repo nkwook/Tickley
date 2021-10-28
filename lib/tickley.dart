@@ -60,7 +60,11 @@ class Tickley extends StatefulWidget {
 class TickleyState extends State<Tickley> {
   @override
   void initState() {
-    BlocProvider.of<AuthCubit>(context).userLogin();
+    User? user = FirebaseAuth.instance.currentUser;
+    print(user);
+    if (user != null) {
+      BlocProvider.of<AuthCubit>(context).userLogin(user.uid);
+    }
   }
 
   @override

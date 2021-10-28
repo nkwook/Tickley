@@ -92,21 +92,11 @@ class LoginScreenState extends State<LoginScreen> {
                   setState(() {
                     _isSigningIn = true;
                   });
-                  // User? user =
-                  //     await Authentication.signInWithGoogle(context: context);
+                  User? user =
+                      await Authentication.signInWithGoogle(context: context);
 
-                  // if (user != null) {
-                  try {
-                    BlocProvider.of<AuthCubit>(context).userLogin();
-                  } on Exception catch (exception) {
-                    print(exception);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RegisterScreen()));
-                    // RegisterScreen(user: user)));
-                  } catch (error) {
-                    print(error);
+                  if (user != null) {
+                    BlocProvider.of<AuthCubit>(context).userLogin(user.uid);
                   }
 
                   setState(() {
