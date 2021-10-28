@@ -29,6 +29,9 @@ class CategoryWidgetState extends State<CategoryWidget> {
   Utils utils = new Utils();
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
+  final _biggerWhiteFont = const TextStyle(
+      fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w500);
+
   // String s='0x'+widget.emoji;
   @override
   Widget build(BuildContext context) {
@@ -46,13 +49,15 @@ class CategoryWidgetState extends State<CategoryWidget> {
         decoration: BoxDecoration(
             // boxShadow:
             color: widget.currentCategory == widget.id
-                ? Colors.green[50]
+                ? Colors.green[500]
                 : Colors.white,
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.all(Radius.circular(20))),
         padding: const EdgeInsets.all(8),
         child: Text(utils.convertStringToUnicode(widget.emoji) + widget.label,
-            style: _biggerFont),
+            style: widget.currentCategory == widget.id
+                ? _biggerWhiteFont
+                : _biggerFont),
       ),
     )));
   }

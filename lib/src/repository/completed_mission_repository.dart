@@ -21,7 +21,6 @@ class CompletedMissionRepository {
     final response = await http.get(Uri.parse(
         BASE_URL + 'user/' + id.toString() + '/completedTask/weekly'));
 
-    print(response.body.toString());
     if (response.statusCode == 200) {
       return parseWeeklyCompletedMissions(response.body);
     } else {
@@ -40,20 +39,15 @@ class CompletedMissionRepository {
   List<List<CompletedMission>> parseWeeklyCompletedMissions(
       String responseBody) {
     final parsed = json.decode(responseBody);
-    // List<List<CompletedMission>> m = List<List<CompletedMission>>.from(
-    //     parsed["data"].map((jsonArr) => CompletedMission.fromJson(jsonArr)));
-    //     .toList()
-    //     .map((json) => CompletedMission.fromJson()
-    //     )
-    // }));
     List<List<CompletedMission>> missionList = [];
 
-    parsed["data"].foreach((jsonArr) => {
-          print(jsonArr)
-          // jsonArr.toList().foreach((json) => json)
-        });
-
-    // print(missionList.toString());
+    for (var jsonArr in parsed["data"]) {
+      List<CompletedMission> temp = [];
+      for (var json in jsonArr) {
+        temp.add(CompletedMission.fromJson(json));
+      }
+      missionList.add(temp);
+    }
     return missionList;
   }
 }

@@ -24,6 +24,7 @@ class MissionListScreenState extends State<MissionListScreen> {
   final _biggerFont = const TextStyle(fontSize: 18.0);
   final _biggerBoldFont =
       const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700);
+  // final GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class MissionListScreenState extends State<MissionListScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add, size: 30),
+            backgroundColor: Colors.green,
             elevation: 2,
             onPressed: () {
               showModalBottomSheet(
@@ -52,15 +54,9 @@ class MissionListScreenState extends State<MissionListScreen> {
                     return MissionSelectScreen(tUser: widget.tUser);
                   });
             }),
-        //   Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (context) =>
-        //               MissionSelectScreen(tUser: widget.tUser)));
-        // }),
-        body: Center(
-            child: SingleChildScrollView(
-                child: Column(
+        body: SingleChildScrollView(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
                 alignment: Alignment.centerLeft,
@@ -86,7 +82,7 @@ class MissionListScreenState extends State<MissionListScreen> {
             }),
             _favoriteMission(),
           ],
-        ))));
+        )));
   }
 
   Widget _favoriteMission() {

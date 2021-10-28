@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/api/api.dart';
 import 'package:tickley/src/bloc/auth/auth_cubit.dart';
 import 'package:tickley/src/bloc/auth/auth_state.dart';
-import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
 import 'package:tickley/src/utils/authentication.dart';
 import '../bottom_navigator.dart';
 

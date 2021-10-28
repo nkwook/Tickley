@@ -23,6 +23,17 @@ class Utils {
     return content;
   }
 
+  List<DateTime> getDateList() {
+    var dateTime = new DateTime.now();
+
+    List<DateTime> dateList = [];
+    final startDate = dateTime.subtract(Duration(days: dateTime.weekday - 1));
+    for (int i = 0; i < 7; i++) {
+      dateList.add(startDate.add(Duration(days: i)));
+    }
+    return dateList;
+  }
+
   List<Mission> parseMissions(String responseBody) {
     final parsed = json.decode(responseBody);
     List<Mission> missionList = List<Mission>.from(

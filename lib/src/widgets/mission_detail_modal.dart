@@ -33,7 +33,7 @@ class MissionDetailModalState extends State<MissionDetailModal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 300,
+        height: 320,
         child: Center(
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center,
@@ -45,8 +45,8 @@ class MissionDetailModalState extends State<MissionDetailModal> {
                   style: _biggerFont),
               Divider(),
               Container(
-                height: 110,
-                margin: EdgeInsets.only(top: 20),
+                height: 150,
+                padding: EdgeInsets.all(15),
                 child: Text(widget.mission.description, style: _normalFont),
               ),
               Material(

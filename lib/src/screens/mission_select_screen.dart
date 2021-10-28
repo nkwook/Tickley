@@ -11,11 +11,13 @@ import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/utils/widget_functions.dart';
-import '../widgets/mission_widget.dart';
+import 'package:tickley/src/widgets/new_mission_form_widget.dart';
+import '../widgets/add_mission_list_widget.dart';
 import '../widgets/category_widget.dart';
 
 class MissionSelectScreen extends StatefulWidget {
   TUser tUser;
+
   MissionSelectScreen({Key? key, required this.tUser}) : super(key: key);
   @override
   MissionSelectScreenState createState() => MissionSelectScreenState();
@@ -45,14 +47,15 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
   @override
   Widget build(BuildContext context) {
     return
-        //  Scaffold(
+        // Scaffold(
         //     appBar: AppBar(
         //       title: Text('Add Mission'),
         //       backgroundColor: Colors.white,
         //       foregroundColor: Colors.black,
         //     ),
-        //     body:
+        // body:
         Container(
+            height: MediaQuery.of(context).size.height * 0.8,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -87,11 +90,13 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
                               updateCurrentCategory: updateCurrentCategory,
                               currentCategory: currentCategory)),
                       Divider(),
-                      Container(
-                          margin: EdgeInsets.only(top: 5, bottom: 15),
-                          child: Text('관심있는 활동들을 눌러서 확인해보세요',
-                              textAlign: TextAlign.center,
-                              style: _biggerGreyFont)),
+                      currentCategory == -1
+                          ? NewMissionFormWidget()
+                          : Container(
+                              margin: EdgeInsets.only(top: 5, bottom: 15),
+                              child: Text('관심있는 활동들을 미션 목록에 추가해보세요',
+                                  textAlign: TextAlign.center,
+                                  style: _biggerGreyFont)),
                       BlocBuilder<MissionCubit, ms.MissionState>(
                           builder: (_, missionState) {
                         if (missionState is ms.Empty) {
@@ -105,8 +110,7 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
                               child: CustomCircularProgressIndicator());
                         } else if (missionState is ms.Loaded) {
                           return Container(
-                              height: MediaQuery.of(context).size.height * 0.55,
-                              width: 200,
+                              width: 350,
                               child: MissionList(
                                 missions: missionState.missions,
                                 userId: widget.tUser.id,
@@ -133,6 +137,7 @@ class CategoryList extends StatelessWidget {
       required this.updateCurrentCategory,
       required this.currentCategory})
       : super(key: key);
+  // categories.add(Category(label: '새 미션 추가', emoji: '\u{1F606}', id: -1));
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +200,7 @@ class MissionListState extends State<MissionList> {
               }
             }
 
-            return MissionWidget(
+            return AddMissionListWidget(
               mission: widget.missions[index],
               userId: widget.userId,
               isFavorite: isFavorite,
