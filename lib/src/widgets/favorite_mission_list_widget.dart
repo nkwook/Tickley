@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
+import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
 import 'mission_detail_modal.dart';
 
@@ -23,7 +24,6 @@ class FavoriteMissionListWidget extends StatefulWidget {
 }
 
 class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
-  final _biggerFont = const TextStyle(fontSize: 19.0);
   Utils utils = new Utils();
   bool isCompleted = false;
   bool isClicked = false;
@@ -83,7 +83,7 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
                           Text(
                             utils.convertStringToUnicode(widget.mission.emoji) +
                                 widget.mission.label,
-                            style: _biggerFont,
+                            style: BiggerFont,
                             textAlign: TextAlign.center,
                           ),
                           InkWell(

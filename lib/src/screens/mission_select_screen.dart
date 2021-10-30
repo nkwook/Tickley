@@ -9,6 +9,7 @@ import 'package:tickley/src/bloc/mission/mission_state.dart' as ms;
 import 'package:tickley/src/model/category/category.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
+import 'package:tickley/src/utils/constants.dart';
 
 import 'package:tickley/src/utils/widget_functions.dart';
 import 'package:tickley/src/widgets/new_mission_form_widget.dart';
@@ -26,10 +27,6 @@ class MissionSelectScreen extends StatefulWidget {
 class MissionSelectScreenState extends State<MissionSelectScreen> {
   int userId = 0;
   int currentCategory = 1;
-
-  final _biggerGreyFont = const TextStyle(fontSize: 18.0, color: Colors.grey);
-  final _biggerFont =
-      const TextStyle(fontSize: 22.0, fontWeight: FontWeight.w700);
 
   @override
   void initState() {
@@ -78,7 +75,7 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
                         margin: EdgeInsets.symmetric(vertical: 15),
                         child: Text(
                           "Add Mission",
-                          style: _biggerFont,
+                          style: BiggerFont,
                         ),
                       ),
                       Container(
@@ -96,7 +93,7 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
                               margin: EdgeInsets.only(top: 5, bottom: 15),
                               child: Text('관심있는 활동들을 미션 목록에 추가해보세요',
                                   textAlign: TextAlign.center,
-                                  style: _biggerGreyFont)),
+                                  style: BiggerGreyFont)),
                       BlocBuilder<MissionCubit, ms.MissionState>(
                           builder: (_, missionState) {
                         if (missionState is ms.Empty) {

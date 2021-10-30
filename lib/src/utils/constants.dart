@@ -11,6 +11,14 @@ const COLOR_GREY = Color.fromRGBO(141, 141, 141, 1.0);
 const COLOR_WHITE = Colors.white;
 const COLOR_DARK_BLUE = Color.fromRGBO(20, 25, 45, 1.0);
 
+const BiggerFont = TextStyle(fontSize: 18.0);
+const BiggerBoldFont = TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700);
+const BiggerGreyFont = TextStyle(fontSize: 18.0, color: Colors.grey);
+const BiggerWhiteFont =
+    TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w500);
+const BiggerFont20 = const TextStyle(
+    fontSize: 20.0, color: Colors.black, fontWeight: FontWeight.bold);
+
 const TextTheme TEXT_THEME_DEFAULT = TextTheme(
     headline1: TextStyle(
         color: COLOR_BLACK, fontWeight: FontWeight.w700, fontSize: 26),

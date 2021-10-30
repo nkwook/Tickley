@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tickley/src/model/completed_mission/completed_mission.dart';
+import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
 
 class CompletedMissionWidget extends StatefulWidget {
@@ -15,7 +16,6 @@ class CompletedMissionWidget extends StatefulWidget {
 }
 
 class CompletedMissionWidgetState extends State<CompletedMissionWidget> {
-  final _biggerFont = const TextStyle(fontSize: 18.0);
   Utils utils = new Utils();
 
   @override
@@ -44,7 +44,7 @@ class CompletedMissionWidgetState extends State<CompletedMissionWidget> {
                   child: Text(
                     utils.convertStringToUnicode(widget.mission.emoji) +
                         widget.mission.label,
-                    style: _biggerFont,
+                    style: BiggerFont,
                     textAlign: TextAlign.center,
                   )),
             )));

@@ -7,6 +7,7 @@ import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_missi
     as ws;
 
 import 'package:tickley/src/model/tUser/tUser.dart';
+import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/widgets/favorite_mission_list_widget.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 import 'package:tickley/src/widgets/weekly_point_widget.dart';
@@ -21,11 +22,6 @@ class MissionListScreen extends StatefulWidget {
 }
 
 class MissionListScreenState extends State<MissionListScreen> {
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-  final _biggerBoldFont =
-      const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700);
-  // final GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
-
   @override
   void initState() {
     super.initState();
@@ -64,7 +60,7 @@ class MissionListScreenState extends State<MissionListScreen> {
                 padding: EdgeInsets.only(left: 25),
                 child: Text(
                   'Eco Mission',
-                  style: _biggerBoldFont,
+                  style: BiggerBoldFont,
                 )),
             BlocBuilder<WeeklyCompletedMissionCubit,
                 ws.WeeklyCompletedMissionState>(builder: (_, state) {

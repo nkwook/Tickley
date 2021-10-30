@@ -4,21 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/auth/auth_cubit.dart';
 import 'package:tickley/src/bloc/auth/auth_state.dart';
 import 'package:tickley/src/utils/authentication.dart';
+import 'package:tickley/src/utils/constants.dart';
 import '../bottom_navigator.dart';
 
 class RegisterScreen extends StatefulWidget {
-  // User user;
-  RegisterScreen({Key? key
-      // required this.user,
-      })
-      : super(key: key);
+  RegisterScreen({Key? key}) : super(key: key);
   RegisterScreenState createState() => RegisterScreenState();
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
   bool _isSigningIn = false;
   final _formKey = GlobalKey<FormState>();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
   String nickname = '';
 
   @override
@@ -48,7 +44,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text('환경 보호에 동참할 닉네임을 입력해주세요.', style: _biggerFont),
+                          Text('환경 보호에 동참할 닉네임을 입력해주세요.', style: BiggerFont),
                           TextFormField(
                             // The validator receives the text that the user has entered.
                             validator: (value) {

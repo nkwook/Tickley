@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tickley/src/utils/constants.dart';
 
 import '../utils/utils.dart';
 
@@ -11,7 +12,6 @@ class NewMissionFormWidget extends StatefulWidget {
 
 class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  final _biggerFont = const TextStyle(fontSize: 18.0);
   TextEditingController _controllerName = new TextEditingController();
   TextEditingController _controllerDescription = new TextEditingController();
   TextEditingController _controllerCategory = new TextEditingController();
@@ -28,8 +28,8 @@ class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
                 // mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('환경 보호 미션을 제안해주세요.', style: _biggerFont),
-                  Text('검토 후 반영됩니다:)', style: _biggerFont),
+                  Text('환경 보호 미션을 제안해주세요.', style: BiggerFont),
+                  Text('검토 후 반영됩니다:)', style: BiggerFont),
                   Container(height: 20),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -37,7 +37,7 @@ class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
                       children: [
                         Text(
                           '미션 이름: ',
-                          style: _biggerFont,
+                          style: BiggerFont,
                         ),
                         Container(
                             width: 180,
@@ -57,7 +57,7 @@ class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
                       children: [
                         Text(
                           '미션 카테고리: ',
-                          style: _biggerFont,
+                          style: BiggerFont,
                         ),
                         Container(
                             width: 180,
@@ -77,7 +77,7 @@ class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
                       children: [
                         Text(
                           '미션 설명: ',
-                          style: _biggerFont,
+                          style: BiggerFont,
                         ),
                         Container(
                             width: 180,
@@ -105,7 +105,7 @@ class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
                       child: Container(
                           alignment: Alignment.center,
                           width: 150,
-                          child: Text('제출하기', style: _biggerFont)),
+                          child: Text('제출하기', style: BiggerFont)),
                     ),
                   ),
                 ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/mission/mission_cubit.dart';
+import 'package:tickley/src/utils/constants.dart';
 
 import '../utils/utils.dart';
 
@@ -28,10 +29,6 @@ class CategoryWidgetState extends State<CategoryWidget> {
   // String e = '\\uD83D\\uDEAE';
   Utils utils = new Utils();
 
-  final _biggerFont = const TextStyle(fontSize: 18.0);
-  final _biggerWhiteFont = const TextStyle(
-      fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w500);
-
   // String s='0x'+widget.emoji;
   @override
   Widget build(BuildContext context) {
@@ -56,8 +53,8 @@ class CategoryWidgetState extends State<CategoryWidget> {
         padding: const EdgeInsets.all(8),
         child: Text(utils.convertStringToUnicode(widget.emoji) + widget.label,
             style: widget.currentCategory == widget.id
-                ? _biggerWhiteFont
-                : _biggerFont),
+                ? BiggerWhiteFont
+                : BiggerFont),
       ),
     )));
   }

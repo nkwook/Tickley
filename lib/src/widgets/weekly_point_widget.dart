@@ -19,8 +19,6 @@ class WeeklyPointWidget extends StatefulWidget {
 }
 
 class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
-  final _biggerFont =
-      const TextStyle(fontSize: 19.0, fontWeight: FontWeight.bold);
   Utils utils = new Utils();
   bool isCompleted = false;
   bool isClicked = false;
@@ -85,7 +83,7 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                           children: [
                             Text(
                               "Weekly Point",
-                              style: _biggerFont,
+                              style: BiggerFont20,
                               textAlign: TextAlign.center,
                             ),
                             Text('\u{1F331} ' +

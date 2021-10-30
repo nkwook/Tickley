@@ -19,7 +19,6 @@ class MainMissionWidget extends StatefulWidget {
 }
 
 class MissionWidgetState2 extends State<MainMissionWidget> {
-  final _biggerFont = const TextStyle(fontSize: 18.0);
   Utils utils = new Utils();
   List<String> usersList = [];
 

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 
 import 'package:tickley/src/model/mission/mission.dart';
+import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
 
 class MissionDetailModal extends StatefulWidget {
@@ -26,10 +27,6 @@ class MissionDetailModalState extends State<MissionDetailModal> {
   Utils utils = new Utils();
   final _normalFont = const TextStyle(fontSize: 15.0);
 
-  final _biggerFont = const TextStyle(fontSize: 22.0);
-  final _biggerFont2 = const TextStyle(
-      fontSize: 20.0, color: Colors.black, fontWeight: FontWeight.bold);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +39,7 @@ class MissionDetailModalState extends State<MissionDetailModal> {
               Text(
                   utils.convertStringToUnicode(widget.mission.emoji) +
                       widget.mission.label,
-                  style: _biggerFont),
+                  style: BiggerFont),
               Divider(),
               Container(
                 height: 150,
@@ -83,12 +80,12 @@ class MissionDetailModalState extends State<MissionDetailModal> {
                         child: widget.isCompleted
                             ? Text(
                                 '완료한 활동\u{1F44D}',
-                                style: _biggerFont2,
+                                style: BiggerFont20,
                                 textAlign: TextAlign.center,
                               )
                             : Text(
                                 '완료하기\u{2705}',
-                                style: _biggerFont2,
+                                style: BiggerFont20,
                                 textAlign: TextAlign.center,
                               )),
                   ))
