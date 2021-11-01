@@ -7,6 +7,7 @@ import 'package:tickley/src/bloc/category/category_cubit.dart';
 import 'package:tickley/src/bloc/completed_mission/completed_mission_cubit.dart';
 import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/bloc/mission/mission_cubit.dart';
+import 'package:tickley/src/bloc/point/point_cubit.dart';
 import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
 import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_mission_cubit.dart';
 
@@ -14,6 +15,7 @@ import 'package:tickley/src/repository/category_repository.dart';
 import 'package:tickley/src/repository/completed_mission_repository.dart';
 import 'package:tickley/src/repository/favorite_mission_repository.dart';
 import 'package:tickley/src/repository/mission_repository.dart';
+import 'package:tickley/src/repository/point_repository.dart';
 import 'package:tickley/src/repository/tUser_repository.dart';
 import 'package:tickley/src/screens/login_screen.dart';
 import 'package:tickley/src/screens/register_screen.dart';
@@ -42,6 +44,7 @@ class TickleyApp extends StatelessWidget {
           BlocProvider(
               create: (_) => WeeklyCompletedMissionCubit(
                   repository: CompletedMissionRepository())),
+          BlocProvider(create: (_) => PointCubit(repository: PointRepository()))
         ],
         child: MaterialApp(
             title: '티끌리',
@@ -61,7 +64,6 @@ class TickleyState extends State<Tickley> {
   @override
   void initState() {
     User? user = FirebaseAuth.instance.currentUser;
-    print(user);
     if (user != null) {
       BlocProvider.of<AuthCubit>(context).userLogin(user.uid);
     }

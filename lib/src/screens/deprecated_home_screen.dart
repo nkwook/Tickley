@@ -3,15 +3,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/category/category_cubit.dart';
-import 'package:tickley/src/bloc/category/category_state.dart';
+
 import 'package:tickley/src/model/category/category.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 
-import 'package:tickley/src/utils/widget_functions.dart';
-
-import '../widgets/main_mission_widget.dart';
-
-import '../api/api.dart';
+import '../widgets/most_active_mission_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -37,8 +33,8 @@ class HomeScreenState extends State<HomeScreen> {
 
   //Category별로 task 업뎃
   void updateMissions(int id) async {
-    List<Mission> t = await fetchMissionsByCategory(id);
-    int globalPoint = await fetchCategoryPointSum(id);
+    // List<Mission> t = await fetchMissionsByCategory(id);
+    // int globalPoint = await fetchCategoryPointSum(id);
     // print(globalPoint);
     setState(() {
       //tasks = t;
@@ -157,7 +153,7 @@ class MissionListState2 extends State<MissionList2> {
         // return Text("Td");
         return index == widget.missions.length
             ? Container(height: 1)
-            : MainMissionWidget(mission: widget.missions[index]);
+            : MostActiveMissionWidget(mission: widget.missions[index]);
       },
     );
   }

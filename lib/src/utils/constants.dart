@@ -12,7 +12,8 @@ const COLOR_WHITE = Colors.white;
 const COLOR_DARK_BLUE = Color.fromRGBO(20, 25, 45, 1.0);
 
 const BiggerFont = TextStyle(fontSize: 18.0);
-const BiggerBoldFont = TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700);
+const BiggerBoldFont =
+    TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700, color: Colors.black);
 const BiggerGreyFont = TextStyle(fontSize: 18.0, color: Colors.grey);
 const BiggerWhiteFont =
     TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w500);

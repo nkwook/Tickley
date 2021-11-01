@@ -44,7 +44,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-      padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+      padding: EdgeInsets.symmetric(vertical: 70.0, horizontal: 16.0),
       child: Column(
         children: [
           BlocBuilder<TUserCubit, ts.TUserState>(builder: (_, state) {
@@ -217,7 +217,6 @@ class CompletedMissionListState extends State<CompletedMissionList> {
   String formatting(CompletedMission mission) {
     var str = mission.completedAt;
     var formattedDate = str.substring(0, 10);
-    // print(formattedDate);
 
     return formattedDate;
   }
@@ -232,14 +231,16 @@ class CompletedMissionListState extends State<CompletedMissionList> {
       shrinkWrap: true,
       itemCount: widget.missions.length,
       itemBuilder: (context, index) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CompletedMissionWidget(
-                mission: widget.missions[index], userId: widget.userId),
-            Text(formatting(widget.missions[index]))
-          ],
-        );
+        return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CompletedMissionWidget(
+                    mission: widget.missions[index], userId: widget.userId),
+                Text(formatting(widget.missions[index]))
+              ],
+            ));
       },
     );
   }
