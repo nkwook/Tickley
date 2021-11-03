@@ -17,20 +17,10 @@ class MostActiveMissionWidget extends StatefulWidget {
 
 class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
   Utils utils = new Utils();
-  List<String> usersList = [];
+  // List<String> usersList = [' '];
 
   @override
-  void initState() {
-    updateUsers_hard(widget.mission.id);
-  }
-
-  void updateUsers_hard(int id) async {
-    usersList.add('assets/1.png');
-    usersList.add('assets/2.png');
-    usersList.add('assets/3.png');
-    usersList.add('assets/4.png');
-    // usersList.add('assets/google_logo.png');
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
@@ -41,54 +31,68 @@ class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
             elevation: 3,
             shadowColor: Colors.grey,
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: RichText(
-                        text: TextSpan(
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                            children: <TextSpan>[
-                          TextSpan(
-                              text: widget.mission.label,
-                              style: TextStyle(color: Color(0xFFD6B589))),
-                          TextSpan(
-                              text: " 지금 " +
-                                  usersList.length.toString() +
-                                  "명이 참여했어요!",
-                              style: TextStyle(color: Colors.black))
-                        ]))),
-                Container(
-                  margin: EdgeInsets.only(bottom: 10, left: 10),
-                  height: 60,
-                  child: _userListView(),
-                )
-              ],
-            )));
+            child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                          text: TextSpan(
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              children: <TextSpan>[
+                            TextSpan(
+                                text: widget.mission.label,
+                                style: TextStyle(color: Colors.orangeAccent)),
+                            TextSpan(
+                                text: utils.convertStringToUnicode(
+                                    widget.mission.emoji)),
+                          ])),
+                      Row(children: [
+                        Icon(Icons.people, color: Colors.grey),
+                        Text("    " + 1000.toString() + "명이 참여했어요!",
+                            style: TextStyle(color: Colors.black))
+                      ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Flexible(
+                                flex: 1,
+                                child:
+                                    Icon(Icons.timelapse, color: Colors.grey)),
+                            Flexible(
+                                flex: 7,
+                                child: Container(
+                                  // margin: EdgeInsets.only(bottom: 10, left: 10),
+                                  child: _userListView(),
+                                ))
+                          ]),
+                    ]))));
   }
 
   Widget _userListView() {
     return ListView.separated(
       separatorBuilder: (context, index) {
-        return Container(width: 1);
+        return Container(height: 1);
       },
       // physics: ClampingScrollPhysics(),
       padding: EdgeInsets.only(top: 3.0),
 
-      scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemCount: usersList.length,
+      itemCount: 3,
       itemBuilder: (context, index) {
-        return index == usersList.length
-            ? Container(height: 1) // 개야매
-            : Container(
-                width: 65,
-                height: 65,
-                child: UserWidget(image: usersList[index]));
+        return Container(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("흥냐흥냐흥냐 님"),
+            Text("10분 전", style: TextStyle(color: Colors.grey))
+          ],
+        ));
       },
     );
   }

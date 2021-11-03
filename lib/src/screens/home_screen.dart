@@ -10,6 +10,7 @@ import 'package:tickley/src/bloc/point/point_state.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 import 'package:tickley/src/widgets/all_user_point_widget.dart';
+import 'package:tickley/src/widgets/category_chart_widget.dart';
 import 'package:tickley/src/widgets/most_active_mission_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  final sampleList = ["ㅇㅇ", "ㄴㄴ", "ㄹㄹ", "ㄱㄱ"];
+  final fixedList = [0, 1, 2];
   @override
   void initState() {
     super.initState();
@@ -50,12 +51,12 @@ class HomeScreenState extends State<HomeScreen> {
           }),
           Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(top: 30, bottom: 10),
+              margin: EdgeInsets.only(top: 30, bottom: 5),
               padding: EdgeInsets.only(left: 25),
               child: Column(children: [
                 Text(
-                  'Mostly Active Mission',
-                  style: BiggerFont20,
+                  '가장 인기있는 미션',
+                  style: BiggerFont22,
                 )
               ])),
           BlocBuilder<MissionCubit, ms.MissionState>(builder: (_, state) {
@@ -69,7 +70,7 @@ class HomeScreenState extends State<HomeScreen> {
               return CarouselSlider(
                   options: CarouselOptions(
                     enableInfiniteScroll: false,
-                    height: 180,
+                    height: 170,
                     viewportFraction: 1.0,
                     enlargeCenterPage: false,
                     autoPlay: true,
@@ -83,12 +84,13 @@ class HomeScreenState extends State<HomeScreen> {
           }),
           Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(top: 30, bottom: 10),
+              margin: EdgeInsets.only(top: 30, bottom: 0),
               padding: EdgeInsets.only(left: 25),
               child: Text(
-                'Category Active Graph',
-                style: BiggerFont20,
+                '카테고리별 저감량',
+                style: BiggerFont22,
               )),
+          CategoryChartWidget()
         ])));
   }
 }

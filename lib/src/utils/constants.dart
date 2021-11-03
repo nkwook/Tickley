@@ -19,6 +19,8 @@ const BiggerWhiteFont =
     TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w500);
 const BiggerFont20 = const TextStyle(
     fontSize: 20.0, color: Colors.black, fontWeight: FontWeight.bold);
+const BiggerFont22 = const TextStyle(
+    fontSize: 22.0, color: Colors.black, fontWeight: FontWeight.bold);
 
 const TextTheme TEXT_THEME_DEFAULT = TextTheme(
     headline1: TextStyle(
