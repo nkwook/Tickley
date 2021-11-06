@@ -82,7 +82,7 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Weekly Point",
+                              "주간 에코 포인트",
                               style: BiggerFont20,
                               textAlign: TextAlign.center,
                             ),

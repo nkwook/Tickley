@@ -1,5 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tickley/src/bloc/category/category_cubit.dart';
+import 'package:tickley/src/bloc/category/category_state.dart';
+import 'package:tickley/src/bloc/category_point/category_point_cubit.dart';
+import 'package:tickley/src/bloc/category_point/category_point_state.dart'
+    as cs;
 import 'package:tickley/src/utils/color_extension.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 
@@ -14,6 +20,24 @@ class CategoryChartWidget extends StatefulWidget {
 
 class CategoryChartWidgetState extends State<CategoryChartWidget> {
   int touchedIndex = -1;
+  final colorList = [
+    0xff0293ee,
+    0xfff8b250,
+    0xff845bef,
+    0xff13d38e,
+    0xff472a3e
+  ];
+  final textColorList = [0xff044d7c, 0xff90672d, 0xff4c3788, 0xff0c7f55];
+  // final percentageList=[]
+  final radiusList = [80.0, 65.0, 60.0, 70.0];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<CategoryCubit>(context).fetchCategories();
+    BlocProvider.of<CategoryPointCubit>(context).fetchCategoryPoints();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,152 +51,108 @@ class CategoryChartWidgetState extends State<CategoryChartWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
+                    flex: 8,
                     child: AspectRatio(
-                      aspectRatio: 1.1,
-                      child: PieChart(
-                        PieChartData(
-                            pieTouchData: PieTouchData(touchCallback:
-                                (FlTouchEvent event, pieTouchResponse) {
-                              setState(() {
-                                if (!event.isInterestedForInteractions ||
-                                    pieTouchResponse == null ||
-                                    pieTouchResponse.touchedSection == null) {
-                                  touchedIndex = -1;
-                                  return;
-                                }
-                                touchedIndex = pieTouchResponse
-                                    .touchedSection!.touchedSectionIndex;
-                              });
-                            }),
-                            startDegreeOffset: 180,
-                            borderData: FlBorderData(
-                              show: false,
-                            ),
-                            sectionsSpace: 1,
-                            centerSpaceRadius: 30,
-                            sections: showingSections()),
-                      ),
-                    ),
+                        aspectRatio: 1.1,
+                        child: BlocBuilder<CategoryPointCubit,
+                            cs.CategoryPointState>(builder: (context, state) {
+                          if (state is cs.Empty)
+                            return CustomCircularProgressIndicator();
+                          else if (state is cs.Loading)
+                            return CustomCircularProgressIndicator();
+                          else if (state is cs.Error)
+                            return CustomCircularProgressIndicator();
+                          else if (state is cs.Loaded) {
+                            return PieChart(
+                              PieChartData(
+                                  pieTouchData: PieTouchData(touchCallback:
+                                      (FlTouchEvent event, pieTouchResponse) {
+                                    setState(() {
+                                      if (!event.isInterestedForInteractions ||
+                                          pieTouchResponse == null ||
+                                          pieTouchResponse.touchedSection ==
+                                              null) {
+                                        touchedIndex = -1;
+                                        return;
+                                      }
+                                      touchedIndex = pieTouchResponse
+                                          .touchedSection!.touchedSectionIndex;
+                                    });
+                                  }),
+                                  startDegreeOffset: 180,
+                                  borderData: FlBorderData(
+                                    show: false,
+                                  ),
+                                  sectionsSpace: 1,
+                                  centerSpaceRadius: 30,
+                                  sections: showingSections(state.points)),
+                            );
+                          }
+                          return Container();
+                        })),
                   ),
-                  Column(
-                    // mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Indicator(
-                        color: const Color(0xff0293ee),
-                        text: 'One',
-                        isSquare: false,
-                        size: touchedIndex == 0 ? 18 : 16,
-                        textColor:
-                            touchedIndex == 0 ? Colors.black : Colors.grey,
-                      ),
-                      Indicator(
-                        color: const Color(0xfff8b250),
-                        text: 'Two',
-                        isSquare: false,
-                        size: touchedIndex == 1 ? 18 : 16,
-                        textColor:
-                            touchedIndex == 1 ? Colors.black : Colors.grey,
-                      ),
-                      Indicator(
-                        color: const Color(0xff845bef),
-                        text: 'Three',
-                        isSquare: false,
-                        size: touchedIndex == 2 ? 18 : 16,
-                        textColor:
-                            touchedIndex == 2 ? Colors.black : Colors.grey,
-                      ),
-                      Indicator(
-                        color: const Color(0xff13d38e),
-                        text: 'Four',
-                        isSquare: false,
-                        size: touchedIndex == 3 ? 18 : 16,
-                        textColor:
-                            touchedIndex == 3 ? Colors.black : Colors.grey,
-                      ),
-                    ],
-                  ),
+                  BlocBuilder<CategoryCubit, CategoryState>(
+                      builder: (_, state) {
+                    if (state is Empty)
+                      return CustomCircularProgressIndicator();
+                    else if (state is Loading)
+                      return CustomCircularProgressIndicator();
+                    else if (state is Error) {
+                      return CustomCircularProgressIndicator();
+                    } else if (state is Loaded) {
+                      return Expanded(
+                          flex: 3,
+                          child: Container(
+                              height: 200,
+                              width: 120,
+                              child: ListView.separated(
+                                  itemBuilder: (context, index) {
+                                    return index == state.categories.length - 1
+                                        ? Container()
+                                        : Indicator(
+                                            color: Color(colorList[index]),
+                                            text: state.categories[index].label,
+                                            isSquare: false,
+                                            size:
+                                                touchedIndex == index ? 16 : 14,
+                                            textColor: touchedIndex == index
+                                                ? Colors.black
+                                                : Colors.grey,
+                                          );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return Container();
+                                  },
+                                  itemCount: state.categories.length)));
+                    }
+                    return Container();
+                  }),
                   SizedBox(width: 25)
                 ]),
           ]),
         ));
   }
 
-  List<PieChartSectionData> showingSections() {
+  List<PieChartSectionData> showingSections(List<double> points) {
     return List.generate(4, (i) {
       final isTouched = i == touchedIndex;
       final opacity = isTouched ? 1.0 : 0.6;
+      double sum = points.reduce((a, b) => a + b);
 
-      const color0 = Color(0xff0293ee);
-      const color1 = Color(0xfff8b250);
-      const color2 = Color(0xff845bef);
-      const color3 = Color(0xff13d38e);
-
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: color0.withOpacity(opacity),
-            value: 25,
-            title: '25%',
-            radius: 80,
-            titleStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff044d7c)),
-            titlePositionPercentageOffset: 0.55,
-            borderSide: isTouched
-                ? BorderSide(color: color0.darken(40), width: 6)
-                : BorderSide(color: color0.withOpacity(0)),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: color1.withOpacity(opacity),
-            value: 25,
-            title: '25%',
-            radius: 65,
-            titleStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff90672d)),
-            titlePositionPercentageOffset: 0.55,
-            borderSide: isTouched
-                ? BorderSide(color: color1.darken(40), width: 6)
-                : BorderSide(color: color2.withOpacity(0)),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: color2.withOpacity(opacity),
-            value: 25,
-            title: '25%',
-            radius: 60,
-            titleStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff4c3788)),
-            titlePositionPercentageOffset: 0.6,
-            borderSide: isTouched
-                ? BorderSide(color: color2.darken(40), width: 6)
-                : BorderSide(color: color2.withOpacity(0)),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: color3.withOpacity(opacity),
-            value: 25,
-            title: '25%',
-            radius: 70,
-            titleStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff0c7f55)),
-            titlePositionPercentageOffset: 0.55,
-            borderSide: isTouched
-                ? BorderSide(color: color3.darken(40), width: 6)
-                : BorderSide(color: color2.withOpacity(0)),
-          );
-        default:
-          throw Error();
-      }
+      return PieChartSectionData(
+        color: Color(colorList[i]).withOpacity(opacity),
+        value: points[i],
+        title: ((points[i] / sum) * 100).round().toString() + '%',
+        radius: radiusList[i],
+        titleStyle: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(textColorList[i])),
+        titlePositionPercentageOffset: 0.55,
+        borderSide: isTouched
+            ? BorderSide(color: Color(colorList[i]).darken(40), width: 6)
+            : BorderSide(color: Color(colorList[i]).withOpacity(0)),
+      );
     });
   }
 }

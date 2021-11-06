@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/mission/mission_cubit.dart';
-import 'package:tickley/src/bloc/mission/mission_state.dart' as ms;
+import 'package:tickley/src/bloc/most_active_mission/most_active_mission_cubit.dart';
+import 'package:tickley/src/bloc/most_active_mission/most_active_mission_state.dart'
+    as ms;
+
 import 'package:tickley/src/bloc/point/point_cubit.dart';
 import 'package:tickley/src/bloc/point/point_state.dart';
 import 'package:tickley/src/utils/constants.dart';
@@ -24,7 +27,7 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     BlocProvider.of<PointCubit>(context).fetchAllUserPoint();
-    BlocProvider.of<MissionCubit>(context).fetchMissionsByCategory(2);
+    BlocProvider.of<MostActiveMissionCubit>(context).fetchMostActiveMissions();
   }
 
   @override
@@ -59,7 +62,8 @@ class HomeScreenState extends State<HomeScreen> {
                   style: BiggerFont22,
                 )
               ])),
-          BlocBuilder<MissionCubit, ms.MissionState>(builder: (_, state) {
+          BlocBuilder<MostActiveMissionCubit, ms.MostActiveMissionState>(
+              builder: (_, state) {
             if (state is ms.Empty)
               return CustomCircularProgressIndicator();
             else if (state is ms.Loading)
@@ -67,18 +71,19 @@ class HomeScreenState extends State<HomeScreen> {
             else if (state is ms.Error)
               return CustomCircularProgressIndicator();
             else if (state is ms.Loaded) {
-              return CarouselSlider(
-                  options: CarouselOptions(
-                    enableInfiniteScroll: false,
-                    height: 170,
-                    viewportFraction: 1.0,
-                    enlargeCenterPage: false,
-                    autoPlay: true,
-                  ),
-                  items: state.missions
-                      .map((mission) =>
-                          MostActiveMissionWidget(mission: mission))
-                      .toList());
+              return MostActiveMissionWidget(mission: state.missions);
+              // return CarouselSlider(
+              //     options: CarouselOptions(
+              //       enableInfiniteScroll: false,
+              //       height: 170,
+              //       viewportFraction: 1.0,
+              //       enlargeCenterPage: false,
+              //       autoPlay: true,
+              //     ),
+              //     items: state.missions
+              //         .map((mission) =>
+              //             MostActiveMissionWidget(mission: mission))
+              //         .toList());
             }
             return Container();
           }),

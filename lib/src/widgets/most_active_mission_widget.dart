@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:tickley/src/model/mission/mission.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tickley/src/bloc/mission_user/mission_user_cubit.dart';
+import 'package:tickley/src/bloc/mission_user/mission_user_state.dart';
+
+import 'package:tickley/src/model/most_active_mission/most_active_mission.dart';
 
 import 'package:tickley/src/utils/utils.dart';
-
-import 'user_widget.dart';
+import 'package:tickley/src/utils/widget_functions.dart';
 
 class MostActiveMissionWidget extends StatefulWidget {
-  Mission mission;
+  MostActiveMission mission;
 
   MostActiveMissionWidget({Key? key, required this.mission}) : super(key: key);
 
@@ -17,10 +20,12 @@ class MostActiveMissionWidget extends StatefulWidget {
 
 class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
   Utils utils = new Utils();
-  // List<String> usersList = [' '];
 
   @override
-  void initState() {}
+  void initState() {
+    BlocProvider.of<MissionUserCubit>(context)
+        .fetchLastestUserbyMission(widget.mission.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,10 @@ class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
                           ])),
                       Row(children: [
                         Icon(Icons.people, color: Colors.grey),
-                        Text("    " + 1000.toString() + "명이 참여했어요!",
+                        Text(
+                            "    " +
+                                widget.mission.completedCount.toString() +
+                                "명이 참여했어요!",
                             style: TextStyle(color: Colors.black))
                       ]),
                       Row(
@@ -74,26 +82,36 @@ class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
   }
 
   Widget _userListView() {
-    return ListView.separated(
-      separatorBuilder: (context, index) {
-        return Container(height: 1);
-      },
-      // physics: ClampingScrollPhysics(),
-      padding: EdgeInsets.only(top: 3.0),
-
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: 3,
-      itemBuilder: (context, index) {
-        return Container(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("흥냐흥냐흥냐 님"),
-            Text("10분 전", style: TextStyle(color: Colors.grey))
-          ],
-        ));
-      },
-    );
+    return BlocBuilder<MissionUserCubit, MissionUserState>(builder: (_, state) {
+      if (state is Empty)
+        return CustomCircularProgressIndicator();
+      else if (state is Loading)
+        return CustomCircularProgressIndicator();
+      else if (state is Error)
+        return CustomCircularProgressIndicator();
+      else if (state is Loaded) {
+        return ListView.separated(
+            separatorBuilder: (context, index) {
+              return Container(height: 1);
+            },
+            // physics: ClampingScrollPhysics(),
+            padding: EdgeInsets.only(top: 3.0),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return Container(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(state.users[index].nickname + " 님"),
+                  Text(utils.getTimeDifference(state.users[index].completedAt),
+                      style: TextStyle(color: Colors.grey))
+                ],
+              ));
+            });
+      }
+      return Container();
+    });
   }
 }

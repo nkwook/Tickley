@@ -8,7 +8,7 @@ part of 'completed_mission.dart';
 
 _$_CompletedMission _$$_CompletedMissionFromJson(Map<String, dynamic> json) =>
     _$_CompletedMission(
-      date: json['date'] != null ? json['date'] as String : 'ㅇㅇ',
+      date: json['date'] != null ? json['date'] as String : '',
       week: json['week'] != null ? json['week'] as int : -1,
       label: json['label'] as String,
       description: json['description'] as String,

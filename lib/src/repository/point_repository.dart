@@ -22,4 +22,27 @@ class PointRepository {
       throw Exception('Failed to load userlength');
     }
   }
+
+  // need to fixed when category modification
+  Future<List<double>> fetchCategoryPoints() async {
+    final responses = await Future.wait([
+      http.get(Uri.parse(BASE_URL + 'category/1/pointSum')),
+      http.get(Uri.parse(BASE_URL + 'category/2/pointSum')),
+      http.get(Uri.parse(BASE_URL + 'category/3/pointSum')),
+      http.get(Uri.parse(BASE_URL + 'category/4/pointSum')),
+    ]);
+
+    // print(responses.toString());
+    return [
+      getPointsFromResponse(responses[0]),
+      getPointsFromResponse(responses[1]),
+      getPointsFromResponse(responses[2]),
+      getPointsFromResponse(responses[3])
+    ];
+  }
+
+  double getPointsFromResponse(http.Response response) {
+    final result = json.decode(response.body)['data'];
+    return double.parse(result);
+  }
 }
