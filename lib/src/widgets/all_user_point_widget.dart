@@ -37,7 +37,7 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
           width: 300,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(width: 10, color: Colors.grey)),
+              border: Border.all(width: 5, color: Colors.grey.shade300)),
           child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
             Container(
                 width: 150,
