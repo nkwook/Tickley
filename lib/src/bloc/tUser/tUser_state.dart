@@ -31,11 +31,10 @@ class Error extends TUserState {
 
 class Loaded extends TUserState {
   final TUser tUser;
+  final List<double> point;
 
-  Loaded({
-    required this.tUser,
-  });
+  Loaded({required this.tUser, required this.point});
 
   @override
-  List<Object> get props => [this.tUser];
+  List<Object> get props => [this.tUser, this.point];
 }

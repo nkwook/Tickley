@@ -32,7 +32,6 @@ class PointRepository {
       http.get(Uri.parse(BASE_URL + 'category/4/pointSum')),
     ]);
 
-    // print(responses.toString());
     return [
       getPointsFromResponse(responses[0]),
       getPointsFromResponse(responses[1]),
@@ -41,8 +40,30 @@ class PointRepository {
     ];
   }
 
+  Future<List<double>> fetchCategoryPointsByUser(int id) async {
+    final responses = await Future.wait([
+      http.get(
+          Uri.parse(BASE_URL + 'point/user/' + id.toString() + '/category/1')),
+      http.get(
+          Uri.parse(BASE_URL + 'point/user/' + id.toString() + '/category/2')),
+      http.get(
+          Uri.parse(BASE_URL + 'point/user/' + id.toString() + '/category/3')),
+      http.get(
+          Uri.parse(BASE_URL + 'point/user/' + id.toString() + '/category/4')),
+    ]);
+
+    final result = [
+      getPointsFromResponse(responses[0]),
+      getPointsFromResponse(responses[1]),
+      getPointsFromResponse(responses[2]),
+      getPointsFromResponse(responses[3])
+    ];
+    return result;
+  }
+
   double getPointsFromResponse(http.Response response) {
     final result = json.decode(response.body)['data'];
-    return double.parse(result);
+
+    return double.parse(result.toString());
   }
 }

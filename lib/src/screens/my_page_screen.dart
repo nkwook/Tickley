@@ -20,6 +20,7 @@ import 'package:tickley/src/utils/utils.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 
 import 'package:tickley/src/widgets/completed_mission_widget.dart';
+import 'package:tickley/src/widgets/my_category_chart_widget.dart';
 
 class MyPageScreen extends StatefulWidget {
   TUser tUser;
@@ -36,47 +37,51 @@ class _MyPageScreenState extends State<MyPageScreen> {
     BlocProvider.of<CompletedMissionCubit>(context)
         .fetchCompletedMissionsByUser(widget.tUser.id);
     // to get points
-    BlocProvider.of<TUserCubit>(context).fetchUserData();
+    BlocProvider.of<TUserCubit>(context).fetchUserDataMyPage();
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+        physics: ScrollPhysics(),
         child: Container(
-      padding: EdgeInsets.symmetric(vertical: 70.0, horizontal: 16.0),
-      child: Column(
-        children: [
-          BlocBuilder<TUserCubit, ts.TUserState>(builder: (_, state) {
-            if (state is ts.Empty) {
-              return CustomCircularProgressIndicator();
-            } else if (state is ts.Loading) {
-              return CustomCircularProgressIndicator();
-            } else if (state is ts.Error) {
-              return CustomCircularProgressIndicator();
-            } else if (state is ts.Loaded) {
-              return MyPointLevelWidget(state.tUser);
-            }
-            return Container();
-          }),
+          padding: EdgeInsets.symmetric(vertical: 70.0, horizontal: 16.0),
+          child: Column(
+            children: [
+              BlocBuilder<TUserCubit, ts.TUserState>(builder: (_, state) {
+                if (state is ts.Empty) {
+                  return CustomCircularProgressIndicator();
+                } else if (state is ts.Loading) {
+                  return CustomCircularProgressIndicator();
+                } else if (state is ts.Error) {
+                  return CustomCircularProgressIndicator();
+                } else if (state is ts.Loaded) {
+                  return Column(children: [
+                    MyPointLevelWidget(state.tUser),
+                    MyCategoryChartWidget(point: state.point)
+                  ]);
+                }
+                return Container();
+              }),
 
-          BlocBuilder<CompletedMissionCubit, cs.CompletedMissionState>(
-              builder: (_, state) {
-            if (state is cs.Empty) {
-              return CustomCircularProgressIndicator();
-            } else if (state is cs.Loading) {
-              return CustomCircularProgressIndicator();
-            } else if (state is cs.Error) {
-              return CustomCircularProgressIndicator();
-            } else if (state is cs.Loaded) {
-              return missionItemList(state.missions, widget.tUser.id);
-            }
-            return Container();
-          }),
-          _logoutButtonTemp()
+              BlocBuilder<CompletedMissionCubit, cs.CompletedMissionState>(
+                  builder: (_, state) {
+                if (state is cs.Empty) {
+                  return CustomCircularProgressIndicator();
+                } else if (state is cs.Loading) {
+                  return CustomCircularProgressIndicator();
+                } else if (state is cs.Error) {
+                  return CustomCircularProgressIndicator();
+                } else if (state is cs.Loaded) {
+                  return missionItemList(state.missions, widget.tUser.id);
+                }
+                return Container();
+              }),
+              _logoutButtonTemp()
 // myPageList()
-        ],
-      ),
-    ));
+            ],
+          ),
+        ));
   }
 
   Widget _logoutButtonTemp() {
@@ -169,25 +174,24 @@ class _MyPageScreenState extends State<MyPageScreen> {
   }
 
   Widget missionItemList(List<CompletedMission> completedMissions, int userId) {
-    return Container(
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 0, top: 10),
+        child: Text(
+          '내 기록',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+      ),
+      Container(
         margin: EdgeInsets.only(top: 30),
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: Color(0xffEFEFEF), borderRadius: BorderRadius.circular(20)),
         width: 330,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Text(
-                '내 기록',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
+        child:
             CompletedMissionList(missions: completedMissions, userId: userId),
-          ],
-        ));
+      )
+    ]);
   }
 }
 
@@ -212,6 +216,7 @@ class CompletedMissionListState extends State<CompletedMissionList> {
   Widget build(BuildContext context) {
     // print("길이" + widget.tasks.length.toString());
     return ListView.separated(
+      physics: NeverScrollableScrollPhysics(),
       separatorBuilder: (context, index) {
         return Container(height: 10);
       },

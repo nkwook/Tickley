@@ -9,16 +9,16 @@ import 'package:tickley/src/bloc/category_point/category_point_state.dart'
 import 'package:tickley/src/utils/color_extension.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 
-class CategoryChartWidget extends StatefulWidget {
-  CategoryChartWidget({
+class AllCategoryChartWidget extends StatefulWidget {
+  AllCategoryChartWidget({
     Key? key,
   }) : super(key: key);
 
   @override
-  CategoryChartWidgetState createState() => CategoryChartWidgetState();
+  AllCategoryChartWidgetState createState() => AllCategoryChartWidgetState();
 }
 
-class CategoryChartWidgetState extends State<CategoryChartWidget> {
+class AllCategoryChartWidgetState extends State<AllCategoryChartWidget> {
   int touchedIndex = -1;
   final colorList = [
     0xff0293ee,

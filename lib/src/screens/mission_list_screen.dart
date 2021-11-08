@@ -77,16 +77,17 @@ class MissionListScreenState extends State<MissionListScreen> {
               return Container();
             }),
             _favoriteMission(),
+            SizedBox(
+              height: 50,
+            )
           ],
         )));
   }
 
   Widget _favoriteMission() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        BlocBuilder<FavoriteMissionCubit, FavoriteMissionState>(
+    return SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: BlocBuilder<FavoriteMissionCubit, FavoriteMissionState>(
             builder: (_, state) {
           if (state is Empty) {
             return CustomCircularProgressIndicator();
@@ -95,8 +96,12 @@ class MissionListScreenState extends State<MissionListScreen> {
           } else if (state is Error) {
             return CustomCircularProgressIndicator();
           } else if (state is Loaded) {
-            return Flexible(
-                child: ListView.separated(
+            return
+                // Flexible(
+                //     child:
+
+                ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: state.missions.length,
                     padding: const EdgeInsets.all(16),
@@ -108,11 +113,9 @@ class MissionListScreenState extends State<MissionListScreen> {
                     },
                     separatorBuilder: (context, i) {
                       return const Divider();
-                    }));
+                    });
           }
           return Container();
-        })
-      ],
-    );
+        }));
   }
 }

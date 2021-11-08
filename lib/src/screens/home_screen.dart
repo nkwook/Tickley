@@ -12,7 +12,7 @@ import 'package:tickley/src/bloc/point/point_state.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 import 'package:tickley/src/widgets/all_user_point_widget.dart';
-import 'package:tickley/src/widgets/category_chart_widget.dart';
+import 'package:tickley/src/widgets/all_category_chart_widget.dart';
 import 'package:tickley/src/widgets/most_active_mission_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -93,7 +93,7 @@ class HomeScreenState extends State<HomeScreen> {
                 '카테고리별 저감량',
                 style: BiggerFont22,
               )),
-          CategoryChartWidget()
+          AllCategoryChartWidget()
         ])));
   }
 }

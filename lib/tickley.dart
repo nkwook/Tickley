@@ -35,7 +35,9 @@ class TickleyApp extends StatelessWidget {
           //TODO: separate unrequired global blocproviders.
           BlocProvider(create: (_) => AuthCubit(repository: TUserRepository())),
           BlocProvider(
-              create: (_) => TUserCubit(repository: TUserRepository())),
+              create: (_) => TUserCubit(
+                  tUserRepository: TUserRepository(),
+                  pointRepository: PointRepository())),
           BlocProvider(
               create: (_) => FavoriteMissionCubit(
                   repository: FavoriteMissionRepository())),
