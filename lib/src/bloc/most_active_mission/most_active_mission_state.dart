@@ -28,8 +28,7 @@ class Error extends MostActiveMissionState {
 }
 
 class Loaded extends MostActiveMissionState {
-  // final List<MostActiveMission> missions;
-  final MostActiveMission missions;
+  final List<MostActiveMission> missions;
 
   Loaded({
     required this.missions,

@@ -5,6 +5,81 @@ const BASE_URL =
 
 const WeekList = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+const PointLevelTable = [
+  {
+    'start': 0,
+    'end': 9,
+    'label': '브론즈 티끌이',
+    'next': '실버 티끌이',
+    'imgUrl': 'assets/bronze.png',
+    'color': 0xFF815C12
+  },
+  {
+    'start': 10,
+    'end': 19,
+    'label': '실버 티끌이',
+    'next': '골드 티끌이',
+    'imgUrl': 'assets/silver.png',
+    'color': 0xFFA7A7A7
+  },
+  {
+    'start': 20,
+    'end': 29,
+    'label': '골드 티끌이',
+    'next': '브론즈 동산이',
+    'imgUrl': 'assets/gold.png',
+    'color': 0xFFFFAA00
+  },
+  {
+    'start': 30,
+    'end': 39,
+    'label': '브론즈 동산이',
+    'next': '실버 동산이',
+    'imgUrl': 'assets/dongsan_bronze.png',
+    'color': 0xFF815C12
+  },
+  {
+    'start': 40,
+    'end': 49,
+    'label': '실버 동산이',
+    'next': '골드 동산이',
+    'imgUrl': 'assets/dongsan_silver.png',
+    'color': 0xFFA7A7A7
+  },
+  {
+    'start': 50,
+    'end': 59,
+    'label': '골드 동산이',
+    'next': '브론즈 태산이',
+    'imgUrl': 'assets/dongsan_gold.png',
+    'color': 0xFFFFAA00
+  },
+  {
+    'start': 60,
+    'end': 69,
+    'label': '브론즈 태산이',
+    'next': '실버 태산이',
+    'imgUrl': 'assets/taesan_bronze.png',
+    'color': 0xFF815C12
+  },
+  {
+    'start': 70,
+    'end': 79,
+    'label': '실버 태산이',
+    'next': '골드 태산이',
+    'imgUrl': 'assets/taesan_silver.png',
+    'color': 0xFFA7A7A7
+  },
+  {
+    'start': 80,
+    'end': 1000,
+    'label': '골드 태산이',
+    'next': '환경보호에 동참해주시는 당신이 아름답습니다',
+    'imgUrl': 'assets/taesan_gold.png',
+    'color': 0xFFFFAA00
+  },
+];
+
 const COLOR_BLACK = Color.fromRGBO(48, 47, 48, 1.0);
 const COLOR_GREY = Color.fromRGBO(141, 141, 141, 1.0);
 

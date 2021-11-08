@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tickley/src/bloc/mission/mission_cubit.dart';
 import 'package:tickley/src/bloc/most_active_mission/most_active_mission_cubit.dart';
 import 'package:tickley/src/bloc/most_active_mission/most_active_mission_state.dart'
     as ms;
@@ -71,19 +70,18 @@ class HomeScreenState extends State<HomeScreen> {
             else if (state is ms.Error)
               return CustomCircularProgressIndicator();
             else if (state is ms.Loaded) {
-              return MostActiveMissionWidget(mission: state.missions);
-              // return CarouselSlider(
-              //     options: CarouselOptions(
-              //       enableInfiniteScroll: false,
-              //       height: 170,
-              //       viewportFraction: 1.0,
-              //       enlargeCenterPage: false,
-              //       autoPlay: true,
-              //     ),
-              //     items: state.missions
-              //         .map((mission) =>
-              //             MostActiveMissionWidget(mission: mission))
-              //         .toList());
+              return CarouselSlider(
+                  options: CarouselOptions(
+                    enableInfiniteScroll: false,
+                    height: 170,
+                    viewportFraction: 1.0,
+                    enlargeCenterPage: false,
+                    autoPlay: true,
+                  ),
+                  items: state.missions
+                      .map((mission) =>
+                          MostActiveMissionWidget(mission: mission))
+                      .toList());
             }
             return Container();
           }),

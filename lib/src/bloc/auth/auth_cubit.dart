@@ -33,7 +33,6 @@ class AuthCubit extends Cubit<AuthState> {
 
       final status =
           await this.repository.createUser(nickname, accessToken, profileImage);
-      print(status);
       final resp = await this.repository.userLogin(user.uid);
       final tUser = resp;
 

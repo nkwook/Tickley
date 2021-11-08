@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/model/mission_user/mission_user.dart';
 import 'package:tickley/src/model/most_active_mission/most_active_mission.dart';
+import 'package:tickley/src/model/tUser/tUser.dart';
+import 'package:tickley/src/utils/constants.dart';
 
 class Utils {
   String convertStringToUnicode(String content) {
@@ -69,5 +71,14 @@ class Utils {
     final parsed = json.decode(responseBody);
     return List<MostActiveMission>.from(
         parsed["data"].map((json) => MostActiveMission.fromJson(json)));
+  }
+
+  Map<String, dynamic> convertPointToLevel(int point) {
+    for (dynamic p in PointLevelTable) {
+      if (point <= p['end']) {
+        return p;
+      }
+    }
+    return PointLevelTable[PointLevelTable.length - 1];
   }
 }

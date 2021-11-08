@@ -16,6 +16,7 @@ import 'package:tickley/src/model/completed_mission/completed_mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/utils/authentication.dart';
+import 'package:tickley/src/utils/utils.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 
 import 'package:tickley/src/widgets/completed_mission_widget.dart';
@@ -29,8 +30,6 @@ class MyPageScreen extends StatefulWidget {
 }
 
 class _MyPageScreenState extends State<MyPageScreen> {
-  final myPageListLabel = ['내 성취 보러가기', '프로필 설정', '알림 설정'];
-
   @override
   void initState() {
     super.initState();
@@ -55,10 +54,11 @@ class _MyPageScreenState extends State<MyPageScreen> {
             } else if (state is ts.Error) {
               return CustomCircularProgressIndicator();
             } else if (state is ts.Loaded) {
-              return charByPoint(state.tUser);
+              return MyPointLevelWidget(state.tUser);
             }
             return Container();
           }),
+
           BlocBuilder<CompletedMissionCubit, cs.CompletedMissionState>(
               builder: (_, state) {
             if (state is cs.Empty) {
@@ -90,60 +90,46 @@ class _MyPageScreenState extends State<MyPageScreen> {
             )));
   }
 
-  Widget charByPoint(TUser userData) {
-    String label;
-    String imgUrl;
-    int score;
-
-    if (userData.point >= 80) {
-      label = "골드 태산이";
-      imgUrl = 'assets/taesan_gold.png';
-      score = 80;
-    } else if (userData.point >= 70) {
-      label = "실버 태산이";
-      imgUrl = 'assets/taesan_silver.png';
-      score = 70;
-    } else if (userData.point >= 60) {
-      label = "브론즈 태산이";
-      imgUrl = 'assets/taesan_bronze.png';
-      score = 60;
-    } else if (userData.point >= 50) {
-      label = "골드 동산이";
-      imgUrl = 'assets/dongsan_gold.png';
-      score = 50;
-    } else if (userData.point >= 40) {
-      label = "실버 동산이";
-      imgUrl = 'assets/dongsan_silver.png';
-      score = 40;
-    } else if (userData.point >= 30) {
-      label = "브론즈 동산이";
-      imgUrl = 'assets/dongsan_bronze.png';
-      score = 30;
-    } else if (userData.point >= 20) {
-      label = "골드 티끄리";
-      imgUrl = 'assets/gold.png';
-      score = 20;
-    } else if (userData.point >= 10) {
-      label = "실버 티끄리";
-      imgUrl = 'assets/silver.png';
-      score = 10;
-    } else {
-      label = "브론즈 티끄리";
-      imgUrl = 'assets/bronze.png';
-      score = 0;
-    }
+  Widget MyPointLevelWidget(TUser userData) {
+    Utils utils = new Utils();
+    Map<String, dynamic> levelMap = utils.convertPointToLevel(userData.point);
 
     return Column(
       children: [
+        Container(
+          margin: EdgeInsets.only(left: 15),
+          alignment: Alignment.topLeft,
+          child: Text(userData.nickname + ' 님',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        ),
+        SizedBox(height: 22),
         CircleAvatar(
-          radius: 80.0,
-          backgroundImage: AssetImage(imgUrl),
+          radius: 90.0,
+          backgroundImage: AssetImage(levelMap['imgUrl']),
           backgroundColor: Color(0xffEFEFEF),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 22.0),
-          child: Text(userData.nickname,
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+        SizedBox(height: 22),
+        Container(
+          width: 320,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                levelMap['label'],
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color(levelMap['color']),
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                userData.point.toString() + 'point',
+                style: TextStyle(
+                    fontSize: 20,
+                    color: Color(levelMap['color']),
+                    fontWeight: FontWeight.normal),
+              ),
+            ],
+          ),
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: 5),
@@ -152,8 +138,9 @@ class _MyPageScreenState extends State<MyPageScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(10)),
             child: LinearProgressIndicator(
-              value: (userData.point - score) / 10,
-              valueColor: new AlwaysStoppedAnimation<Color>(Color(0xff90CA8B)),
+              value: (userData.point - levelMap['start']) / 10,
+              valueColor:
+                  new AlwaysStoppedAnimation<Color>(Color(levelMap['color'])),
               backgroundColor: Color(0xffEFEFEF),
             ),
           ),
@@ -161,22 +148,22 @@ class _MyPageScreenState extends State<MyPageScreen> {
         Container(
           width: 320,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                '내 Eco 포인트',
-                style: TextStyle(fontSize: 20),
+                levelMap['next'] + '까지 ',
+                style: TextStyle(fontSize: 15, color: Colors.grey),
               ),
               Text(
-                userData.point.toString() + 'point',
+                '-' + (levelMap['end'] + 1 - userData.point).toString(),
                 style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xff90CA8B),
+                    fontSize: 15,
+                    color: Colors.grey,
                     fontWeight: FontWeight.bold),
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

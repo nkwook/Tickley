@@ -26,7 +26,6 @@ class FavoriteMissionCubit extends Cubit<FavoriteMissionState> {
   addFavoriteMission(int userId, int missionId) async {
     try {
       final resp = await this.repository.addFavoriteMission(userId, missionId);
-      print(resp);
 
       emit(Loaded(missions: resp));
     } catch (e) {
@@ -55,7 +54,6 @@ class FavoriteMissionCubit extends Cubit<FavoriteMissionState> {
           if (m.id == missionId) {
             Mission mm = m.copyWith(completed: true);
             m = mm;
-            print(m.completed);
           }
         }
         emit(Loaded(missions: mList));

@@ -12,7 +12,6 @@ class MostActiveMissionCubit extends Cubit<MostActiveMissionState> {
       emit(Loading());
 
       final resp = await this.repository.fetchMostActiveMissions();
-      print(resp);
       final missions = resp;
 
       emit(Loaded(missions: missions));

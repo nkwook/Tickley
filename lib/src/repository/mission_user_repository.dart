@@ -12,7 +12,6 @@ class MissionUserRepository {
   Future<List<MissionUser>> fetchLastestUserbyMission(int id) async {
     final response = await http.get(
         Uri.parse(BASE_URL + 'task/' + id.toString() + '/user?byLatest=true'));
-    print(response.body.toString());
     if (response.statusCode == 200) {
       return utils.parseMissionUsers(response.body);
     } else {
