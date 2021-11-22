@@ -34,13 +34,13 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
             ]),
           )),
       Container(
-          width: 300,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 5, color: Colors.grey.shade300)),
+          width: 400,
+          // decoration: BoxDecoration(
+          //     shape: BoxShape.circle,
+          //     border: Border.all(width: 5, color: Colors.grey.shade300)),
           child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
             Container(
-                width: 150,
+                width: 300,
                 child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
@@ -49,12 +49,12 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   // scale: 1.5,
-                                  image: AssetImage('assets/pine-tree.png'),
+                                  image: AssetImage('assets/tree.png'),
                                   fit: BoxFit.fitWidth,
                                   alignment: FractionalOffset.bottomCenter)),
                         )))),
             Container(
-                width: 150,
+                width: 300,
                 child: Align(
                     alignment: Alignment.bottomCenter,
                     child: AspectRatio(
@@ -63,7 +63,7 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   // scale: 1.5,
-                                  image: AssetImage('assets/pine-tree.png'),
+                                  image: AssetImage('assets/tree.png'),
                                   fit: BoxFit.fitWidth,
                                   alignment: FractionalOffset.bottomCenter,
                                   colorFilter: ColorFilter.mode(
