@@ -83,7 +83,7 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                           children: [
                             Text(
                               "주간 에코 포인트",
-                              style: BiggerFont20,
+                              style: FontBoldGreen20,
                               textAlign: TextAlign.center,
                             ),
                             Text('\u{1F331} ' +

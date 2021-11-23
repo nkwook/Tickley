@@ -16,11 +16,13 @@ import 'package:tickley/src/model/completed_mission/completed_mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/utils/authentication.dart';
+import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 
 import 'package:tickley/src/widgets/completed_mission_widget.dart';
 import 'package:tickley/src/widgets/my_category_chart_widget.dart';
+import 'package:tickley/src/widgets/my_point_level_widget.dart';
 
 class MyPageScreen extends StatefulWidget {
   TUser tUser;
@@ -45,9 +47,13 @@ class _MyPageScreenState extends State<MyPageScreen> {
     return SingleChildScrollView(
         physics: ScrollPhysics(),
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 70.0, horizontal: 16.0),
+          padding: EdgeInsets.symmetric(vertical: 80.0, horizontal: 16.0),
           child: Column(
             children: [
+              Container(
+                  margin: EdgeInsets.only(left: 24),
+                  alignment: Alignment.topLeft,
+                  child: Text("마이페이지", style: TitleFont)),
               BlocBuilder<TUserCubit, ts.TUserState>(builder: (_, state) {
                 if (state is ts.Empty) {
                   return CustomCircularProgressIndicator();
@@ -57,7 +63,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
                   return CustomCircularProgressIndicator();
                 } else if (state is ts.Loaded) {
                   return Column(children: [
-                    MyPointLevelWidget(state.tUser),
+                    MyPointLevelWidget(userData: state.tUser),
                     MyCategoryChartWidget(point: state.point)
                   ]);
                 }
@@ -95,84 +101,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
             )));
   }
 
-  Widget MyPointLevelWidget(TUser userData) {
-    Utils utils = new Utils();
-    Map<String, dynamic> levelMap = utils.convertPointToLevel(userData.point);
-
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(left: 15),
-          alignment: Alignment.topLeft,
-          child: Text(userData.nickname + ' 님',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-        ),
-        SizedBox(height: 22),
-        CircleAvatar(
-          radius: 90.0,
-          backgroundImage: AssetImage(levelMap['imgUrl']),
-          backgroundColor: Color(0xffEFEFEF),
-        ),
-        SizedBox(height: 22),
-        Container(
-          width: 320,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                levelMap['label'],
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Color(levelMap['color']),
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                userData.point.toString() + 'point',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Color(levelMap['color']),
-                    fontWeight: FontWeight.normal),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
-          width: 330,
-          height: 20,
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            child: LinearProgressIndicator(
-              value: (userData.point - levelMap['start']) / 10,
-              valueColor:
-                  new AlwaysStoppedAnimation<Color>(Color(levelMap['color'])),
-              backgroundColor: Color(0xffEFEFEF),
-            ),
-          ),
-        ),
-        Container(
-          width: 320,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                levelMap['next'] + '까지 ',
-                style: TextStyle(fontSize: 15, color: Colors.grey),
-              ),
-              Text(
-                '-' + (levelMap['end'] + 1 - userData.point).toString(),
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget missionItemList(List<CompletedMission> completedMissions, int userId) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
@@ -186,7 +114,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
         margin: EdgeInsets.only(top: 30),
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-            color: Color(0xffEFEFEF), borderRadius: BorderRadius.circular(20)),
+            color: Color(0xffEFEFEF), borderRadius: BorderRadius.circular(16)),
         width: 330,
         child:
             CompletedMissionList(missions: completedMissions, userId: userId),

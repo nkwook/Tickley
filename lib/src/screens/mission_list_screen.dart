@@ -60,7 +60,7 @@ class MissionListScreenState extends State<MissionListScreen> {
                 padding: EdgeInsets.only(left: 25),
                 child: Text(
                   '에코 미션',
-                  style: BiggerBoldFont,
+                  style: FontBoldGreen24,
                 )),
             BlocBuilder<WeeklyCompletedMissionCubit,
                 ws.WeeklyCompletedMissionState>(builder: (_, state) {

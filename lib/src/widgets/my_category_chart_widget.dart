@@ -206,9 +206,7 @@ class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
       RawDataSet(
         title: 'User',
         color: graphColor,
-        values:
-            //  [0.0, 0.0, 0.0, 0.0]
-            widget.point,
+        values: widget.point,
       ),
     ];
   }

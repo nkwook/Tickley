@@ -80,12 +80,12 @@ class MissionDetailModalState extends State<MissionDetailModal> {
                         child: widget.isCompleted
                             ? Text(
                                 '완료한 활동\u{1F44D}',
-                                style: BiggerFont20,
+                                style: FontBoldGreen20,
                                 textAlign: TextAlign.center,
                               )
                             : Text(
                                 '완료하기\u{2705}',
-                                style: BiggerFont20,
+                                style: FontBoldGreen20,
                                 textAlign: TextAlign.center,
                               )),
                   ))

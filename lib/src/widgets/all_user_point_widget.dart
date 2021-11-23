@@ -21,7 +21,7 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
           margin: EdgeInsets.only(top: 70, bottom: 15),
           padding: EdgeInsets.only(left: 25),
           child: RichText(
-            text: TextSpan(style: BiggerBoldFont, children: <TextSpan>[
+            text: TextSpan(style: FontBoldGreen24, children: <TextSpan>[
               TextSpan(text: "지금까지 "),
               TextSpan(
                   text: widget.userLength.toString() + "명",
@@ -76,7 +76,7 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
           margin: EdgeInsets.only(top: 15, bottom: 10),
           padding: EdgeInsets.only(right: 40),
           child: RichText(
-            text: TextSpan(style: BiggerFont20, children: <TextSpan>[
+            text: TextSpan(style: FontBoldGreen20, children: <TextSpan>[
               TextSpan(text: "대략 30년산 소나무 "),
               TextSpan(
                   text: (widget.point * 0.01 / 6.6)

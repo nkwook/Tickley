@@ -81,21 +81,31 @@ const PointLevelTable = [
 ];
 
 const COLOR_BLACK = Color.fromRGBO(48, 47, 48, 1.0);
-const COLOR_GREY = Color.fromRGBO(141, 141, 141, 1.0);
+// const COLOR_GREY = Color.fromRGBO(141, 141, 141, 1.0);
 
 const COLOR_WHITE = Colors.white;
 const COLOR_DARK_BLUE = Color.fromRGBO(20, 25, 45, 1.0);
 
+const COLOR_GREEN = Color(0xFF375854);
+const COLOR_GREY = Color(0xFFF4F4F5);
+
+const TitleFont =
+    TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: COLOR_GREEN);
+const FontBoldGreen18 = const TextStyle(
+    fontSize: 18.0, fontWeight: FontWeight.bold, color: COLOR_GREEN);
+const FontNormalGreen18 = const TextStyle(
+    fontSize: 18.0, fontWeight: FontWeight.normal, color: COLOR_GREEN);
+const FontBoldGreen20 = const TextStyle(
+    fontSize: 20.0, fontWeight: FontWeight.bold, color: COLOR_GREEN);
+const FontBoldGreen24 =
+    TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700, color: COLOR_GREEN);
+
 const BiggerFont = TextStyle(fontSize: 18.0);
-const BiggerBoldFont =
-    TextStyle(fontSize: 24.0, fontWeight: FontWeight.w700, color: Colors.black);
 const BiggerGreyFont = TextStyle(fontSize: 18.0, color: Colors.grey);
 const BiggerWhiteFont =
     TextStyle(fontSize: 18.0, color: Colors.white, fontWeight: FontWeight.w500);
-const BiggerFont20 = const TextStyle(
-    fontSize: 20.0, color: Colors.black, fontWeight: FontWeight.bold);
 const BiggerFont22 = const TextStyle(
-    fontSize: 22.0, color: Colors.black, fontWeight: FontWeight.bold);
+    fontSize: 22.0, fontWeight: FontWeight.bold, color: COLOR_GREEN);
 
 const TextTheme TEXT_THEME_DEFAULT = TextTheme(
     headline1: TextStyle(
