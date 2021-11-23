@@ -67,42 +67,51 @@ class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
                 else if (state is Error)
                   return CustomCircularProgressIndicator();
                 else if (state is Loaded) {
-                  return RadarChart(
-                    RadarChartData(
-                      radarTouchData: RadarTouchData(
-                          touchCallback: (FlTouchEvent event, response) {
-                        if (!event.isInterestedForInteractions) {
-                          setState(() {
-                            selectedDataSetIndex = -1;
-                          });
-                          return;
-                        }
-                        setState(() {
-                          selectedDataSetIndex =
-                              response?.touchedSpot?.touchedDataSetIndex ?? -1;
-                        });
-                      }),
-                      dataSets: showingDataSets(),
-                      radarBackgroundColor: Colors.transparent,
-                      borderData: FlBorderData(show: false),
-                      radarBorderData:
-                          const BorderSide(color: Colors.transparent),
-                      titlePositionPercentageOffset: 0.2,
-                      titleTextStyle:
-                          const TextStyle(color: Colors.grey, fontSize: 14),
-                      getTitle: (index) {
-                        return state.categories[index].label;
-                      },
-                      tickCount: 1,
-                      ticksTextStyle: const TextStyle(
-                          color: Colors.transparent, fontSize: 10),
-                      tickBorderData:
-                          const BorderSide(color: Colors.transparent),
-                      gridBorderData:
-                          const BorderSide(color: gridColor, width: 2),
-                    ),
-                    swapAnimationDuration: const Duration(milliseconds: 400),
-                  );
+                  return
+                      // Container();
+                      widget.point.reduce((a, b) => a + b) == 0
+                          ? Container(
+                              alignment: Alignment.center,
+                              child: Text('미션을 수행하고 통계를 확인하세요!'),
+                            )
+                          : RadarChart(
+                              RadarChartData(
+                                radarTouchData: RadarTouchData(touchCallback:
+                                    (FlTouchEvent event, response) {
+                                  if (!event.isInterestedForInteractions) {
+                                    setState(() {
+                                      selectedDataSetIndex = -1;
+                                    });
+                                    return;
+                                  }
+                                  setState(() {
+                                    selectedDataSetIndex = response?.touchedSpot
+                                            ?.touchedDataSetIndex ??
+                                        -1;
+                                  });
+                                }),
+                                dataSets: showingDataSets(),
+                                radarBackgroundColor: Colors.transparent,
+                                borderData: FlBorderData(show: false),
+                                radarBorderData:
+                                    const BorderSide(color: Colors.transparent),
+                                titlePositionPercentageOffset: 0.2,
+                                titleTextStyle: const TextStyle(
+                                    color: Colors.grey, fontSize: 14),
+                                getTitle: (index) {
+                                  return state.categories[index].label;
+                                },
+                                tickCount: 1,
+                                ticksTextStyle: const TextStyle(
+                                    color: Colors.transparent, fontSize: 10),
+                                tickBorderData:
+                                    const BorderSide(color: Colors.transparent),
+                                gridBorderData: const BorderSide(
+                                    color: gridColor, width: 2),
+                              ),
+                              swapAnimationDuration:
+                                  const Duration(milliseconds: 400),
+                            );
                 }
                 return Container();
               })),
@@ -197,7 +206,9 @@ class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
       RawDataSet(
         title: 'User',
         color: graphColor,
-        values: widget.point,
+        values:
+            //  [0.0, 0.0, 0.0, 0.0]
+            widget.point,
       ),
     ];
   }

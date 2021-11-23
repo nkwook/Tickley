@@ -23,6 +23,7 @@ class TUserCubit extends Cubit<TUserState> {
       final tUser = await this.tUserRepository.userLogin(user.uid);
       final point =
           await this.pointRepository.fetchCategoryPointsByUser(tUser.id);
+      print(point);
       emit(Loaded(tUser: tUser, point: point));
     } catch (e) {
       emit(Error(message: e.toString()));
