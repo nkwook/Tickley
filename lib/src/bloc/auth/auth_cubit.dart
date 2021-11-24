@@ -13,9 +13,7 @@ class AuthCubit extends Cubit<AuthState> {
   userLogin(String uid) async {
     try {
       emit(Loading());
-
       final resp = await this.repository.userLogin(uid);
-
       final tUser = resp;
       emit(Loaded(tUser: tUser));
       // }

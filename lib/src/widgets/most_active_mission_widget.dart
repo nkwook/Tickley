@@ -98,7 +98,7 @@ class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
             padding: EdgeInsets.only(top: 3.0),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
-            itemCount: state.users.length,
+            itemCount: state.users.length > 3 ? 3 : state.users.length,
             itemBuilder: (context, index) {
               return Container(
                   child: Row(

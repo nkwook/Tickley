@@ -12,18 +12,16 @@ class TUserCubit extends Cubit<TUserState> {
   TUserCubit({required this.tUserRepository, required this.pointRepository})
       : super(Empty());
 
-  fetchUserDataMyPage() async {
+  fetchUserDataMyPage(int id) async {
     try {
       emit(Loading());
 
-      User? user = FirebaseAuth.instance.currentUser;
+      // User? user = FirebaseAuth.instance.currentUser;
 
-      if (user == null) throw Exception('Failed to get user data');
+      // if (user == null) throw Exception('Failed to get user data');
 
-      final tUser = await this.tUserRepository.userLogin(user.uid);
-      final point =
-          await this.pointRepository.fetchCategoryPointsByUser(tUser.id);
-      print(point);
+      final tUser = await this.tUserRepository.fetchUserbyId(id);
+      final point = await this.pointRepository.fetchCategoryPointsByUser(id);
       emit(Loaded(tUser: tUser, point: point));
     } catch (e) {
       emit(Error(message: e.toString()));

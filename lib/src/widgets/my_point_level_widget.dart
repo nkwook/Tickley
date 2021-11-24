@@ -78,7 +78,7 @@ class _MyPointLevelWidgetState extends State<MyPointLevelWidget> {
         SizedBox(height: 20),
         Container(
           decoration: BoxDecoration(
-              border: Border.all(color: COLOR_GREY),
+              border: Border.all(color: COLOR_BORDER, width: 1),
               borderRadius: BorderRadius.all(Radius.circular(16))),
           padding: EdgeInsets.all(20),
           alignment: Alignment.center,
@@ -105,7 +105,9 @@ class _MyPointLevelWidgetState extends State<MyPointLevelWidget> {
                           widget.userData.nickname +
                           ' 님은 '),
                   TextSpan(
-                      text: '상위 16%',
+                      text: '상위 ' +
+                          widget.userData.pointPercentage.toStringAsFixed(1) +
+                          '%',
                       style: TextStyle(
                           color: Color(0xFF727272),
                           fontSize: 18,

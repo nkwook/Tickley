@@ -14,6 +14,10 @@ _$_TUser _$$_TUserFromJson(Map<String, dynamic> json) => _$_TUser(
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
       profileImage: json['profileImage'] as String,
+      rank: json['rank'] != null ? json['rank'] : -1 as int,
+      pointPercentage: json['pointPercentage'] != null
+          ? (json['pointPercentage'] as num).toDouble()
+          : -1.0 as double,
     );
 
 Map<String, dynamic> _$$_TUserToJson(_$_TUser instance) => <String, dynamic>{
@@ -24,4 +28,6 @@ Map<String, dynamic> _$$_TUserToJson(_$_TUser instance) => <String, dynamic>{
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
       'profileImage': instance.profileImage,
+      'rank': instance.rank,
+      'pointPercentage': instance.pointPercentage,
     };

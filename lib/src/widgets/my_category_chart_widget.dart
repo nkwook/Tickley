@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/category/category_cubit.dart';
 import 'package:tickley/src/bloc/category/category_state.dart';
+import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/widget_functions.dart';
 
 const gridColor = Color(0xff68739f);
@@ -24,7 +25,8 @@ class MyCategoryChartWidget extends StatefulWidget {
 }
 
 class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
-  int selectedDataSetIndex = -1;
+  double selectedPoint = -1;
+  String selectedCategory = '';
 
   @override
   void initState() {
@@ -42,22 +44,31 @@ class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedDataSetIndex = -1;
-              });
-            },
-            child: Text(
-              '저감량 분포',
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(height: 14),
+              onTap: () {
+                setState(() {
+                  selectedPoint = -1;
+                  selectedCategory = '';
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('포인트 분석', style: FontBoldGreen20),
+                  selectedPoint != -1
+                      ? Text(
+                          selectedCategory +
+                              ': ' +
+                              selectedPoint.toStringAsFixed(0) +
+                              '  ',
+                          style: TextStyle(
+                            color: Color(0xFF727272),
+                          ))
+                      : Text("")
+                ],
+              )),
+          const SizedBox(height: 10),
           AspectRatio(
-              aspectRatio: 1.3,
+              aspectRatio: 1.1,
               child: BlocBuilder<CategoryCubit, CategoryState>(
                   builder: (_, state) {
                 if (state is Empty)
@@ -67,29 +78,45 @@ class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
                 else if (state is Error)
                   return CustomCircularProgressIndicator();
                 else if (state is Loaded) {
-                  return
-                      // Container();
-                      widget.point.reduce((a, b) => a + b) == 0
+                  return Container(
+                      width: 320,
+                      padding: EdgeInsets.symmetric(vertical: 30),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: COLOR_BORDER, width: 1)),
+                      child: widget.point.reduce((a, b) => a + b) == 0
                           ? Container(
                               alignment: Alignment.center,
                               child: Text('미션을 수행하고 통계를 확인하세요!'),
                             )
                           : RadarChart(
                               RadarChartData(
-                                radarTouchData: RadarTouchData(touchCallback:
-                                    (FlTouchEvent event, response) {
-                                  if (!event.isInterestedForInteractions) {
-                                    setState(() {
-                                      selectedDataSetIndex = -1;
-                                    });
-                                    return;
-                                  }
-                                  setState(() {
-                                    selectedDataSetIndex = response?.touchedSpot
-                                            ?.touchedDataSetIndex ??
-                                        -1;
-                                  });
-                                }),
+                                radarTouchData: RadarTouchData(
+                                    enabled: true,
+                                    touchCallback:
+                                        (FlTouchEvent event, response) {
+                                      // print(response?.touchedDataSetIndex);
+
+                                      if (!event.isInterestedForInteractions) {
+                                        setState(() {
+                                          selectedPoint = -1;
+                                          selectedCategory = '';
+                                        });
+                                        return;
+                                      }
+                                      int selected = response?.touchedSpot
+                                              ?.touchedRadarEntryIndex ??
+                                          -1;
+                                      setState(() {
+                                        selectedPoint = selected != -1
+                                            ? widget.point[selected]
+                                            : -1;
+
+                                        selectedCategory = selected != -1
+                                            ? state.categories[selected].label
+                                            : '';
+                                      });
+                                    }),
                                 dataSets: showingDataSets(),
                                 radarBackgroundColor: Colors.transparent,
                                 borderData: FlBorderData(show: false),
@@ -111,66 +138,10 @@ class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
                               ),
                               swapAnimationDuration:
                                   const Duration(milliseconds: 400),
-                            );
+                            ));
                 }
                 return Container();
               })),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: rawDataSets()
-                .asMap()
-                .map((index, value) {
-                  final isSelected = index == selectedDataSetIndex;
-                  return MapEntry(
-                    index,
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedDataSetIndex = index;
-                        });
-                      },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(vertical: 2),
-                        height: 26,
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? gridColor.withOpacity(0.5)
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(46),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 6),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 400),
-                              curve: Curves.easeInToLinear,
-                              padding: EdgeInsets.all(isSelected ? 8 : 6),
-                              decoration: BoxDecoration(
-                                color: value.color,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            AnimatedDefaultTextStyle(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInToLinear,
-                              style: TextStyle(
-                                color: isSelected ? value.color : gridColor,
-                              ),
-                              child: Text(value.title),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                })
-                .values
-                .toList(),
-          ),
         ],
       ),
     );
@@ -181,9 +152,9 @@ class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
       var index = entry.key;
       var rawDataSet = entry.value;
 
-      final isSelected = index == selectedDataSetIndex
+      final isSelected = index == selectedPoint
           ? true
-          : selectedDataSetIndex == -1
+          : selectedPoint == -1
               ? true
               : false;
 

@@ -88,6 +88,7 @@ const COLOR_DARK_BLUE = Color.fromRGBO(20, 25, 45, 1.0);
 
 const COLOR_GREEN = Color(0xFF375854);
 const COLOR_GREY = Color(0xFFF4F4F5);
+const COLOR_BORDER = Color(0xFFC4C4C4);
 
 const TitleFont =
     TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: COLOR_GREEN);

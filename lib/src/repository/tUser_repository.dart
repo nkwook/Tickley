@@ -23,6 +23,17 @@ class TUserRepository {
     }
   }
 
+  Future<TUser> fetchUserbyId(int id) async {
+    final response =
+        await http.get(Uri.parse(BASE_URL + 'user/' + id.toString()));
+    // print(response.body.toString());
+    if (response.statusCode == 200) {
+      return TUser.fromJson(json.decode(response.body)['data']);
+    } else {
+      throw Exception('Failed to login');
+    }
+  }
+
   // needs to return TUser later.
   Future<int> createUser(
       String nickname, String accessToken, String profileImage) async {

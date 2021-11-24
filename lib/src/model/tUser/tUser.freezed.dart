@@ -28,7 +28,9 @@ class _$TUserTearOff {
       required int point,
       required String createdAt,
       required String updatedAt,
-      required String profileImage}) {
+      required String profileImage,
+      required int rank,
+      required double pointPercentage}) {
     return _TUser(
       accessToken: accessToken,
       nickname: nickname,
@@ -37,6 +39,8 @@ class _$TUserTearOff {
       createdAt: createdAt,
       updatedAt: updatedAt,
       profileImage: profileImage,
+      rank: rank,
+      pointPercentage: pointPercentage,
     );
   }
 
@@ -57,6 +61,8 @@ mixin _$TUser {
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
   String get profileImage => throw _privateConstructorUsedError;
+  int get rank => throw _privateConstructorUsedError;
+  double get pointPercentage => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -74,7 +80,9 @@ abstract class $TUserCopyWith<$Res> {
       int point,
       String createdAt,
       String updatedAt,
-      String profileImage});
+      String profileImage,
+      int rank,
+      double pointPercentage});
 }
 
 /// @nodoc
@@ -94,6 +102,8 @@ class _$TUserCopyWithImpl<$Res> implements $TUserCopyWith<$Res> {
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? profileImage = freezed,
+    Object? rank = freezed,
+    Object? pointPercentage = freezed,
   }) {
     return _then(_value.copyWith(
       accessToken: accessToken == freezed
@@ -124,6 +134,14 @@ class _$TUserCopyWithImpl<$Res> implements $TUserCopyWith<$Res> {
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
               as String,
+      rank: rank == freezed
+          ? _value.rank
+          : rank // ignore: cast_nullable_to_non_nullable
+              as int,
+      pointPercentage: pointPercentage == freezed
+          ? _value.pointPercentage
+          : pointPercentage // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -140,7 +158,9 @@ abstract class _$TUserCopyWith<$Res> implements $TUserCopyWith<$Res> {
       int point,
       String createdAt,
       String updatedAt,
-      String profileImage});
+      String profileImage,
+      int rank,
+      double pointPercentage});
 }
 
 /// @nodoc
@@ -161,6 +181,8 @@ class __$TUserCopyWithImpl<$Res> extends _$TUserCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? profileImage = freezed,
+    Object? rank = freezed,
+    Object? pointPercentage = freezed,
   }) {
     return _then(_TUser(
       accessToken: accessToken == freezed
@@ -191,6 +213,14 @@ class __$TUserCopyWithImpl<$Res> extends _$TUserCopyWithImpl<$Res>
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
               as String,
+      rank: rank == freezed
+          ? _value.rank
+          : rank // ignore: cast_nullable_to_non_nullable
+              as int,
+      pointPercentage: pointPercentage == freezed
+          ? _value.pointPercentage
+          : pointPercentage // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -205,7 +235,9 @@ class _$_TUser implements _TUser {
       required this.point,
       required this.createdAt,
       required this.updatedAt,
-      required this.profileImage});
+      required this.profileImage,
+      required this.rank,
+      required this.pointPercentage});
 
   factory _$_TUser.fromJson(Map<String, dynamic> json) =>
       _$$_TUserFromJson(json);
@@ -224,10 +256,14 @@ class _$_TUser implements _TUser {
   final String updatedAt;
   @override
   final String profileImage;
+  @override
+  final int rank;
+  @override
+  final double pointPercentage;
 
   @override
   String toString() {
-    return 'TUser(accessToken: $accessToken, nickname: $nickname, id: $id, point: $point, createdAt: $createdAt, updatedAt: $updatedAt, profileImage: $profileImage)';
+    return 'TUser(accessToken: $accessToken, nickname: $nickname, id: $id, point: $point, createdAt: $createdAt, updatedAt: $updatedAt, profileImage: $profileImage, rank: $rank, pointPercentage: $pointPercentage)';
   }
 
   @override
@@ -246,12 +282,15 @@ class _$_TUser implements _TUser {
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.profileImage, profileImage) ||
-                other.profileImage == profileImage));
+                other.profileImage == profileImage) &&
+            (identical(other.rank, rank) || other.rank == rank) &&
+            (identical(other.pointPercentage, pointPercentage) ||
+                other.pointPercentage == pointPercentage));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, accessToken, nickname, id, point,
-      createdAt, updatedAt, profileImage);
+      createdAt, updatedAt, profileImage, rank, pointPercentage);
 
   @JsonKey(ignore: true)
   @override
@@ -272,7 +311,9 @@ abstract class _TUser implements TUser {
       required int point,
       required String createdAt,
       required String updatedAt,
-      required String profileImage}) = _$_TUser;
+      required String profileImage,
+      required int rank,
+      required double pointPercentage}) = _$_TUser;
 
   factory _TUser.fromJson(Map<String, dynamic> json) = _$_TUser.fromJson;
 
@@ -290,6 +331,10 @@ abstract class _TUser implements TUser {
   String get updatedAt;
   @override
   String get profileImage;
+  @override
+  int get rank;
+  @override
+  double get pointPercentage;
   @override
   @JsonKey(ignore: true)
   _$TUserCopyWith<_TUser> get copyWith => throw _privateConstructorUsedError;

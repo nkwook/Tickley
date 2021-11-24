@@ -105,7 +105,7 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                                         getPointSumDay(widget
                                                 .weeklyCompletedMission[index])
                                             .toString() +
-                                        ' Points',
+                                        ' Point',
                                     child: Container(
                                         child: Column(children: [
                                       Text(WeekList[index]),
