@@ -59,7 +59,7 @@ class _MyCategoryChartWidgetState extends State<MyCategoryChartWidget> {
                           selectedCategory +
                               ': ' +
                               selectedPoint.toStringAsFixed(0) +
-                              '  ',
+                              ' Point  ',
                           style: TextStyle(
                             color: Color(0xFF727272),
                           ))

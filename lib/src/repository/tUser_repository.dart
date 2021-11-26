@@ -27,6 +27,7 @@ class TUserRepository {
     final response =
         await http.get(Uri.parse(BASE_URL + 'user/' + id.toString()));
     // print(response.body.toString());
+
     if (response.statusCode == 200) {
       return TUser.fromJson(json.decode(response.body)['data']);
     } else {
