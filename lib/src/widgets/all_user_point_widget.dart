@@ -19,7 +19,7 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
       margin: EdgeInsets.symmetric(horizontal: 10),
       // color: Colors.grey,
       decoration: BoxDecoration(color: Colors.grey,
-      borderRadius: BorderRadius.all(Radius.circular(24))),
+        borderRadius: BorderRadius.all(Radius.circular(24))),
       //borderRadius: BorderRadius.all(Radius.circular(20)),
       //padding: EdgeInsets.only(left: 25),
       child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <

@@ -39,7 +39,7 @@ class MissionListScreenState extends State<MissionListScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add, size: 30),
-            backgroundColor: Colors.green,
+            backgroundColor: const Color(0xff375854),
             elevation: 2,
             onPressed: () {
               showModalBottomSheet(
@@ -60,7 +60,7 @@ class MissionListScreenState extends State<MissionListScreen> {
                 padding: EdgeInsets.only(left: 25),
                 child: Text(
                   '에코 미션',
-                  style: BiggerBoldFont,
+                  style: TextStyle(fontSize:30, fontWeight: FontWeight.w700, color: const Color(0xff375854)),
                 )),
             BlocBuilder<WeeklyCompletedMissionCubit,
                 ws.WeeklyCompletedMissionState>(builder: (_, state) {
@@ -97,9 +97,6 @@ class MissionListScreenState extends State<MissionListScreen> {
             return CustomCircularProgressIndicator();
           } else if (state is Loaded) {
             return
-                // Flexible(
-                //     child:
-
                 ListView.separated(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,

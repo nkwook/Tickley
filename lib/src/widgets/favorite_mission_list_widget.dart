@@ -52,11 +52,19 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
       // print(isCompleted);
     }
     return Container(
-        height: 60,
-        child: Material(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            elevation: 2,
-            child: InkWell(
+        height: 80,
+        child: Container(
+          //padding: const EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color(0xffECEDEF),
+                width: 1.0,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(24)),
+            ),
+            
+            child: Container(
+              child: InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 onTap: () {
                   showModalBottomSheet(
@@ -72,18 +80,17 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
                 child: Container(
                     decoration: BoxDecoration(
                       color: isCompleted ? Colors.green[50] : Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.all(Radius.circular(24)),
                     ),
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                     // boxShadow:
-                    padding: const EdgeInsets.all(8),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            utils.convertStringToUnicode(widget.mission.emoji) +
+                            utils.convertStringToUnicode(widget.mission.emoji) + "  "+
                                 widget.mission.label,
-                            style: BiggerFont,
+                            style: TextStyle(fontSize:15, fontWeight: FontWeight.w700, color:Colors.black),
                             textAlign: TextAlign.center,
                           ),
                           InkWell(
@@ -103,11 +110,12 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
                               },
                               child: Icon(
                                 isCompleted
-                                    ? Icons.check_box
-                                    : Icons.check_box_outline_blank_rounded,
-                                color: Colors.grey[500],
+                                    ? Icons.check_circle_rounded
+                                    : Icons.circle_outlined,
+                                color: const Color(0xffF2F6F7),
                                 size: 35,
                               ))
-                        ])))));
+                        ])))
+            )));
   }
 }
