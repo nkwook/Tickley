@@ -38,11 +38,11 @@ class HomeScreenState extends State<HomeScreen> {
       //mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(children: [
-          Text('지금 우리는',
-              style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700))
+          Text(
+                  '지금 우리는',
+                  style: TextStyle(fontSize:30, fontWeight: FontWeight.w700, color: const Color(0xff375854)),
+                )
+                  
         ]),
         BlocBuilder<PointCubit, PointState>(builder: (_, state) {
           if (state is Empty) {
@@ -62,10 +62,10 @@ class HomeScreenState extends State<HomeScreen> {
         Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(top: 30, bottom: 5),
-            padding: EdgeInsets.only(left: 25),
+            //padding: EdgeInsets.only(left: 25),
             child: Column(children: [
               Text(
-                '가장 인기있는 미션',
+                '인기있는 미션 ✨',
                 style: BiggerFont22,
               )
             ])),
@@ -95,7 +95,7 @@ class HomeScreenState extends State<HomeScreen> {
         Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(top: 30, bottom: 0),
-            padding: EdgeInsets.only(left: 25),
+            padding: EdgeInsets.only(left: 0),
             child: Text(
               '카테고리별 저감량',
               style: BiggerFont22,
