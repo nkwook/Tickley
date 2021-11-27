@@ -31,14 +31,14 @@ class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        margin: EdgeInsets.symmetric(horizontal: 10),
+        margin: EdgeInsets.symmetric(horizontal: 0),
         child: Material(
-            elevation: 3,
-            shadowColor: Colors.grey,
+            elevation: 1,
+            // shadowColor: Colors.grey,
             borderRadius: BorderRadius.all(Radius.circular(20)),
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,12 +48,13 @@ class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                               children: <TextSpan>[
-                            TextSpan(
-                                text: widget.mission.label,
-                                style: TextStyle(color: Colors.orangeAccent)),
-                            TextSpan(
+                                TextSpan(
                                 text: utils.convertStringToUnicode(
                                     widget.mission.emoji)),
+                            TextSpan(
+                                text: " "+widget.mission.label,
+                                style: TextStyle(color: Colors.black)),
+                            
                           ])),
                       Row(children: [
                         Icon(Icons.people, color: Colors.grey),

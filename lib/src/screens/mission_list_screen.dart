@@ -39,7 +39,7 @@ class MissionListScreenState extends State<MissionListScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add, size: 30),
-            backgroundColor: Colors.green,
+            backgroundColor: const Color(0xff375854),
             elevation: 2,
             onPressed: () {
               showModalBottomSheet(
@@ -96,24 +96,20 @@ class MissionListScreenState extends State<MissionListScreen> {
           } else if (state is Error) {
             return CustomCircularProgressIndicator();
           } else if (state is Loaded) {
-            return
-                // Flexible(
-                //     child:
-
-                ListView.separated(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: state.missions.length,
-                    padding: const EdgeInsets.all(16),
-                    itemBuilder: (context, i) {
-                      return FavoriteMissionListWidget(
-                          mission: state.missions[i],
-                          userId: widget.tUser.id,
-                          isCompleted: state.missions[i].completed);
-                    },
-                    separatorBuilder: (context, i) {
-                      return const Divider();
-                    });
+            return ListView.separated(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: state.missions.length,
+                padding: const EdgeInsets.all(16),
+                itemBuilder: (context, i) {
+                  return FavoriteMissionListWidget(
+                      mission: state.missions[i],
+                      userId: widget.tUser.id,
+                      isCompleted: state.missions[i].completed);
+                },
+                separatorBuilder: (context, i) {
+                  return const Divider();
+                });
           }
           return Container();
         }));

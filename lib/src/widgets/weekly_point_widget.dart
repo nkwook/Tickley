@@ -52,6 +52,9 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
   }
 
   Color? getWidgetColor(int point) {
+    if (point == 0) {
+      return Colors.white;
+    }
     return Colors.green[point * 100];
   }
 
@@ -60,20 +63,19 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
     final dateList = utils.getDateList();
     return Container(
         margin: EdgeInsets.only(top: 30),
-        height: 120,
+        height: 140,
         child: Material(
             borderRadius: BorderRadius.all(Radius.circular(20)),
-            elevation: 2,
             child: InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 onTap: () {},
                 child: Container(
                     width: 360.0,
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: const Color(0xff375854),
                       borderRadius: BorderRadius.all(Radius.circular(20)),
-                      border: Border.all(color: Colors.black),
+                      //border: Border.all(color: Colors.black),
                     ),
                     // boxShadow:
                     // padding: const EdgeInsets.all(8),
@@ -83,12 +85,21 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                           children: [
                             Text(
                               "주간 에코 포인트",
-                              style: FontBoldGreen20,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
-                            Text('\u{1F331} ' +
-                                getPointSumWeek().toString() +
-                                "  ")
+                            Text(
+                              '\u{1F331} ' +
+                                  getPointSumWeek().toString() +
+                                  "  ",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white),
+                            )
                           ]),
                       Container(
                           height: 60,
@@ -105,26 +116,30 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                                         getPointSumDay(widget
                                                 .weeklyCompletedMission[index])
                                             .toString() +
-                                        ' Point',
+                                        ' Points',
                                     child: Container(
+                                        alignment: Alignment.center,
                                         child: Column(children: [
-                                      Text(WeekList[index]),
-                                      Container(
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  width: 0.5,
-                                                  color: Colors.grey),
-                                              color: getWidgetColor(
-                                                  getPointSumDay(widget
-                                                          .weeklyCompletedMission[
-                                                      index]))),
-                                          width: 40,
-                                          height: 40,
-                                          child: Text(
-                                              dateList[index].day.toString())),
-                                    ])));
+                                          Text(WeekList[index],
+                                              style: TextStyle(
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.white)),
+                                          Container(
+                                              margin: EdgeInsets.only(top: 5),
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: getWidgetColor(
+                                                      getPointSumDay(widget
+                                                              .weeklyCompletedMission[
+                                                          index]))),
+                                              width: 35,
+                                              height: 35,
+                                              child: Text(dateList[index]
+                                                  .day
+                                                  .toString())),
+                                        ])));
                               },
                               scrollDirection: Axis.horizontal,
                               separatorBuilder: (_, index) {
