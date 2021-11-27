@@ -33,8 +33,8 @@ class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         margin: EdgeInsets.symmetric(horizontal: 10),
         child: Material(
-            elevation: 3,
-            shadowColor: Colors.grey,
+            elevation: 1,
+            // shadowColor: Colors.grey,
             borderRadius: BorderRadius.all(Radius.circular(20)),
             child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),

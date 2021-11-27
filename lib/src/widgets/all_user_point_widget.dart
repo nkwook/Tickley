@@ -14,12 +14,20 @@ class AllUserPointWidget extends StatefulWidget {
 class AllUserPointWidgetState extends State<AllUserPointWidget> {
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisAlignment: MainAxisAlignment.start, children: <
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      // color: Colors.grey,
+      decoration: BoxDecoration(color: Colors.grey,
+        borderRadius: BorderRadius.all(Radius.circular(24))),
+      //borderRadius: BorderRadius.all(Radius.circular(20)),
+      //padding: EdgeInsets.only(left: 25),
+      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
         Widget>[
       Container(
           alignment: Alignment.centerLeft,
-          margin: EdgeInsets.only(top: 70, bottom: 15),
-          padding: EdgeInsets.only(left: 25),
+          // margin: EdgeInsets.only(top: 70, bottom: 15),
+          // padding: EdgeInsets.only(left: 25),
           child: RichText(
             text: TextSpan(style: BiggerBoldFont, children: <TextSpan>[
               TextSpan(text: "지금까지 "),
@@ -33,45 +41,7 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
               TextSpan(text: "의 CO2를 저감했어요")
             ]),
           )),
-      Container(
-          width: 300,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 5, color: Colors.grey.shade300)),
-          child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
-            Container(
-                width: 150,
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: AspectRatio(
-                        aspectRatio: 6.6 / (widget.point * 0.01),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  // scale: 1.5,
-                                  image: AssetImage('assets/pine-tree.png'),
-                                  fit: BoxFit.fitWidth,
-                                  alignment: FractionalOffset.bottomCenter)),
-                        )))),
-            Container(
-                width: 150,
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: AspectRatio(
-                        aspectRatio: 0.6,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  // scale: 1.5,
-                                  image: AssetImage('assets/pine-tree.png'),
-                                  fit: BoxFit.fitWidth,
-                                  alignment: FractionalOffset.bottomCenter,
-                                  colorFilter: ColorFilter.mode(
-                                      Colors.white.withOpacity(0.05),
-                                      BlendMode.dstATop))),
-                        ))))
-          ])),
-      Container(
+           Container(
           alignment: Alignment.centerRight,
           margin: EdgeInsets.only(top: 15, bottom: 10),
           padding: EdgeInsets.only(right: 40),
@@ -87,6 +57,43 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
               TextSpan(text: "\n가 1년에 흡수하는 양이랍니다"),
             ]),
           )),
-    ]);
+      Container(
+          width: MediaQuery.of(context).size.width,
+          height: 300,
+          child: Stack(alignment: AlignmentDirectional.bottomCenter, children: [
+            Container(
+                width: 300,
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: AspectRatio(
+                        aspectRatio: 6.6 / (widget.point * 0.01),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  // scale: 1.5,
+                                  image: AssetImage('assets/tree.png'),
+                                  fit: BoxFit.fitWidth,
+                                  alignment: FractionalOffset.bottomCenter)),
+                        )))),
+            Container(
+                width: 300,
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: AspectRatio(
+                        aspectRatio: 0.6,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  // scale: 1.5,
+                                  image: AssetImage('assets/tree.png'),
+                                  fit: BoxFit.fitWidth,
+                                  alignment: FractionalOffset.bottomCenter,
+                                  colorFilter: ColorFilter.mode(
+                                      Colors.white.withOpacity(0.05),
+                                      BlendMode.dstATop))),
+                        ))))
+          ])),
+    ])
+    );
   }
 }

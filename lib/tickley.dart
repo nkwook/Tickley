@@ -65,7 +65,7 @@ class TickleyApp extends StatelessWidget {
           )
         ],
         child: MaterialApp(
-            title: '티끌리',
+            title: '티끌이',
             home: Tickley(),
             theme: new ThemeData(
               scaffoldBackgroundColor: Colors.white,
