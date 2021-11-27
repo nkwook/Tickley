@@ -40,7 +40,7 @@ dependencies:
   firebase_auth: "^3.1.2"
   google_sign_in: "^5.1.1"
   
-  flutter_native_splash: "^1.2.4"
+  # flutter_native_splash: "^1.2.4"
 
   carousel_slider: "^4.0.0"
 
@@ -109,6 +109,6 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 
-flutter_native_splash:
-  color: "#42a5f5"
-  # background_image: "assets/logo.png"
+# flutter_native_splash:
+#   background_image: "assets/splash_screen.png"
+  # color: "#42a5f5"

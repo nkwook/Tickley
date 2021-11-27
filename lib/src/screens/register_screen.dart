@@ -20,7 +20,10 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('회원 가입')),
+        appBar: AppBar(
+            title: Text('회원 가입'),
+            backgroundColor: Colors.white,
+            foregroundColor: COLOR_GREEN),
         body: Center(
             child: Container(
                 margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -50,7 +53,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return '닉네임을 입력해주세요';
+                              } else if (value.length > 10) {
+                                return '닉네임은 10자 이내로 설정해주세요.';
                               }
+
                               nickname = value;
                               return null;
                             },
@@ -58,32 +64,42 @@ class RegisterScreenState extends State<RegisterScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: ElevatedButton(
-                              onPressed: () async {
-                                User? user =
-                                    await Authentication.signInWithGoogle(
-                                        context: context);
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            COLOR_GREY)),
+                                onPressed: () async {
+                                  // if (!signable) return;
 
-                                if (_formKey.currentState!.validate()) {
-                                  try {
-                                    String? url = 'https://picsum.photos/200';
-                                    if (user!.photoURL != null) {
-                                      url = user.photoURL;
+                                  if (_formKey.currentState!.validate()) {
+                                    try {
+                                      User? user =
+                                          await Authentication.signInWithGoogle(
+                                              context: context);
+
+                                      String? url = 'https://picsum.photos/200';
+                                      if (user!.photoURL != null) {
+                                        url = user.photoURL;
+                                      }
+                                      //not debugged + need to consider err case
+
+                                      BlocProvider.of<AuthCubit>(context)
+                                          .createUser(nickname, user.uid, url!);
+                                    } catch (error) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                '오류입니다. 네트워크 환경을 확인해주세요.')),
+                                      );
                                     }
-                                    //not debugged + need to consider err case
-
-                                    BlocProvider.of<AuthCubit>(context)
-                                        .createUser(nickname, user.uid, url!);
-                                  } catch (error) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content:
-                                              Text('오류입니다. 네트워크 환경을 확인해주세요.')),
-                                    );
                                   }
-                                }
-                              },
-                              child: Center(child: const Text('Login')),
-                            ),
+                                },
+                                child: Center(
+                                  child: const Text('회원 가입',
+                                      style: TextStyle(
+                                          color: COLOR_GREEN, fontSize: 18)),
+                                )),
                           ),
                         ],
                       ),

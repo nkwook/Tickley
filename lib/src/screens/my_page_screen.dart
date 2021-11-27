@@ -50,9 +50,24 @@ class _MyPageScreenState extends State<MyPageScreen> {
           child: Column(
             children: [
               Container(
-                  margin: EdgeInsets.only(left: 24),
-                  alignment: Alignment.topLeft,
-                  child: Text("마이페이지", style: TitleFont)),
+                  margin: EdgeInsets.only(left: 24, right: 25),
+                  // alignment: Alignment.topLeft,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("마이페이지", style: TitleFont),
+                        // // GestureDetector(
+                        // //     onTap: () {
+                        // //       Navigator.push(
+                        // //           context,
+                        // //           MaterialPageRoute(
+                        // //               builder: (context) =>
+                        // //                   HistoryScreen(tUser: widget.tUser)));
+                        // //     },
+                        //     child: Icon(Icons.settings,
+                        //         size: 35, color: COLOR_GREEN))
+                      ])),
               BlocBuilder<TUserCubit, ts.TUserState>(builder: (_, state) {
                 if (state is ts.Empty) {
                   return CustomCircularProgressIndicator();
@@ -68,10 +83,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 }
                 return Container();
               }),
-              // Container(
-              //     // width: 320,
-              //     // height: 55,
-              // child:
               Material(
                   color: COLOR_GREEN,
                   elevation: 2,
@@ -93,22 +104,30 @@ class _MyPageScreenState extends State<MyPageScreen> {
                           width: 320,
                           height: 55,
                           child: Text('내 수행 목록')))),
-
-              _logoutButtonTemp()
+              SizedBox(height: 15),
+              _logoutButton()
 // myPageList()
             ],
           ),
         ));
   }
 
-  Widget _logoutButtonTemp() {
+  Widget _logoutButton() {
     return Material(
-        child: InkWell(
-            onTap: () {
-              Authentication.signOut(context: context);
-            },
-            child: Container(
-              child: Text("Log out"),
-            )));
+      color: COLOR_GREY,
+      elevation: 0,
+      textStyle: TextStyle(
+          color: COLOR_BORDER, fontSize: 18, fontWeight: FontWeight.bold),
+      borderRadius: BorderRadius.circular(16),
+      child: InkWell(
+          onTap: () {
+            Authentication.signOut(context: context);
+          },
+          child: Container(
+              alignment: Alignment.center,
+              width: 320,
+              height: 50,
+              child: Text('로그아웃'))),
+    );
   }
 }
