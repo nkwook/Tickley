@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/mission/mission_cubit.dart';
 import 'package:tickley/src/utils/constants.dart';
@@ -26,36 +27,37 @@ class CategoryWidget extends StatefulWidget {
 }
 
 class CategoryWidgetState extends State<CategoryWidget> {
-  // String e = '\\uD83D\\uDEAE';
   Utils utils = new Utils();
+  final TextStyle titleStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: COLOR_GREEN);
 
-  // String s='0x'+widget.emoji;
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Material(
             child: InkWell(
-      borderRadius: BorderRadius.all(Radius.circular(20)),
-      onTap: () {
-        BlocProvider.of<MissionCubit>(context)
-            .fetchMissionsByCategory(widget.id);
-
-        widget.updateCurrentCategory(widget.id);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            // boxShadow:
-            color: widget.currentCategory == widget.id
-                ? Colors.green[500]
-                : Colors.white,
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        padding: const EdgeInsets.all(8),
-        child: Text(utils.convertStringToUnicode(widget.emoji) + widget.label,
-            style: widget.currentCategory == widget.id
-                ? BiggerWhiteFont
-                : BiggerFont),
-      ),
-    )));
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              onTap: () {
+                BlocProvider.of<MissionCubit>(context).fetchMissionsByCategory(widget.id);
+                widget.updateCurrentCategory(widget.id);
+              },
+              child: Container(
+                height: 48,
+                padding: EdgeInsets.symmetric(vertical: 9, horizontal: 14),
+                decoration: BoxDecoration(
+                    color: widget.currentCategory == widget.id
+                        ? COLOR_GREEN.withOpacity(0.13)
+                        : Colors.white,
+                    border: widget.currentCategory == widget.id
+                        ? Border.all(color: COLOR_GREEN)
+                        : Border.all(color: COLOR_BORDER),
+                    borderRadius: BorderRadius.all(Radius.circular(24))),
+                child: Text(widget.label,
+                    style: widget.currentCategory == widget.id
+                        ? titleStyle
+                        : titleStyle.copyWith(color: COLOR_BORDER)),
+              ),
+            )
+        )
+    );
   }
 }

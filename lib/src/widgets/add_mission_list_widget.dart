@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
+import 'package:tickley/src/utils/widget_functions.dart';
 
 class AddMissionListWidget extends StatefulWidget {
   Mission mission;
@@ -43,12 +45,12 @@ class AddMissionListWidgetState extends State<AddMissionListWidget> {
     }
     return Container(
         width: 350,
-        height: 60,
+        height: 72,
         child: Material(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            elevation: 2,
+            borderRadius: BorderRadius.all(Radius.circular(24)),
+            elevation: 0,
             child: InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+                borderRadius: BorderRadius.all(Radius.circular(24)),
                 onTap: () {
                   if (!isFavorite) {
                     BlocProvider.of<FavoriteMissionCubit>(context)
@@ -82,32 +84,43 @@ class AddMissionListWidgetState extends State<AddMissionListWidget> {
                         content: Text('체크리스트에서 삭제되었습니다.')));
                   }
                 },
-                child: Container(
+                child: Stack(children: [
+                  Container(
                     // width: 350,
-                    decoration: BoxDecoration(
-                      color: isFavorite ? Colors.white : Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      border: Border.all(color: Colors.black),
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              width: 250,
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                utils.convertStringToUnicode(
-                                        widget.mission.emoji) +
-                                    widget.mission.label,
-                                style: BiggerFont,
-                                textAlign: TextAlign.center,
-                              )),
-                          Text('\u{1F331} ' + widget.mission.point.toString(),
-                              style: BiggerFont),
-                          Icon(Icons.star,
-                              color: isFavorite ? Colors.yellow : Colors.white,
-                              size: 32)
-                        ])))));
+                      decoration: BoxDecoration(
+                        color: isFavorite ? Colors.white : Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(24)),
+                        border: Border.all(color: Color(0xFFECEDEF)),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                width: 250,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  utils.convertStringToUnicode(
+                                      widget.mission.emoji) + '\t' +
+                                      widget.mission.label,
+                                  style: TextStyle(fontSize: 15, color: COLOR_DARK_BLUE, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                )
+                            ),
+                            PointBlock(point: widget.mission.point)
+
+                          ])
+                  ),
+                  Positioned(
+                    top: 8,
+                    left: 4,
+                    child: Icon(Icons.star,
+                        color: isFavorite ? COLOR_YELLOW : Colors.transparent,
+                        size: 32),
+                  )
+                ])
+            )
+        )
+    );
   }
 }
