@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/category/category_cubit.dart';
 import 'package:tickley/src/bloc/category/category_state.dart' as cs;
@@ -68,32 +69,35 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
               } else if (state is cs.Loading) {
                 return Center(child: CustomCircularProgressIndicator());
               } else if (state is cs.Loaded) {
-                return Center(
-                    heightFactor: 1,
-                    child: Column(children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 15),
-                        child: Text(
-                          "Add Mission",
-                          style: BiggerFont,
+                return Column(
+                        children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25, left: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "미션 추가",
+                              style: TextStyle(color: COLOR_GREEN, fontSize: 24, fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                                height: 48,
+                                child: CategoryList(
+                                    categories: state.categories,
+                                    updateCurrentCategory: updateCurrentCategory,
+                                    currentCategory: currentCategory)
+                            ),
+
+                          ],
                         ),
                       ),
-                      Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          height: 70,
-                          child: CategoryList(
-                              categories: state.categories,
-                              updateCurrentCategory: updateCurrentCategory,
-                              currentCategory: currentCategory)),
-                      Divider(),
                       currentCategory == -1
                           ? NewMissionFormWidget()
                           : Container(
-                              margin: EdgeInsets.only(top: 5, bottom: 15),
+                              margin: EdgeInsets.only(top: 20, bottom: 10),
                               child: Text('관심있는 활동들을 미션 목록에 추가해보세요',
                                   textAlign: TextAlign.center,
-                                  style: BiggerGreyFont)),
+                                  style: TextStyle(fontSize: 15, color: Color(0xFFADADAD), fontWeight: FontWeight.bold))),
                       BlocBuilder<MissionCubit, ms.MissionState>(
                           builder: (_, missionState) {
                         if (missionState is ms.Empty) {
@@ -115,7 +119,8 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
                         }
                         return Container();
                       })
-                    ]));
+                    ])
+                ;
               }
               return Container();
             })));
@@ -140,7 +145,7 @@ class CategoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       separatorBuilder: (context, index) {
-        return Container(width: 20);
+        return Container(width: 10);
       },
       padding: EdgeInsets.only(top: 8.0),
       scrollDirection: Axis.horizontal,
