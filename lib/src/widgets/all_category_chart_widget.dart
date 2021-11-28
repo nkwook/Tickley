@@ -29,7 +29,7 @@ class AllCategoryChartWidgetState extends State<AllCategoryChartWidget> {
   ];
   final textColorList = [0xff044d7c, 0xff90672d, 0xff4c3788, 0xff0c7f55];
   // final percentageList=[]
-  final radiusList = [80.0, 65.0, 60.0, 70.0];
+  final radiusList = [75.0, 65.0, 60.0, 70.0];
 
   @override
   void initState() {
@@ -46,12 +46,15 @@ class AllCategoryChartWidgetState extends State<AllCategoryChartWidget> {
         child: Card(
           color: Colors.white,
           child: Column(children: <Widget>[
+            SizedBox(
+              height: 20,
+            ),
             Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex: 8,
+                    flex: 10,
                     child: AspectRatio(
                         aspectRatio: 1.1,
                         child: BlocBuilder<CategoryPointCubit,
@@ -101,10 +104,10 @@ class AllCategoryChartWidgetState extends State<AllCategoryChartWidget> {
                       return CustomCircularProgressIndicator();
                     } else if (state is Loaded) {
                       return Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: Container(
                               height: 200,
-                              width: 120,
+                              width: 100,
                               child: ListView.separated(
                                   itemBuilder: (context, index) {
                                     return index == state.categories.length - 1
@@ -114,7 +117,7 @@ class AllCategoryChartWidgetState extends State<AllCategoryChartWidget> {
                                             text: state.categories[index].label,
                                             isSquare: false,
                                             size:
-                                                touchedIndex == index ? 16 : 14,
+                                                touchedIndex == index ? 15 : 13,
                                             textColor: touchedIndex == index
                                                 ? Colors.black
                                                 : Colors.grey,
@@ -127,7 +130,7 @@ class AllCategoryChartWidgetState extends State<AllCategoryChartWidget> {
                     }
                     return Container();
                   }),
-                  SizedBox(width: 25)
+                  SizedBox(width: 10)
                 ]),
           ]),
         ));

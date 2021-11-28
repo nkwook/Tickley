@@ -103,7 +103,9 @@ class _MyPageScreenState extends State<MyPageScreen> {
                           alignment: Alignment.center,
                           width: 320,
                           height: 55,
-                          child: Text('내 수행 목록')))),
+                          child: Text('내 수행 목록'))
+                  )
+              ),
               SizedBox(height: 15),
               _logoutButton()
 // myPageList()

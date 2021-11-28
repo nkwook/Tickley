@@ -68,6 +68,7 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 onTap: () {
                   showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
                       context: context,
                       builder: (BuildContext context) {
                         return MissionDetailModal(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:tickley/src/utils/constants.dart';
 
 Widget addVerticalSpace(double height) {
   return SizedBox(height: height);
@@ -78,6 +80,30 @@ class Indicator extends StatelessWidget {
               fontSize: 14, fontWeight: FontWeight.bold, color: textColor),
         )
       ],
+    );
+  }
+}
+
+
+class PointBlock extends StatelessWidget {
+  final int point;
+
+  const PointBlock({
+    Key? key,
+    required this.point,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Container(
+        width: 46,
+        height: 34,
+        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), color: COLOR_YELLOW),
+        child: Text('\u{1F331} ' + point.toString(), style: TextStyle(color: COLOR_GREEN, fontWeight: FontWeight.bold))
+      ),
     );
   }
 }

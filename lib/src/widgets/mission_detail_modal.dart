@@ -5,6 +5,7 @@ import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
+import 'package:tickley/src/utils/widget_functions.dart';
 
 class MissionDetailModal extends StatefulWidget {
   Mission mission;
@@ -25,72 +26,87 @@ class MissionDetailModal extends StatefulWidget {
 
 class MissionDetailModalState extends State<MissionDetailModal> {
   Utils utils = new Utils();
-  final _normalFont = const TextStyle(fontSize: 15.0);
+  final _normalFont = const TextStyle(fontSize: 15.0, color: Color(0xFFADADAD));
+  final _missionTitle = const TextStyle(fontSize: 18.0, color: COLOR_GREEN, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
     return Container(
         height: 320,
-        child: Center(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(25.0),
+                topRight: const Radius.circular(25.0))),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(height: 20),
-              Text(
-                  utils.convertStringToUnicode(widget.mission.emoji) +
-                      widget.mission.label,
-                  style: BiggerFont),
-              Divider(),
-              Container(
-                height: 150,
-                padding: EdgeInsets.all(15),
-                child: Text(widget.mission.description, style: _normalFont),
-              ),
-              Material(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  elevation: 2,
-                  child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    onTap: () async {
-                      if (!widget.isCompleted) {
-                        BlocProvider.of<FavoriteMissionCubit>(context)
-                            .postMissionCompleted(
-                                widget.userId, widget.mission.id);
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(height: 20),
+                Row(
+                  children: [
+                    Text(
+                        utils.convertStringToUnicode(widget.mission.emoji) + '\t' +
+                            widget.mission.label,
+                        style: _missionTitle),
+                    PointBlock(point: widget.mission.point)
+                  ],
+                ),
+                Container(
+                  height: 165,
+                  padding: EdgeInsets.only(top: 16),
+                  child: Text(widget.mission.description, style: _normalFont),
+                ),
+                Material(
+                      color: COLOR_GREEN,
+                      elevation: 2,
+                      textStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                      borderRadius: BorderRadius.circular(16),
+                      child: InkWell(
+                          onTap: () async {
+                            if (!widget.isCompleted) {
+                              BlocProvider.of<FavoriteMissionCubit>(context)
+                                  .postMissionCompleted(
+                                  widget.userId, widget.mission.id);
 
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('환경 보호 성공! ' +
-                                widget.mission.point.toString() +
-                                '점 을 얻었어요.')));
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text('환경 보호 성공! ' +
+                                      widget.mission.point.toString() +
+                                      '점 을 얻었어요.')));
 
-                        Navigator.pop(context);
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text('환경 보호에 동참해주셔서 감사합니다\u{1F603}')));
-                        Navigator.pop(context);
-                      }
-                    },
-                    child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(color: Colors.black),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 25),
-                        child: widget.isCompleted
-                            ? Text(
-                                '완료한 활동\u{1F44D}',
-                                style: FontBoldGreen20,
+                              Navigator.pop(context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text('환경 보호에 동참해주셔서 감사합니다\u{1F603}')));
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 55,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(10)),
+                              ),
+                              child: widget.isCompleted
+                                  ? const Text(
+                                '완료한 활동',
                                 textAlign: TextAlign.center,
                               )
-                            : Text(
-                                '완료하기\u{2705}',
-                                style: FontBoldGreen20,
+                                  : const Text(
+                                '완료하기',
                                 textAlign: TextAlign.center,
                               )),
-                  ))
-            ],
-          ),
-        ));
+                      )
+                  ),
+
+              ],
+            ),
+        ),
+        );
   }
 }
