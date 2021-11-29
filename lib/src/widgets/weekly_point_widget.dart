@@ -54,8 +54,10 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
   Color? getWidgetColor(int point) {
     if (point == 0) {
       return Colors.white;
+    } else if (point > 180) {
+      point = 180;
     }
-    return Colors.green[point * 100];
+    return Colors.green[((point ~/ 20) + 1) * 100];
   }
 
   @override
@@ -75,10 +77,7 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                     decoration: BoxDecoration(
                       color: const Color(0xff375854),
                       borderRadius: BorderRadius.all(Radius.circular(20)),
-                      //border: Border.all(color: Colors.black),
                     ),
-                    // boxShadow:
-                    // padding: const EdgeInsets.all(8),
                     child: Column(children: [
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

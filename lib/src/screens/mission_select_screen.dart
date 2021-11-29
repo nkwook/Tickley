@@ -10,7 +10,7 @@ import 'package:tickley/src/bloc/mission/mission_state.dart' as ms;
 import 'package:tickley/src/model/category/category.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
-import 'package:tickley/src/screens/sugget_mission_screen.dart';
+
 import 'package:tickley/src/utils/constants.dart';
 
 import 'package:tickley/src/utils/widget_functions.dart';
@@ -27,8 +27,8 @@ class MissionSelectScreen extends StatefulWidget {
 }
 
 class MissionSelectScreenState extends State<MissionSelectScreen> {
-  int userId = 0;
   int currentCategory = 1;
+  bool isSuggestion = false;
 
   @override
   void initState() {
@@ -40,6 +40,12 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
   void updateCurrentCategory(int id) async {
     setState(() {
       currentCategory = id;
+    });
+  }
+
+  void setIsSuggestion() {
+    setState(() {
+      isSuggestion = !isSuggestion;
     });
   }
 
@@ -60,69 +66,76 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
                 borderRadius: BorderRadius.only(
                     topLeft: const Radius.circular(25.0),
                     topRight: const Radius.circular(25.0))),
-            child: SingleChildScrollView(child:
-                BlocBuilder<CategoryCubit, cs.CategoryState>(
-                    builder: (_, state) {
-              if (state is cs.Empty) {
-                return Center(child: CustomCircularProgressIndicator());
-              } else if (state is cs.Error) {
-                return Center(child: CustomCircularProgressIndicator());
-              } else if (state is cs.Loading) {
-                return Center(child: CustomCircularProgressIndicator());
-              } else if (state is cs.Loaded) {
-                return Column(
-                        children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25, left: 24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "미션 추가",
-                              style: TextStyle(color: COLOR_GREEN, fontSize: 24, fontWeight: FontWeight.bold),
+            child: isSuggestion
+                ? NewMissionFormWidget(setSuggestion: setIsSuggestion)
+                : SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
+                    child: BlocBuilder<CategoryCubit, cs.CategoryState>(
+                        builder: (_, state) {
+                      if (state is cs.Empty) {
+                        return Center(child: CustomCircularProgressIndicator());
+                      } else if (state is cs.Error) {
+                        return Center(child: CustomCircularProgressIndicator());
+                      } else if (state is cs.Loading) {
+                        return Center(child: CustomCircularProgressIndicator());
+                      } else if (state is cs.Loaded) {
+                        return Column(children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 25, left: 24),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "미션 추가",
+                                  style: TextStyle(
+                                      color: COLOR_GREEN,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                    height: 48,
+                                    child: CategoryList(
+                                        categories: state.categories,
+                                        updateCurrentCategory:
+                                            updateCurrentCategory,
+                                        currentCategory: currentCategory)),
+                              ],
                             ),
-                            Container(
-                                height: 48,
-                                child: CategoryList(
-                                    categories: state.categories,
-                                    updateCurrentCategory: updateCurrentCategory,
-                                    currentCategory: currentCategory)
-                            ),
-
-                          ],
-                        ),
-                      ),
-                      Container(
+                          ),
+                          Container(
                               margin: EdgeInsets.only(top: 20, bottom: 10),
                               child: Text('관심있는 활동들을 미션 목록에 추가해보세요',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 15, color: Color(0xFFADADAD), fontWeight: FontWeight.bold))),
-                      BlocBuilder<MissionCubit, ms.MissionState>(
-                          builder: (_, missionState) {
-                        if (missionState is ms.Empty) {
-                          return Center(
-                              child: CustomCircularProgressIndicator());
-                        } else if (missionState is ms.Error) {
-                          return Center(
-                              child: CustomCircularProgressIndicator());
-                        } else if (missionState is ms.Loading) {
-                          return Center(
-                              child: CustomCircularProgressIndicator());
-                        } else if (missionState is ms.Loaded) {
-                          return Container(
-                              width: 350,
-                              child: MissionList(
-                                missions: missionState.missions,
-                                userId: widget.tUser.id,
-                              ));
-                        }
-                        return Container();
-                      })
-                    ])
-                ;
-              }
-              return Container();
-            })));
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Color(0xFFADADAD),
+                                      fontWeight: FontWeight.bold))),
+                          BlocBuilder<MissionCubit, ms.MissionState>(
+                              builder: (_, missionState) {
+                            if (missionState is ms.Empty) {
+                              return Center(
+                                  child: CustomCircularProgressIndicator());
+                            } else if (missionState is ms.Error) {
+                              return Center(
+                                  child: CustomCircularProgressIndicator());
+                            } else if (missionState is ms.Loading) {
+                              return Center(
+                                  child: CustomCircularProgressIndicator());
+                            } else if (missionState is ms.Loaded) {
+                              return Container(
+                                  width: 350,
+                                  child: MissionList(
+                                    setSuggestion: setIsSuggestion,
+                                    missions: missionState.missions,
+                                    userId: widget.tUser.id,
+                                  ));
+                            }
+                            return Container();
+                          })
+                        ]);
+                      }
+                      return Container();
+                    })));
   }
 }
 
@@ -138,7 +151,6 @@ class CategoryList extends StatelessWidget {
       required this.updateCurrentCategory,
       required this.currentCategory})
       : super(key: key);
-  // categories.add(Category(label: '새 미션 추가', emoji: '\u{1F606}', id: -1));
 
   @override
   Widget build(BuildContext context) {
@@ -165,12 +177,14 @@ class CategoryList extends StatelessWidget {
 class MissionList extends StatefulWidget {
   final List<Mission> missions;
   int userId;
+  Function setSuggestion;
 
-  MissionList({
-    Key? key,
-    required this.missions,
-    required this.userId,
-  }) : super(key: key);
+  MissionList(
+      {Key? key,
+      required this.missions,
+      required this.userId,
+      required this.setSuggestion})
+      : super(key: key);
   MissionListState createState() => MissionListState();
 }
 
@@ -186,61 +200,40 @@ class MissionListState extends State<MissionList> {
       else if (state is Error)
         return CustomCircularProgressIndicator();
       else if (state is Loaded) {
-        return ListView.separated(
-          separatorBuilder: (context, index) {
-            return Container(height: 10);
-          },
-          shrinkWrap: true,
-          itemCount: widget.missions.length + 1,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return Material(
-                  color: COLOR_GREEN,
-                  elevation: 2,
-                  textStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                  borderRadius: BorderRadius.circular(16),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  SuggetMissionScreen()));
-                    },
-                    child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 55,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        child: Text(
-                          '새 미션 제안할래요!',
-                          textAlign: TextAlign.center,
-                        )
-                    ),
-                  )
-              );
-            }
+        return ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6,
+            ),
+            child: ListView.separated(
+              separatorBuilder: (context, index) {
+                return Container(height: 10);
+              },
+              shrinkWrap: true,
+              itemCount: widget.missions.length + 1,
+              itemBuilder: (context, index) {
+                if (index == widget.missions.length) {
+                  return GreenButton(
+                      text: '새 미션 제안할래요!',
+                      onTapFunction: () {
+                        widget.setSuggestion();
+                      });
+                }
 
-            bool isFavorite = false;
-            for (int i = 0; i < state.missions.length; i++) {
-              if (state.missions[i].id == widget.missions[index].id) {
-                isFavorite = true;
-                break;
-              }
-            }
+                bool isFavorite = false;
+                for (int i = 0; i < state.missions.length; i++) {
+                  if (state.missions[i].id == widget.missions[index].id) {
+                    isFavorite = true;
+                    break;
+                  }
+                }
 
-            return AddMissionListWidget(
-              mission: widget.missions[index],
-              userId: widget.userId,
-              isFavorite: isFavorite,
-            );
-          },
-        );
+                return AddMissionListWidget(
+                  mission: widget.missions[index],
+                  userId: widget.userId,
+                  isFavorite: isFavorite,
+                );
+              },
+            ));
       }
 
       return Container();

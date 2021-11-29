@@ -15,7 +15,7 @@ class CategoryCubit extends Cubit<CategoryState> {
       final resp = await this.repository.fetchCategories();
 
       final categories = resp;
-      categories.add(Category(label: '새 미션 추가', emoji: '\u{1F606}', id: -1));
+      // categories.add(Category(label: '새 미션 추가', emoji: '\u{1F606}', id: -1));
       emit(Loaded(categories: categories));
     } catch (e) {
       emit(Error(message: e.toString()));

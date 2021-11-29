@@ -53,7 +53,7 @@ class PointRepository {
     ]);
 
     final result = [
-      getPointsFromResponse(responses[0]),
+      getPointsFromResponse(responses[0]) + 0.01,
       getPointsFromResponse(responses[1]),
       getPointsFromResponse(responses[2]),
       getPointsFromResponse(responses[3])

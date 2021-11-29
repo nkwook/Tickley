@@ -19,4 +19,20 @@ class MissionRepository {
       throw Exception('Failed to load missions');
     }
   }
+
+  Future<bool> postMissionSuggestion(String label, String description) async {
+    final response = await http.post(
+      Uri.parse(BASE_URL + 'task/tip-off'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, String>{'label': label, 'description': description}),
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Failed to login');
+    }
+  }
 }

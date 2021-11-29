@@ -11,10 +11,12 @@ Widget addHorizontalSpace(double width) {
 }
 
 Widget CustomCircularProgressIndicator() {
-  return Container(
-      // height: 100,
-      child: CircularProgressIndicator(
-          valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey)));
+  return SizedBox(
+      height: 50,
+      width: 50,
+      child: Center(
+          child: CircularProgressIndicator(
+              valueColor: new AlwaysStoppedAnimation<Color>(Colors.grey))));
 }
 
 class MyTooltip extends StatelessWidget {
@@ -84,7 +86,6 @@ class Indicator extends StatelessWidget {
   }
 }
 
-
 class PointBlock extends StatelessWidget {
   final int point;
 
@@ -95,15 +96,51 @@ class PointBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: Container(
-        width: 46,
-        height: 34,
-        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 8),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), color: COLOR_YELLOW),
-        child: Text('\u{1F331} ' + point.toString(), style: TextStyle(color: COLOR_GREEN, fontWeight: FontWeight.bold))
-      ),
-    );
+    return
+        // Padding(
+        //     padding: const EdgeInsets.only(left: 8),
+        //     child:
+
+        Container(
+            alignment: Alignment.center,
+            width: 50,
+            height: 34,
+            padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24), color: COLOR_YELLOW),
+            child: Text('\u{1F331} ' + point.toString(),
+                style: TextStyle(
+                    color: COLOR_GREEN, fontWeight: FontWeight.bold)));
+  }
+}
+
+class GreenButton extends StatefulWidget {
+  final String text;
+  final Function onTapFunction;
+
+  const GreenButton({Key? key, required this.text, required this.onTapFunction})
+      : super(key: key);
+
+  GreenButtonState createState() => GreenButtonState();
+}
+
+class GreenButtonState extends State<GreenButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        color: COLOR_GREEN,
+        elevation: 2,
+        textStyle: TextStyle(
+            color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+        borderRadius: BorderRadius.circular(16),
+        child: InkWell(
+            onTap: () {
+              widget.onTapFunction();
+            },
+            child: Container(
+                alignment: Alignment.center,
+                width: 320,
+                height: 55,
+                child: Text(widget.text))));
   }
 }

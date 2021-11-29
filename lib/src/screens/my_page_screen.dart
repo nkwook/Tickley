@@ -57,16 +57,6 @@ class _MyPageScreenState extends State<MyPageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text("마이페이지", style: TitleFont),
-                        // // GestureDetector(
-                        // //     onTap: () {
-                        // //       Navigator.push(
-                        // //           context,
-                        // //           MaterialPageRoute(
-                        // //               builder: (context) =>
-                        // //                   HistoryScreen(tUser: widget.tUser)));
-                        // //     },
-                        //     child: Icon(Icons.settings,
-                        //         size: 35, color: COLOR_GREEN))
                       ])),
               BlocBuilder<TUserCubit, ts.TUserState>(builder: (_, state) {
                 if (state is ts.Empty) {
@@ -83,32 +73,17 @@ class _MyPageScreenState extends State<MyPageScreen> {
                 }
                 return Container();
               }),
-              Material(
-                  color: COLOR_GREEN,
-                  elevation: 2,
-                  textStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                  borderRadius: BorderRadius.circular(16),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    HistoryScreen(tUser: widget.tUser)));
-                      },
-                      child: Container(
-                          alignment: Alignment.center,
-                          width: 320,
-                          height: 55,
-                          child: Text('내 수행 목록'))
-                  )
-              ),
+              GreenButton(
+                  text: '내 수행 목록',
+                  onTapFunction: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                HistoryScreen(tUser: widget.tUser)));
+                  }),
               SizedBox(height: 15),
               _logoutButton()
-// myPageList()
             ],
           ),
         ));

@@ -65,7 +65,7 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
                     children: <TextSpan>[
                       TextSpan(text: "총 "),
                       TextSpan(
-                        text: (widget.point * 0.01).toString() + "kg",
+                        text: (widget.point * 0.01).toStringAsFixed(2) + "kg",
                       ),
                       TextSpan(text: "의 CO2를 저감했습니다")
                     ]),

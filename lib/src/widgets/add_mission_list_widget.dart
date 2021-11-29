@@ -76,9 +76,6 @@ class AddMissionListWidgetState extends State<AddMissionListWidget> {
                       isFavorite = false;
                     });
 
-                    // _modelScaffoldKey.currentState!.showSnackBar(const SnackBar(
-                    //     behavior: SnackBarBehavior.floating,
-                    //     content: Text('체크리스트에서 삭제되었습니다.')));
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         behavior: SnackBarBehavior.floating,
                         content: Text('체크리스트에서 삭제되었습니다.')));
@@ -86,7 +83,7 @@ class AddMissionListWidgetState extends State<AddMissionListWidget> {
                 },
                 child: Stack(children: [
                   Container(
-                    // width: 350,
+                      // width: 350,
                       decoration: BoxDecoration(
                         color: isFavorite ? Colors.white : Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -101,26 +98,24 @@ class AddMissionListWidgetState extends State<AddMissionListWidget> {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   utils.convertStringToUnicode(
-                                      widget.mission.emoji) + '\t' +
+                                          widget.mission.emoji) +
+                                      '\t' +
                                       widget.mission.label,
-                                  style: TextStyle(fontSize: 15, color: COLOR_DARK_BLUE, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: COLOR_DARK_BLUE,
+                                      fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.center,
-                                )
-                            ),
+                                )),
                             PointBlock(point: widget.mission.point)
-
-                          ])
-                  ),
+                          ])),
                   Positioned(
-                    top: 8,
+                    top: 20,
                     left: 4,
                     child: Icon(Icons.star,
                         color: isFavorite ? COLOR_YELLOW : Colors.transparent,
                         size: 32),
                   )
-                ])
-            )
-        )
-    );
+                ]))));
   }
 }

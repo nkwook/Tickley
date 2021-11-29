@@ -67,7 +67,8 @@ class _MyPointLevelWidgetState extends State<MyPointLevelWidget> {
           child: ClipRRect(
             borderRadius: BorderRadius.all(Radius.circular(16)),
             child: LinearProgressIndicator(
-              value: (widget.userData.point - levelMap['start']) / 10,
+              value: (widget.userData.point - levelMap['start']) /
+                  (levelMap['end'] - levelMap['start'] + 1),
               valueColor:
                   // new AlwaysStoppedAnimation<Color>(Color(levelMap['color'])),
                   new AlwaysStoppedAnimation<Color>(COLOR_GREEN),
