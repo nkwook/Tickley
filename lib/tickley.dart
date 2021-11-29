@@ -11,6 +11,7 @@ import 'package:tickley/src/bloc/mission/mission_cubit.dart';
 import 'package:tickley/src/bloc/mission_user/mission_user_cubit.dart';
 import 'package:tickley/src/bloc/most_active_mission/most_active_mission_cubit.dart';
 import 'package:tickley/src/bloc/point/point_cubit.dart';
+import 'package:tickley/src/bloc/suggestion/suggest_mission_cubit.dart';
 import 'package:tickley/src/bloc/tUser/tUser_cubit.dart';
 import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_mission_cubit.dart';
 
@@ -62,6 +63,9 @@ class TickleyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => CategoryPointCubit(repository: PointRepository()),
+          ),
+          BlocProvider(
+            create: (_) => SuggestMissionCubit(repository: MissionRepository()),
           )
         ],
         child: MaterialApp(
