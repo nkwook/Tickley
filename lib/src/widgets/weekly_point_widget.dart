@@ -4,7 +4,8 @@ import 'package:tickley/src/model/completed_mission/completed_mission.dart';
 import 'package:tickley/src/utils/constants.dart';
 
 import 'package:tickley/src/utils/utils.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/my_tooltip.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 class WeeklyPointWidget extends StatefulWidget {
   List<List<CompletedMission>> weeklyCompletedMission;

@@ -5,7 +5,8 @@ import 'package:tickley/src/bloc/suggestion/suggest_mission_cubit.dart';
 import 'package:tickley/src/bloc/suggestion/suggest_mission_state.dart';
 import 'package:tickley/src/repository/mission_repository.dart';
 import 'package:tickley/src/utils/constants.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/green_button.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 import '../utils/utils.dart';
 

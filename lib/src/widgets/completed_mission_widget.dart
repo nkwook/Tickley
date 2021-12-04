@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/model/completed_mission/completed_mission.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/mission_text.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 class CompletedMissionWidget extends StatefulWidget {
   CompletedMission mission;
@@ -23,14 +24,10 @@ class CompletedMissionWidgetState extends State<CompletedMissionWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: 250,
-      decoration: BoxDecoration(
-          // borderRadius: BorderRadius.all(Radius.circular(20)),
-          // border: Border.all(color: Colors.black),
-          ),
+      decoration: BoxDecoration(),
       padding: const EdgeInsets.all(8),
       child:
           MissionText(emoji: widget.mission.emoji, label: widget.mission.label),
     );
-    // )));
   }
 }

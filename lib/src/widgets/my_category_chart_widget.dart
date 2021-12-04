@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/category/category_cubit.dart';
 import 'package:tickley/src/bloc/category/category_state.dart';
 import 'package:tickley/src/utils/constants.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 const gridColor = Color(0xff68739f);
 const titleColor = Color(0xff8c95db);

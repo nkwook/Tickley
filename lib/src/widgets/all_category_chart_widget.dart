@@ -7,7 +7,8 @@ import 'package:tickley/src/bloc/category_point/category_point_cubit.dart';
 import 'package:tickley/src/bloc/category_point/category_point_state.dart'
     as cs;
 import 'package:tickley/src/utils/color_extension.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/indicator.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 class AllCategoryChartWidget extends StatefulWidget {
   AllCategoryChartWidget({

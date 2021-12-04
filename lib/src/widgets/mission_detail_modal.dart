@@ -5,7 +5,9 @@ import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/mission_text.dart';
+import 'package:tickley/src/utils/widget_functions/point_block.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 class MissionDetailModal extends StatefulWidget {
   Mission mission;

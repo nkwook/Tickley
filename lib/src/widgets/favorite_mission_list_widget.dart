@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
-import 'package:tickley/src/utils/constants.dart';
+
 import 'package:tickley/src/utils/utils.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/mission_text.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 import 'mission_detail_modal.dart';
 
 class FavoriteMissionListWidget extends StatefulWidget {

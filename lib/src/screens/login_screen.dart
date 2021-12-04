@@ -6,7 +6,7 @@ import 'package:tickley/src/bloc/auth/auth_state.dart';
 
 import 'package:tickley/src/screens/register_screen.dart';
 import 'package:tickley/src/utils/authentication.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 import '../bottom_navigator.dart';
 
 class LoginScreen extends StatefulWidget {

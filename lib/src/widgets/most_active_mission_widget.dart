@@ -7,7 +7,7 @@ import 'package:tickley/src/bloc/mission_user/mission_user_state.dart';
 import 'package:tickley/src/model/most_active_mission/most_active_mission.dart';
 
 import 'package:tickley/src/utils/utils.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 class MostActiveMissionWidget extends StatefulWidget {
   MostActiveMission mission;
@@ -48,13 +48,12 @@ class MostActiveMissionWidgetState extends State<MostActiveMissionWidget> {
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                               children: <TextSpan>[
-                                TextSpan(
+                            TextSpan(
                                 text: utils.convertStringToUnicode(
                                     widget.mission.emoji)),
                             TextSpan(
-                                text: " "+widget.mission.label,
+                                text: " " + widget.mission.label,
                                 style: TextStyle(color: Colors.black)),
-                            
                           ])),
                       Row(children: [
                         Icon(Icons.people, color: Colors.grey),

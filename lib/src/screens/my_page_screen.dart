@@ -19,8 +19,9 @@ import 'package:tickley/src/screens/login_screen.dart';
 
 import 'package:tickley/src/utils/authentication.dart';
 import 'package:tickley/src/utils/constants.dart';
+import 'package:tickley/src/utils/widget_functions/green_button.dart';
 
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 import 'package:tickley/src/widgets/completed_mission_widget.dart';
 import 'package:tickley/src/widgets/my_category_chart_widget.dart';

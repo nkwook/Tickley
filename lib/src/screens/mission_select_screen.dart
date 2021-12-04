@@ -12,8 +12,9 @@ import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 
 import 'package:tickley/src/utils/constants.dart';
+import 'package:tickley/src/utils/widget_functions/green_button.dart';
 
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 import 'package:tickley/src/widgets/new_mission_form_widget.dart';
 import '../widgets/add_mission_list_widget.dart';
 import '../widgets/category_widget.dart';

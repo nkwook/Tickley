@@ -8,7 +8,7 @@ import 'package:tickley/src/bloc/completed_mission/completed_mission_state.dart'
 import 'package:tickley/src/model/completed_mission/completed_mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 import 'package:tickley/src/utils/constants.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 import 'package:tickley/src/widgets/completed_mission_widget.dart';
 
 class HistoryScreen extends StatefulWidget {
