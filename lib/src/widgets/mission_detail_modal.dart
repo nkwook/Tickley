@@ -47,11 +47,8 @@ class MissionDetailModalState extends State<MissionDetailModal> {
             Container(height: 20),
             Row(
               children: [
-                Text(
-                    utils.convertStringToUnicode(widget.mission.emoji) +
-                        '\t' +
-                        widget.mission.label,
-                    style: _missionTitle),
+                MissionText(
+                    emoji: widget.mission.emoji, label: widget.mission.label),
                 SizedBox(
                   width: 6,
                 ),

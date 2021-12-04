@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tickley/src/utils/constants.dart';
+import 'package:tickley/src/utils/utils.dart';
 
 Widget addVerticalSpace(double height) {
   return SizedBox(height: height);
@@ -96,21 +97,15 @@ class PointBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Padding(
-        //     padding: const EdgeInsets.only(left: 8),
-        //     child:
-
-        Container(
-            alignment: Alignment.center,
-            width: 50,
-            height: 34,
-            padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24), color: COLOR_YELLOW),
-            child: Text('\u{1F331} ' + point.toString(),
-                style: TextStyle(
-                    color: COLOR_GREEN, fontWeight: FontWeight.bold)));
+    return Container(
+        alignment: Alignment.center,
+        width: 50,
+        height: 34,
+        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24), color: COLOR_YELLOW),
+        child: Text('\u{1F331} ' + point.toString(),
+            style: TextStyle(color: COLOR_GREEN, fontWeight: FontWeight.bold)));
   }
 }
 
@@ -142,5 +137,31 @@ class GreenButtonState extends State<GreenButton> {
                 width: 320,
                 height: 55,
                 child: Text(widget.text))));
+  }
+}
+
+class MissionText extends StatelessWidget {
+  String emoji;
+  String label;
+
+  MissionText({Key? key, required this.emoji, required this.label})
+      : super(key: key);
+
+  Utils utils = new Utils();
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+        text: TextSpan(
+            style: TextStyle(
+                fontSize: 15,
+                color: COLOR_DARK_BLUE,
+                fontWeight: FontWeight.bold),
+            children: <TextSpan>[
+          TextSpan(
+              text: utils.convertStringToUnicode(emoji) + '\t',
+              style: TextStyle(fontSize: 22)),
+          TextSpan(text: label)
+        ]));
   }
 }

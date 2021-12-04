@@ -4,6 +4,7 @@ import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
+import 'package:tickley/src/utils/widget_functions.dart';
 import 'mission_detail_modal.dart';
 
 class FavoriteMissionListWidget extends StatefulWidget {
@@ -54,7 +55,7 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
     return Container(
         height: 80,
         child: Container(
-          //padding: const EdgeInsets.all(12.0),
+            //padding: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(
               border: Border.all(
                 color: const Color(0xffECEDEF),
@@ -62,61 +63,58 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
               ),
               borderRadius: BorderRadius.all(Radius.circular(24)),
             ),
-            
             child: Container(
-              child: InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                onTap: () {
-                  showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return MissionDetailModal(
-                            mission: widget.mission,
-                            userId: widget.userId,
-                            isCompleted: isCompleted,
-                            setIsCompleted: setIsCompleted);
-                      });
-                },
-                child: Container(
-                    decoration: BoxDecoration(
-                      color: isCompleted ? Colors.green[50] : Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(24)),
-                    ),
-                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    // boxShadow:
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            utils.convertStringToUnicode(widget.mission.emoji) + "  "+
-                                widget.mission.label,
-                            style: TextStyle(fontSize:15, fontWeight: FontWeight.w700, color:Colors.black),
-                            textAlign: TextAlign.center,
-                          ),
-                          InkWell(
-                              onTap: () {
-                                if (!isCompleted) {
-                                  BlocProvider.of<FavoriteMissionCubit>(context)
-                                      .postMissionCompleted(
-                                          widget.userId, widget.mission.id);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text('환경 보호 성공! ' +
-                                              widget.mission.point.toString() +
-                                              '점 을 얻었어요.')));
+                child: InkWell(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    onTap: () {
+                      showModalBottomSheet(
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return MissionDetailModal(
+                                mission: widget.mission,
+                                userId: widget.userId,
+                                isCompleted: isCompleted,
+                                setIsCompleted: setIsCompleted);
+                          });
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                          color: isCompleted ? Colors.green[50] : Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(24)),
+                        ),
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                        // boxShadow:
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              MissionText(
+                                  emoji: widget.mission.emoji,
+                                  label: widget.mission.label),
+                              InkWell(
+                                  onTap: () {
+                                    if (!isCompleted) {
+                                      BlocProvider.of<FavoriteMissionCubit>(
+                                              context)
+                                          .postMissionCompleted(
+                                              widget.userId, widget.mission.id);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text('환경 보호 성공! ' +
+                                                  widget.mission.point
+                                                      .toString() +
+                                                  '점 을 얻었어요.')));
 
-                                  setIsCompleted();
-                                }
-                              },
-                              child: Icon(
-                                isCompleted
-                                    ? Icons.check_circle_rounded
-                                    : Icons.circle_outlined,
-                                color: const Color(0xffF2F6F7),
-                                size: 35,
-                              ))
-                        ])))
-            )));
+                                      setIsCompleted();
+                                    }
+                                  },
+                                  child: Icon(
+                                    isCompleted
+                                        ? Icons.check_circle_rounded
+                                        : Icons.circle_outlined,
+                                    color: const Color(0x778AE5A3),
+                                    size: 35,
+                                  ))
+                            ]))))));
   }
 }

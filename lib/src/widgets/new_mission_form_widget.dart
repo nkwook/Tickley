@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/suggestion/suggest_mission_cubit.dart';
@@ -68,7 +69,7 @@ class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
                                 color: Color(0xFFDBDBDB), fontSize: 16)),
                         controller: _controllerName,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.isEmpty || value == '') {
                             return '제목을 입력해주세요';
                           }
                           setState(() {
@@ -93,7 +94,7 @@ class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
                                 color: Color(0xFFDBDBDB), fontSize: 16)),
                         controller: _controllerDescription,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.isEmpty || value == '') {
                             return '설명을 입력해주세요';
                           }
                           setState(() {
@@ -103,30 +104,53 @@ class NewMissionFormWidgetState extends State<NewMissionFormWidget> {
                         },
                       )),
                   SizedBox(height: 30),
-                  GreenButton(
-                      text: '제출하기',
-                      onTapFunction: () async {
-                        BlocProvider.of<SuggestMissionCubit>(context)
-                            .postMissionSuggestion(label, description);
-                        _controllerName.clear();
-                        _controllerDescription.clear();
-                      }),
+
+                  BlocListener<SuggestMissionCubit, SuggestMissionState>(
+                      listener: (_, state) {
+                        if (state is Empty) {
+                          Container();
+                        } else if (state is Loading) {
+                          CustomCircularProgressIndicator();
+                        } else if (state is Error) {
+                          Text('에러가 발생했습니다. 다시 시도해주세요.',
+                              style: TextStyle(color: Colors.amber));
+                        } else if (state is Loaded) {
+                          showCupertinoDialog(
+                              barrierDismissible: true,
+                              context: context,
+                              builder: (_) {
+                                return CupertinoAlertDialog(
+                                    title: Text('새 미션이 제안되었습니다 \u{1F604}'),
+                                    content: Text('건강한 지구를 위해 노력해주셔서 감사합니다.'),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        child: Text('확인'),
+                                        onPressed: () {
+                                          Navigator.pop(_);
+                                        },
+                                      )
+                                    ]);
+                              });
+                        }
+                      },
+                      child: GreenButton(
+                          text: '제출하기',
+                          onTapFunction: () async {
+                            if (_formKey.currentState!.validate()) {
+                              // try{
+                              //   await MissionRepository.postMissionSuggestion(label, description);
+                              // }
+                              BlocProvider.of<SuggestMissionCubit>(context)
+                                  .postMissionSuggestion(label, description);
+                              _controllerName.clear();
+                              _controllerDescription.clear();
+                              setState(() {
+                                label = '';
+                                description = '';
+                              });
+                            }
+                          })),
                   SizedBox(height: 15),
-                  BlocBuilder<SuggestMissionCubit, SuggestMissionState>(
-                      builder: (_, state) {
-                    if (state is Empty) {
-                      return Container();
-                    } else if (state is Loading) {
-                      return CustomCircularProgressIndicator();
-                    } else if (state is Error) {
-                      return Text('에러가 발생했습니다. 다시 시도해주세요.',
-                          style: TextStyle(color: Colors.amber));
-                    } else if (state is Loaded) {
-                      return Text('새 미션 제안 완료\u{1F604}',
-                          style: FontBoldGreen18);
-                    }
-                    return Container();
-                  })
                 ],
               ),
             ))

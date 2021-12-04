@@ -85,7 +85,7 @@ class AddMissionListWidgetState extends State<AddMissionListWidget> {
                   Container(
                       // width: 350,
                       decoration: BoxDecoration(
-                        color: isFavorite ? Colors.white : Colors.white,
+                        color: isFavorite ? Colors.grey[100] : Colors.white,
                         borderRadius: BorderRadius.all(Radius.circular(24)),
                         border: Border.all(color: Color(0xFFECEDEF)),
                       ),
@@ -94,27 +94,33 @@ class AddMissionListWidgetState extends State<AddMissionListWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                                width: 250,
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  utils.convertStringToUnicode(
-                                          widget.mission.emoji) +
-                                      '\t' +
-                                      widget.mission.label,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: COLOR_DARK_BLUE,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center,
-                                )),
+                              width: 250,
+                              alignment: Alignment.centerLeft,
+                              child: RichText(
+                                  text: TextSpan(
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: isFavorite
+                                              ? COLOR_BORDER
+                                              : COLOR_DARK_BLUE,
+                                          fontWeight: FontWeight.bold),
+                                      children: <TextSpan>[
+                                    TextSpan(
+                                        text: utils.convertStringToUnicode(
+                                                widget.mission.emoji) +
+                                            '\t',
+                                        style: TextStyle(fontSize: 22)),
+                                    TextSpan(text: widget.mission.label)
+                                  ])),
+                            ),
                             PointBlock(point: widget.mission.point)
                           ])),
                   Positioned(
-                    top: 20,
-                    left: 4,
+                    top: 8,
+                    left: 6,
                     child: Icon(Icons.star,
                         color: isFavorite ? COLOR_YELLOW : Colors.transparent,
-                        size: 32),
+                        size: 20),
                   )
                 ]))));
   }

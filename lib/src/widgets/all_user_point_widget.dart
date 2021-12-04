@@ -28,10 +28,11 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
           Container(
               alignment: Alignment.centerLeft,
               //margin: EdgeInsets.only(top: 15, bottom: 10),
-              //padding: EdgeInsets.only(right: 40),
+              padding: EdgeInsets.only(left: 15, top: 10),
               child: RichText(
                 text: TextSpan(
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                        fontSize: 23, fontWeight: FontWeight.w700, height: 1.3),
                     children: <TextSpan>[
                       TextSpan(
                           text: "지금까지 ",
@@ -56,8 +57,8 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
               )),
           Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(top: 20, bottom: 10),
-              // padding: EdgeInsets.only(left: 25),
+              margin: EdgeInsets.only(top: 12, bottom: 10),
+              padding: EdgeInsets.only(left: 15),
               child: RichText(
                 text: TextSpan(
                     style:

@@ -15,6 +15,7 @@ import 'package:tickley/src/bloc/tUser/tUser_state.dart' as ts;
 import 'package:tickley/src/model/completed_mission/completed_mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
 import 'package:tickley/src/screens/history_screen.dart';
+import 'package:tickley/src/screens/login_screen.dart';
 
 import 'package:tickley/src/utils/authentication.dart';
 import 'package:tickley/src/utils/constants.dart';
@@ -99,6 +100,11 @@ class _MyPageScreenState extends State<MyPageScreen> {
       child: InkWell(
           onTap: () {
             Authentication.signOut(context: context);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        LoginScreen(initLoad: false)));
           },
           child: Container(
               alignment: Alignment.center,

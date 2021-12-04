@@ -52,12 +52,11 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
   }
 
   Color? getWidgetColor(int point) {
-    if (point == 0) {
-      return Colors.white;
-    } else if (point > 180) {
-      point = 180;
-    }
-    return Colors.green[((point ~/ 20) + 1) * 100];
+    String baseColor = '8AE5A3';
+    String alpha = (33 * ((point + 19) ~/ 20)).toString();
+    if (point > 100) alpha = 'FF';
+
+    return Color(int.parse(alpha + baseColor, radix: 16));
   }
 
   @override
@@ -124,20 +123,34 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w700,
                                                   color: Colors.white)),
-                                          Container(
-                                              margin: EdgeInsets.only(top: 5),
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: getWidgetColor(
-                                                      getPointSumDay(widget
-                                                              .weeklyCompletedMission[
-                                                          index]))),
-                                              width: 35,
-                                              height: 35,
-                                              child: Text(dateList[index]
-                                                  .day
-                                                  .toString())),
+                                          Stack(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(top: 5),
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.white),
+                                                width: 35,
+                                                height: 35,
+                                              ),
+                                              Container(
+                                                  margin:
+                                                      EdgeInsets.only(top: 5),
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: getWidgetColor(
+                                                          getPointSumDay(widget
+                                                                  .weeklyCompletedMission[
+                                                              index]))),
+                                                  width: 35,
+                                                  height: 35,
+                                                  child: Text(dateList[index]
+                                                      .day
+                                                      .toString())),
+                                            ],
+                                          )
                                         ])));
                               },
                               scrollDirection: Axis.horizontal,

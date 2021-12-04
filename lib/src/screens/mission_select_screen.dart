@@ -51,91 +51,83 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // Scaffold(
-        //     appBar: AppBar(
-        //       title: Text('Add Mission'),
-        //       backgroundColor: Colors.white,
-        //       foregroundColor: Colors.black,
-        //     ),
-        // body:
-        Container(
-            height: MediaQuery.of(context).size.height * 0.8,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(25.0),
-                    topRight: const Radius.circular(25.0))),
-            child: isSuggestion
-                ? NewMissionFormWidget(setSuggestion: setIsSuggestion)
-                : SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
-                    child: BlocBuilder<CategoryCubit, cs.CategoryState>(
-                        builder: (_, state) {
-                      if (state is cs.Empty) {
-                        return Center(child: CustomCircularProgressIndicator());
-                      } else if (state is cs.Error) {
-                        return Center(child: CustomCircularProgressIndicator());
-                      } else if (state is cs.Loading) {
-                        return Center(child: CustomCircularProgressIndicator());
-                      } else if (state is cs.Loaded) {
-                        return Column(children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 25, left: 24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  "미션 추가",
-                                  style: TextStyle(
-                                      color: COLOR_GREEN,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Container(
-                                    height: 48,
-                                    child: CategoryList(
-                                        categories: state.categories,
-                                        updateCurrentCategory:
-                                            updateCurrentCategory,
-                                        currentCategory: currentCategory)),
-                              ],
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.8,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(25.0),
+                topRight: const Radius.circular(25.0))),
+        child: isSuggestion
+            ? NewMissionFormWidget(setSuggestion: setIsSuggestion)
+            : SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                child: BlocBuilder<CategoryCubit, cs.CategoryState>(
+                    builder: (_, state) {
+                  if (state is cs.Empty) {
+                    return Center(child: CustomCircularProgressIndicator());
+                  } else if (state is cs.Error) {
+                    return Center(child: CustomCircularProgressIndicator());
+                  } else if (state is cs.Loading) {
+                    return Center(child: CustomCircularProgressIndicator());
+                  } else if (state is cs.Loaded) {
+                    return Column(children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25, left: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "미션 추가",
+                              style: TextStyle(
+                                  color: COLOR_GREEN,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(top: 20, bottom: 10),
-                              child: Text('관심있는 활동들을 미션 목록에 추가해보세요',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color: Color(0xFFADADAD),
-                                      fontWeight: FontWeight.bold))),
-                          BlocBuilder<MissionCubit, ms.MissionState>(
-                              builder: (_, missionState) {
-                            if (missionState is ms.Empty) {
-                              return Center(
-                                  child: CustomCircularProgressIndicator());
-                            } else if (missionState is ms.Error) {
-                              return Center(
-                                  child: CustomCircularProgressIndicator());
-                            } else if (missionState is ms.Loading) {
-                              return Center(
-                                  child: CustomCircularProgressIndicator());
-                            } else if (missionState is ms.Loaded) {
-                              return Container(
-                                  width: 350,
-                                  child: MissionList(
-                                    setSuggestion: setIsSuggestion,
-                                    missions: missionState.missions,
-                                    userId: widget.tUser.id,
-                                  ));
-                            }
-                            return Container();
-                          })
-                        ]);
-                      }
-                      return Container();
-                    })));
+                            Container(
+                                height: 48,
+                                child: CategoryList(
+                                    categories: state.categories,
+                                    updateCurrentCategory:
+                                        updateCurrentCategory,
+                                    currentCategory: currentCategory)),
+                          ],
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.only(top: 20, bottom: 10),
+                          child: Text('관심있는 활동들을 미션 목록에 추가해보세요',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color(0xFFADADAD),
+                                  fontWeight: FontWeight.bold))),
+                      BlocBuilder<MissionCubit, ms.MissionState>(
+                          builder: (_, missionState) {
+                        if (missionState is ms.Empty) {
+                          return Center(
+                              child: CustomCircularProgressIndicator());
+                        } else if (missionState is ms.Error) {
+                          return Center(
+                              child: CustomCircularProgressIndicator());
+                        } else if (missionState is ms.Loading) {
+                          return Center(
+                              child: CustomCircularProgressIndicator());
+                        } else if (missionState is ms.Loaded) {
+                          return Container(
+                              width: 350,
+                              child: MissionList(
+                                setSuggestion: setIsSuggestion,
+                                missions: missionState.missions,
+                                userId: widget.tUser.id,
+                              ));
+                        }
+                        return Container();
+                      })
+                    ]);
+                  }
+                  return Container();
+                })));
   }
 }
 

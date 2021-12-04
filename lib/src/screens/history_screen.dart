@@ -85,15 +85,18 @@ class CompletedMissionListState extends State<CompletedMissionList> {
     return ListView.separated(
       physics: NeverScrollableScrollPhysics(),
       separatorBuilder: (context, index) {
-        return Divider(height: 2, color: COLOR_GREEN);
+        return Divider();
+        // return Divider(height: 2, color: COLOR_GREEN);
       },
       shrinkWrap: true,
       itemCount: widget.missions.length,
       itemBuilder: (context, index) {
         return Container(
-            decoration: BoxDecoration(
-                color: index % 2 == 0 ? Colors.white : Color(0xFFEEEEEE)),
-            child: Row(
+            decoration: BoxDecoration(color: Colors.white
+                // Color(0xFFEEEEEE)
+                ),
+            child: IntrinsicHeight(
+                child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
@@ -102,7 +105,10 @@ class CompletedMissionListState extends State<CompletedMissionList> {
                         alignment: Alignment.center,
                         child: Text(
                             formatting(widget.missions[index].completedAt)))),
-                Container(width: 1, height: 44, color: Color(0xFFDDDDDD)),
+
+                // Container(width: 1, height: 44, color: Color(0xFFDDDDDD)),
+                VerticalDivider(),
+
                 Flexible(
                     flex: 5,
                     child: Container(
@@ -110,7 +116,7 @@ class CompletedMissionListState extends State<CompletedMissionList> {
                         child: CompletedMissionWidget(
                             mission: widget.missions[index])))
               ],
-            ));
+            )));
       },
     );
   }
