@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tickley/src/utils/authentication.dart';
-import 'package:tickley/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 import 'tickley.dart';
 
 void main() {
@@ -32,7 +32,7 @@ class _AppState extends State<App> {
         }
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return TickelyApp();
+          return TickleyApp();
         }
         // Otherwise, show something whilst waiting for initialization to complete
         return CustomCircularProgressIndicator();
