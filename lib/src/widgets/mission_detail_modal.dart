@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
+import 'package:tickley/src/bloc/point/point_cubit.dart';
+import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_mission_cubit.dart';
 
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/utils/utils.dart';
 import 'package:tickley/src/utils/widget_functions/mission_text.dart';
 import 'package:tickley/src/utils/widget_functions/point_block.dart';
-import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 
 class MissionDetailModal extends StatefulWidget {
   Mission mission;
@@ -73,14 +74,18 @@ class MissionDetailModalState extends State<MissionDetailModal> {
                 child: InkWell(
                   onTap: () async {
                     if (!widget.isCompleted) {
-                      BlocProvider.of<FavoriteMissionCubit>(context)
+                      await BlocProvider.of<FavoriteMissionCubit>(context)
                           .postMissionCompleted(
                               widget.userId, widget.mission.id);
+
+                      BlocProvider.of<WeeklyCompletedMissionCubit>(context)
+                          .fetchWeeklyCompletedMissionsByUser(widget.userId);
 
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('환경 보호 성공! ' +
                               widget.mission.point.toString() +
                               '점 을 얻었어요.')));
+                      widget.setIsCompleted();
 
                       Navigator.pop(context);
                     } else {

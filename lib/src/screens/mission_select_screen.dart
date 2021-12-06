@@ -7,6 +7,9 @@ import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
 import 'package:tickley/src/bloc/favorite_mission/favorite_mission_state.dart';
 import 'package:tickley/src/bloc/mission/mission_cubit.dart';
 import 'package:tickley/src/bloc/mission/mission_state.dart' as ms;
+import 'package:tickley/src/bloc/popular_mission/popular_mission_cubit.dart';
+import 'package:tickley/src/bloc/popular_mission/popular_mission_state.dart'
+    as ps;
 import 'package:tickley/src/model/category/category.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 import 'package:tickley/src/model/tUser/tUser.dart';
@@ -36,6 +39,7 @@ class MissionSelectScreenState extends State<MissionSelectScreen> {
     super.initState();
     BlocProvider.of<CategoryCubit>(context).fetchCategories();
     BlocProvider.of<MissionCubit>(context).fetchMissionsByCategory(1);
+    BlocProvider.of<PopularMissionCubit>(context).fetchPopularMissions();
   }
 
   void updateCurrentCategory(int id) async {
@@ -193,42 +197,66 @@ class MissionListState extends State<MissionList> {
       else if (state is Error)
         return CustomCircularProgressIndicator();
       else if (state is Loaded) {
-        return ConstrainedBox(
-            constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.6,
-            ),
-            child: ListView.separated(
-              separatorBuilder: (context, index) {
-                return Container(height: 10);
-              },
-              shrinkWrap: true,
-              itemCount: widget.missions.length + 1,
-              itemBuilder: (context, index) {
-                if (index == widget.missions.length) {
-                  return GreenButton(
-                      text: '새 미션 제안할래요!',
-                      onTapFunction: () {
-                        widget.setSuggestion();
-                      });
-                }
+        return BlocBuilder<PopularMissionCubit, ps.PopularMissionState>(
+            builder: (_, popularState) {
+          if (popularState is ps.Empty)
+            return CustomCircularProgressIndicator();
+          else if (popularState is ps.Loading)
+            return CustomCircularProgressIndicator();
+          else if (popularState is ps.Error)
+            return CustomCircularProgressIndicator();
+          else if (popularState is ps.Loaded) {
+            return ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
+                ),
+                child: ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return Container(height: 10);
+                  },
+                  shrinkWrap: true,
+                  itemCount: widget.missions.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == widget.missions.length) {
+                      return GreenButton(
+                          text: '새 미션 제안할래요!',
+                          onTapFunction: () {
+                            widget.setSuggestion();
+                          });
+                    }
 
-                bool isFavorite = false;
-                for (int i = 0; i < state.missions.length; i++) {
-                  if (state.missions[i].id == widget.missions[index].id) {
-                    isFavorite = true;
-                    break;
-                  }
-                }
+                    bool isFavorite = false;
 
-                return AddMissionListWidget(
-                  mission: widget.missions[index],
-                  userId: widget.userId,
-                  isFavorite: isFavorite,
-                );
-              },
-            ));
+                    for (int i = 0; i < state.missions.length; i++) {
+                      if (state.missions[i].id == widget.missions[index].id) {
+                        isFavorite = true;
+                        break;
+                      }
+                    }
+
+                    bool isPopular = false;
+
+                    for (int i = 0; i < popularState.missions.length; i++) {
+                      if (popularState.missions[i].id ==
+                          widget.missions[index].id) {
+                        isPopular = true;
+                        break;
+                      }
+                    }
+
+                    return AddMissionListWidget(
+                      mission: widget.missions[index],
+                      userId: widget.userId,
+                      isFavorite: isFavorite,
+                      isPopular: isPopular,
+                    );
+                  },
+                ));
+          }
+
+          return Container();
+        });
       }
-
       return Container();
     });
   }

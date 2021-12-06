@@ -24,13 +24,6 @@ class WeeklyPointWidgetState extends State<WeeklyPointWidget> {
   bool isCompleted = false;
   bool isClicked = false;
 
-  setIsCompleted() {
-    setState(() {
-      isCompleted = true;
-      isClicked = true;
-    });
-  }
-
   @override
   void initState() {
     super.initState();

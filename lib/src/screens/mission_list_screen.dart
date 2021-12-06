@@ -9,7 +9,7 @@ import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_missi
 import 'package:tickley/src/model/tUser/tUser.dart';
 import 'package:tickley/src/utils/constants.dart';
 import 'package:tickley/src/widgets/favorite_mission_list_widget.dart';
-import 'package:tickley/src/utils/widget_functions.dart';
+import 'package:tickley/src/utils/widget_functions/widget_functions.dart';
 import 'package:tickley/src/widgets/weekly_point_widget.dart';
 import 'mission_select_screen.dart';
 
@@ -67,7 +67,9 @@ class MissionListScreenState extends State<MissionListScreen> {
               if (state is ws.Empty) {
                 return CustomCircularProgressIndicator();
               } else if (state is ws.Loading) {
-                return CustomCircularProgressIndicator();
+                return WeeklyPointWidget(
+                  weeklyCompletedMission: [],
+                );
               } else if (state is ws.Error) {
                 return CustomCircularProgressIndicator();
               } else if (state is ws.Loaded) {

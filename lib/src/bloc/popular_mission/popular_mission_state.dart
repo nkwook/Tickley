@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 
 @immutable
-abstract class FavoriteMissionState extends Equatable {
-  late FavoriteMissionState _favoriteMissionState;
-  get missons => _favoriteMissionState.missons;
+abstract class PopularMissionState extends Equatable {
+  late PopularMissionState _popularMissionState;
+  get missons => _popularMissionState.missons;
 }
 
-class Empty extends FavoriteMissionState {
+class Empty extends PopularMissionState {
   @override
   List<Object> get props => [];
 }
 
-class Loading extends FavoriteMissionState {
+class Loading extends PopularMissionState {
   @override
   List<Object> get props => [];
 }
 
-class Error extends FavoriteMissionState {
+class Error extends PopularMissionState {
   final String message;
 
   Error({
@@ -29,7 +29,7 @@ class Error extends FavoriteMissionState {
   List<Object> get props => [this.message];
 }
 
-class Loaded extends FavoriteMissionState {
+class Loaded extends PopularMissionState {
   final List<Mission> missions;
   Loaded({required this.missions});
 

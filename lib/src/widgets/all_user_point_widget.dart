@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tickley/src/utils/constants.dart';
 
 class AllUserPointWidget extends StatefulWidget {
   int point;
@@ -21,8 +20,6 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
         decoration: BoxDecoration(
             color: const Color(0xffF4F4F5),
             borderRadius: BorderRadius.all(Radius.circular(24))),
-        //borderRadius: BorderRadius.all(Radius.circular(20)),
-        //padding: EdgeInsets.only(left: 25),
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: <
             Widget>[
           Container(
@@ -73,6 +70,7 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
               )),
           Container(
               width: MediaQuery.of(context).size.width,
+              // width: 300,
               height: 250,
               child: Stack(
                   alignment: AlignmentDirectional.bottomCenter,
@@ -82,11 +80,12 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
                         child: Align(
                             alignment: Alignment.bottomCenter,
                             child: AspectRatio(
-                                aspectRatio: 6.6 / (widget.point * 0.01),
+                                aspectRatio: 1.2 > 6.6 / (widget.point * 0.01)
+                                    ? 1.2
+                                    : 6.6 / (widget.point * 0.01),
                                 child: Container(
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
-                                          // scale: 1.5,
                                           image: AssetImage('assets/tree.png'),
                                           fit: BoxFit.fitWidth,
                                           alignment:
@@ -101,7 +100,6 @@ class AllUserPointWidgetState extends State<AllUserPointWidget> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
-                                          // scale: 1.5,
                                           image: AssetImage('assets/tree.png'),
                                           fit: BoxFit.fitWidth,
                                           alignment:

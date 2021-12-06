@@ -12,12 +12,14 @@ class AddMissionListWidget extends StatefulWidget {
   Mission mission;
   int userId;
   bool isFavorite;
+  bool isPopular;
 
   AddMissionListWidget({
     Key? key,
     required this.mission,
     required this.userId,
     required this.isFavorite,
+    required this.isPopular,
   }) : super(key: key);
 
   @override
@@ -120,7 +122,9 @@ class AddMissionListWidgetState extends State<AddMissionListWidget> {
                     top: 8,
                     left: 6,
                     child: Icon(Icons.star,
-                        color: isFavorite ? COLOR_YELLOW : Colors.transparent,
+                        color: widget.isPopular
+                            ? COLOR_YELLOW
+                            : Colors.transparent,
                         size: 20),
                   )
                 ]))));

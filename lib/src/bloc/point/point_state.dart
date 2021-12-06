@@ -33,5 +33,5 @@ class Loaded extends PointState {
   Loaded({required this.point, required this.userLength});
 
   @override
-  List<Object> get props => [this.point];
+  List<Object> get props => [this.point, this.userLength];
 }

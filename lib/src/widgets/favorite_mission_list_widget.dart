@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tickley/src/bloc/favorite_mission/favorite_mission_cubit.dart';
+import 'package:tickley/src/bloc/weekly_completed_mission/weekly_completed_mission_cubit.dart';
 import 'package:tickley/src/model/mission/mission.dart';
 
 import 'package:tickley/src/utils/utils.dart';
@@ -93,12 +94,19 @@ class FavoriteMissionListWidgetState extends State<FavoriteMissionListWidget> {
                                   emoji: widget.mission.emoji,
                                   label: widget.mission.label),
                               InkWell(
-                                  onTap: () {
+                                  onTap: () async {
                                     if (!isCompleted) {
-                                      BlocProvider.of<FavoriteMissionCubit>(
-                                              context)
+                                      await BlocProvider.of<
+                                              FavoriteMissionCubit>(context)
                                           .postMissionCompleted(
                                               widget.userId, widget.mission.id);
+
+                                      BlocProvider.of<
+                                                  WeeklyCompletedMissionCubit>(
+                                              context)
+                                          .fetchWeeklyCompletedMissionsByUser(
+                                              widget.userId);
+
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(SnackBar(
                                               content: Text('환경 보호 성공! ' +
