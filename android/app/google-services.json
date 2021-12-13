@@ -7,18 +7,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:986570704697:android:3b68b0076417482ae30ae8",
+        "mobilesdk_app_id": "1:986570704697:android:6a64586e844dcf62e30ae8",
         "android_client_info": {
-          "package_name": "com.example.tickley"
+          "package_name": "com.moribi.tickley"
         }
       },
       "oauth_client": [
         {
-          "client_id": "986570704697-ctf718mg9g16evjnqis83gvq3np91skf.apps.googleusercontent.com",
+          "client_id": "986570704697-1a439b3tgmok38fj58qhkdd510ea6ng2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.tickley",
+            "package_name": "com.moribi.tickley",
             "certificate_hash": "7e574cf8a6d65b252bf568c45237b17ec714249f"
+          }
+        },
+        {
+          "client_id": "986570704697-mqq59686ogvdkkehronm2l6gijfall51.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moribi.tickley",
+            "certificate_hash": "dd555ee4afbb301db3cee7e0b624d94f325c3351"
           }
         },
         {
