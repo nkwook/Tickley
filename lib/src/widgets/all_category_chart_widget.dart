@@ -43,7 +43,7 @@ class AllCategoryChartWidgetState extends State<AllCategoryChartWidget> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-        aspectRatio: 1.1,
+        aspectRatio: 1.2,
         child: Card(
           color: Colors.white,
           child: Column(children: <Widget>[
@@ -108,17 +108,17 @@ class AllCategoryChartWidgetState extends State<AllCategoryChartWidget> {
                           flex: 4,
                           child: Container(
                               height: 200,
-                              width: 100,
+                              // width: 100,
                               child: ListView.separated(
                                   itemBuilder: (context, index) {
-                                    return index == state.categories.length - 1
+                                    return index == state.categories.length
                                         ? Container()
                                         : Indicator(
                                             color: Color(colorList[index]),
                                             text: state.categories[index].label,
                                             isSquare: false,
                                             size:
-                                                touchedIndex == index ? 15 : 13,
+                                                touchedIndex == index ? 14 : 13,
                                             textColor: touchedIndex == index
                                                 ? Colors.black
                                                 : Colors.grey,
