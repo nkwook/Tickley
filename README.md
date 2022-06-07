@@ -11,12 +11,12 @@ Available at [Play Store](https://play.google.com/store/apps/details?id=com.mori
 
 ## Environments
 
-###Client Side
+### Client Side
 - Flutter
 - BloC pattern for state management
 - Equatable, Freezed anotation plugin for managing immutable state objects
 
-###Server Side
+### Server Side
 - NodeJS
 - Typescript
 - AWS Lambda
